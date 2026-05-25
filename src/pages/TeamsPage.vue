@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import PublicLayout from '../components/layout/PublicLayout.vue'
 import SectionHeader from '../components/common/SectionHeader.vue'
 import BaseCard from '../components/common/BaseCard.vue'
@@ -6,6 +7,12 @@ import config from '../data/content.yml'
 import teamInfo from '../data/teamInfo.yml'
 
 const teamsContent = config.teams
+const unclusteredTeam = computed(() =>
+  teamInfo.teams.find((team) => team.teamId === 'unclustered')
+)
+const confirmedTeams = computed(() =>
+  teamInfo.teams.filter((team) => team.teamId !== 'unclustered')
+)
 </script>
 
 <template>
@@ -24,14 +31,14 @@ const teamsContent = config.teams
       </div>
 
       <div
-        v-if="teamInfo.teams.length"
+        v-if="confirmedTeams.length"
         class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
       >
         <BaseCard
-          v-for="(team, index) in teamInfo.teams"
+          v-for="(team, index) in confirmedTeams"
           :key="`${team.teamId}-${index}`"
           class="relative"
-          :class="team.members.length >= 2 ? '!border-green-600' : '!border-red-600'"
+          :class="team.members.length >= 3 ? '!border-green-600' : '!border-red-600'"
         >
           <div
             class="absolute top-4 right-4 flex flex-col items-center gap-1"
@@ -56,6 +63,12 @@ const teamsContent = config.teams
                 >
                   Lead
                 </span>
+                <span
+                  v-if="member.tag === 'unregistered'"
+                  class="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-red-600 text-white"
+                >
+                  {{ member.tag }}
+                </span>
               </div>
               <a
                 :href="`mailto:${member.email}`"
@@ -74,6 +87,49 @@ const teamsContent = config.teams
       >
         <p class="text-sm text-neutral-400">{{ teamsContent.emptyMessage }}</p>
       </div>
+
+      <section v-if="unclusteredTeam?.members.length" class="mt-12 border-t border-neutral-200 pt-10">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-violet-600">
+              {{ teamsContent.unclustered.eyebrow }}
+            </p>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight text-neutral-950">
+              {{ teamsContent.unclustered.heading }}
+            </h2>
+            <p class="mt-2 text-sm font-medium text-red-600">
+              {{ teamsContent.unclustered.subheading }}
+            </p>
+          </div>
+          <p class="text-xs text-neutral-400 shrink-0">
+            {{ unclusteredTeam.members.length }} {{ teamsContent.unclustered.countLabel }}
+          </p>
+        </div>
+
+        <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <li
+            v-for="member in unclusteredTeam.members"
+            :key="member.email"
+            class="border border-neutral-200 bg-white p-4"
+          >
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="text-sm font-medium text-neutral-950">{{ member.name }}</p>
+              <span
+                v-if="member.tag === 'unregistered'"
+                class="inline-flex items-center px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-red-600 text-white"
+              >
+                {{ member.tag }}
+              </span>
+            </div>
+            <a
+              :href="`mailto:${member.email}`"
+              class="mt-1 block text-sm text-violet-700 hover:underline underline-offset-2 break-all"
+            >
+              {{ member.email }}
+            </a>
+          </li>
+        </ul>
+      </section>
     </section>
   </PublicLayout>
 </template>

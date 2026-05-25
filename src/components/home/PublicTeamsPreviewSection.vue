@@ -9,11 +9,14 @@ import teamInfo from '../../data/teamInfo.yml'
 const teamsContent = config.teams
 const PER_PAGE = 6
 const page = ref(0)
-const totalPages = computed(() => Math.ceil(teamInfo.teams.length / PER_PAGE))
+const confirmedTeams = computed(() =>
+  teamInfo.teams.filter((team) => team.teamId !== 'unclustered')
+)
+const totalPages = computed(() => Math.ceil(confirmedTeams.value.length / PER_PAGE))
 const canPrev = computed(() => page.value > 0)
 const canNext = computed(() => page.value < totalPages.value - 1)
 const pageTeams = computed(() =>
-  teamInfo.teams.slice(page.value * PER_PAGE, (page.value + 1) * PER_PAGE)
+  confirmedTeams.value.slice(page.value * PER_PAGE, (page.value + 1) * PER_PAGE)
 )
 
 function prev() { if (canPrev.value) page.value-- }
@@ -64,7 +67,7 @@ function next() { if (canNext.value) page.value++ }
 
       <!-- 2-col on all mobile, 3-col tablet, 6-col desktop -->
       <div
-        v-if="teamInfo.teams.length"
+        v-if="confirmedTeams.length"
         class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"
       >
         <article

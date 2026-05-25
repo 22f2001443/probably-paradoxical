@@ -143,6 +143,11 @@ teams:
   subheading: "Team details will be listed here once registrations are confirmed."
   emptyMessage: "Team list coming soon."
   lastUpdatedLabel: "Last updated on"
+  unclustered:
+    eyebrow: "Individual Registrations"
+    heading: "Unclustered Participants"
+    subheading: "If your name is listed below, please contact other participants and form a team of 3-5 people, or you will be assigned to a team randomly."
+    countLabel: "students"
 
 # ── Judges page ────────────────────────────────────────────────────────────
 # Add one entry under profiles for each judge. Leave imageUrl empty ("") to
