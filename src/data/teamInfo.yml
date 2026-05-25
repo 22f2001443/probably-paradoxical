@@ -1,177 +1,305 @@
+# Update both timestamp fields whenever this roster changes.
+lastUpdated: "25 May 2026, 08:07 PM IST"
+lastUpdatedIso: "2026-05-25T20:07:26+05:30"
+
 # Team roster data for the public Teams page.
-# Add each team using this format:
-#
+# Updated automatically from CSV. Solo members moved to Unclustered.
 teams:
 
-  - teamName: "Alibaba4Chor"
-    teamId: "T01" # must be unique, lowercase, no spaces (use hyphens if needed)
+  - teamName: "vedha sri"
+    teamId: "T01"
     members:
-      - name: "Nimish Shinde (DS)"
-        email: "23f2002121@ds.study.iitm.ac.in"
-      - name: "Member Two"
-        email: "23f1002786@ds.study.iitm.ac.in"
-      - name: "Member Three"
-        email: "23f2002121@ds.study.iitm.ac.in"
-      - name: "Member Four"
-        email: "23f2004210@ds.study.iitm.ac.in"
-      - name: "Member Five"
-        email: "24f3002711@ds.study.iitm.ac.in"
+      - name: "VEDHA SRI (DS) DS"
+        email: "25f1000075@ds.study.iitm.ac.in"
+      - name: "leela sai subhramanya avinash"
+        email: "23f2002602@ds.study.iitm.ac.in"
 
-  - teamName: "AnalystKing"
-    teamId: "T02" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Gnanaprakash R (DS)"
-        email: "24ds2000021@ds.study.iitm.ac.in"
-      - name: "Member Two"
-        email: "22f3000144@ds.study.iitm.ac.in"
-      - name: "Member Three"
-        email: "24ds2000033@ds.study.iitm.ac.in"
-      - name: "Member Four"
-        email: "24f2007783@ds.study.iitm.ac.in"
-
-  - teamName: "Chanakya"
-    teamId: "T03" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-  
-  - teamName: "Codorithm"
-    teamId: "T04" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-  
-  - teamName: "Data Panchayat"
-    teamId: "T05" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-  
   - teamName: "DataPulse"
-    teamId: "T06" # must be unique, lowercase, no spaces (use hyphens if needed)
+    teamId: "T02"
     members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-  
-  - teamName: "Innovait"
-    teamId: "T07" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Kivy"
-    teamId: "T08" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Matrix"
-    teamId: "T09" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Pan Bros"
-    teamId: "T10" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-  
-  - teamName: "Rahul"
-    teamId: "T11" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Seedata"
-    teamId: "T12" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Stat Stackers"
-    teamId: "T13" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "Tech Mavericks"
-    teamId: "T14" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  - teamName: "The Invincible Trident"
-    teamId: "T15" # must be unique, lowercase, no spaces (use hyphens if needed)
-    members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
+      - name: "AYUSH GUPTA (DS) DS"
+        email: "22f3000144@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "24f20007782@ds.study.iitm.ac.in"
 
   - teamName: "TMC"
-    teamId: "T16" # must be unique, lowercase, no spaces (use hyphens if needed)
+    teamId: "T03"
     members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
+      - name: "25F1002182 CHITRA SHARMA (DS) DS"
+        email: "25f1002182@ds.study.iitm.ac.in"
+      - name: "25F2000814 TEERTH PATEL (DS) DS"
+        email: "25f2000814@ds.study.iitm.ac.in"
+      - name: "24F2006254 MADHAV RANA (DS) DS"
+        email: "24f2006254@ds.study.iitm.ac.in"
 
-  - teamName: "None"
-    teamId: "T17" # must be unique, lowercase, no spaces (use hyphens if needed)
+  - teamName: "Chanakya"
+    teamId: "T04"
     members:
-      - name: "Member One"
-        email: "member.one@example.com"
-      - name: "Member Two"
-        email: "member.two@example.com"
+      - name: "25F1001611 GURURAGHAVENDRA S (DS)"
+        email: "25f1001611@ds.study.iitm.ac.in"
+      - name: "Ninad"
+        email: "25f3004434@ds.study.iitm.ac.in"
 
-  - teamName: "Unclusered"
-    teamId: "unclusered" # must be unique, lowercase, no spaces (use hyphens if needed)
+  - teamName: "InnovAIT"
+    teamId: "T05"
     members:
-      - name: "Abhay Pratap Singh (ES)"
+      - name: "RITIK YADAV (DS) DS"
+        email: "23f2004634@ds.study.iitm.ac.in"
+      - name: "ABHIHAR (DS) DS"
+        email: "23f2003903@ds.study.iitm.ac.in"
+      - name: "Manish"
+        email: "23f3003197@ds.study.iitm.ac.in"
+      - name: "Aayush Chourasia"
+        email: "23f3001874@ds.study.iitm.ac.in"
+
+  - teamName: "Shreetastic"
+    teamId: "T06"
+    members:
+      - name: "25F2007402 SHREYA SUMAN (DS) DS"
+        email: "25f2007402@ds.study.iitm.ac.in"
+      - name: "Email address of preety topno"
+        email: "23f2002294@ds.study.iitm.ac.in"
+
+  - teamName: "The Invincible Trident"
+    teamId: "T07"
+    members:
+      - name: "ABHISHEK KUMAR (DS) DS"
+        email: "23f3003655@ds.study.iitm.ac.in"
+      - name: "Anshu sharma (DS) DS"
+        email: "23f3000162@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "23f3002149@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "24f1000810@ds.study.iitm.ac.in"
+
+  - teamName: "kivy"
+    teamId: "T08"
+    members:
+      - name: "24F2002059 ABHISHEK KUMAR (DS) DS"
+        email: "24f2002059@ds.study.iitm.ac.in"
+      - name: "KUSHWAHA ABHAYKUMAR DHARMENDRA (DS) DS"
+        email: "24f3003216@ds.study.iitm.ac.in"
+
+  - teamName: "RAHUL"
+    teamId: "T09"
+    members:
+      - name: "RAHUL VAISHNAV (DS) DS"
+        email: "23f3002149@ds.study.iitm.ac.in"
+      - name: "24F1000810 MANALI MILIND ULHE (DS) DS"
+        email: "24f1000810@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "23f3003655@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "23f3000162@ds.study.iitm.ac.in"
+
+  - teamName: "Alibaba4chor"
+    teamId: "T10"
+    members:
+      - name: "Nimish Shinde (DS) DS"
+        email: "23f2002121@ds.study.iitm.ac.in"
+      - name: "Om Pandey"
+        email: "24f3002711@ds.study.iitm.ac.in"
+      - name: "illesha Shri"
+        email: "23f2004210@ds.study.iitm.ac.in"
+      - name: "Devishi Jain"
+        email: "23f1002786@ds.study.iitm.ac.in"
+
+  - teamName: "Tech mavericks"
+    teamId: "T11"
+    members:
+      - name: "A LAKSHMI (DS) DS"
+        email: "22f2001136@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "23f1002103@ds.study.iitm.ac.in"
+
+  - teamName: "Data Panchayat"
+    teamId: "T12"
+    members:
+      - name: "AYUSH KUMAR PUPUL (DS) DS"
+        email: "25f2007368@ds.study.iitm.ac.in"
+      - name: "ROUSHAN KUMAR (DS) DS"
+        email: "25f2005936@ds.study.iitm.ac.in"
+      - name: "IITM RAUSHAN RAJ (DS) DS"
+        email: "25f2006383@ds.study.iitm.ac.in"
+      - name: "25F2008000 ISHU RAJ (DS) DS"
+        email: "25f2008000@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "21f3001767@ds.study.iitm.ac.in"
+
+  - teamName: "SeeData"
+    teamId: "T13"
+    members:
+      - name: "Jaydeep Kumar Hela (DS) DS"
+        email: "24f3002000@ds.study.iitm.ac.in"
+      - name: "26F1000304 SUMIT PANDEY (DS)"
+        email: "26f1000304@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "4956@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "25f3004764@ds.study.iitm.ac.in"
+      - name: "Susmita Ghosh"
+        email: "24f2008796@ds.study.iitm.ac.in"
+
+  - teamName: "Stat Stackers"
+    teamId: "T14"
+    members:
+      - name: "ABDUL GANI SUHAIB (DS) DS"
+        email: "24f1002061@ds.study.iitm.ac.in"
+      - name: "mohammed zaiyan"
+        email: "24f3004045@ds.study.iitm.ac.in"
+      - name: "taseen"
+        email: "26f1000420@ds.study.iitm.ac.in"
+
+  - teamName: "AV"
+    teamId: "T15"
+    members:
+      - name: "25F3005346 ANIKET KUMAR (DS) DS"
+        email: "25f3005346@ds.study.iitm.ac.in"
+      - name: "VAIBHAV VERMA"
+        email: "24F2006476@DS.STUDY.IITM.AC.IN"
+
+  - teamName: "AnalystKing"
+    teamId: "T16"
+    members:
+      - name: "Gnanaprakash R (DS) DS"
+        email: "24ds2000021@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "24ds2000033@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "22f3000144@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "24f2007783@ds.study.iitm.ac.in"
+
+  - teamName: "MaTrix"
+    teamId: "T17"
+    members:
+      - name: "SAI SAHANAA RC- CHENNAI SUNDARBANS (DS) DS"
+        email: "25f3000832@ds.study.iitm.ac.in"
+      - name: "Aditri Bordoloi RC Bengalore (DS) DS"
+        email: "25f2008346@ds.study.iitm.ac.in"
+      - name: "NIVASH KUMAR (DS) DS"
+        email: "23f3003523@ds.study.iitm.ac.in"
+      - name: "Samar Ahmad"
+        email: "23f3001032@ds.study.iitm.ac.in"
+
+  - teamName: "Codorithm"
+    teamId: "T18"
+    members:
+      - name: "25F2000394 MANNEPALLI AKSHAYA SIRI (DS) DS"
+        email: "25f2000394@ds.study.iitm.ac.in"
+      - name: "24F1002193 BALA PRAHARSHA (DS) DS"
+        email: "24f1002193@ds.study.iitm.ac.in"
+      - name: "24F1001011 RUDRA RAJESWARI (DS) DS"
+        email: "24f1001011@ds.study.iitm.ac.in"
+
+  - teamName: "PAN BROS"
+    teamId: "T19"
+    members:
+      - name: "AMIRTHESWARAN A (DS) DS"
+        email: "24f2008899@ds.study.iitm.ac.in"
+      - name: "PRACHI (DS) DS"
+        email: "24f2006480@ds.study.iitm.ac.in"
+      - name: "Member"
+        email: "24f3000111@ds.study.iitm.ac.in"
+
+  - teamName: "Outlier Hunters"
+    teamId: "T20"
+    members:
+      - name: "KR SUBRAMANIAN (DS) DS"
+        email: "23f2001843@ds.study.iitm.ac.in"
+      - name: "Girish S"
+        email: "25f1002053@ds.study.iitm.ac.in"
+
+  - teamName: "StatQuest"
+    teamId: "T21"
+    members:
+      - name: "NITHESH KANNA S (DS) DS"
+        email: "21f2001271@ds.study.iitm.ac.in"
+      - name: "Noufal Rahman"
+        email: "21f1005287@ds.study.iitm.ac.in"
+
+  - teamName: "Indeterminent"
+    teamId: "T22"
+    members:
+      - name: "25F3000179 SIDDHESH SUNIL KAMBLE (DS) DS"
+        email: "25f3000179@ds.study.iitm.ac.in"
+      - name: "26F1000422 RIDA SAHIN (DS) DS"
+        email: "26f1000422@ds.study.iitm.ac.in"
+
+  - teamName: "Unclustered"
+    teamId: "unclustered"
+    members:
+      - name: "ALLANKI SAKETH KUMAR (DS) DS"
+        email: "21f3002278@ds.study.iitm.ac.in"
+      - name: "25F3006183 NAZNIN HOSSAIN (DS) DS"
+        email: "25f3006183@ds.study.iitm.ac.in"
+      - name: "Md Athar (DS) DS"
+        email: "24f2000808@ds.study.iitm.ac.in"
+      - name: "25F3005388 ADARSH PANDEY (DS) DS"
+        email: "25f3005388@ds.study.iitm.ac.in"
+      # Proposed Team: United Champs
+      - name: "Ayush Chowdhury (DS) DS"
+        email: "25f3002457@ds.study.iitm.ac.in"
+      # Proposed Team: Abhay
+      - name: "Abhay Pratap Singh (ES) ES"
         email: "25f3100267@es.study.iitm.ac.in"
-      - name: "Member Two"
-        email: "member.two@example.com"
-
-  # - teamName: "Abhay"
-  #   teamId: "T14" # must be unique, lowercase, no spaces (use hyphens if needed)
-  #   members:
-  #     - name: "Member One"
-  #       email: " "
-  
-  # - teamName: "Tech Mavericks"
-  #   teamId: "T14" # must be unique, lowercase, no spaces (use hyphens if needed)
-  #   members:
-  #     - name: "Member One"
-  #       email: "member.one@example.com"
-  #     - name: "Member Two"
-  #       email: "member.two@example.com"
-
-
-# Update both timestamp fields whenever this roster changes.
-lastUpdated: "25 May 2026, 06:10 AM IST"
-lastUpdatedIso: "2026-05-25T06:10:49+05:30"
+      # Proposed Team: TEAM X
+      - name: "GAALI GAURAV KRISHNA (DS) DS"
+        email: "21f2000631@ds.study.iitm.ac.in"
+      # Proposed Team: Enigma
+      - name: "24F3003715 AMAN JHA (DS) DS"
+        email: "24f3003715@ds.study.iitm.ac.in"
+      # Proposed Team: Sai Kishore N
+      - name: "25F2007285 SAI KISHORE N (DS) DS"
+        email: "25f2007285@ds.study.iitm.ac.in"
+      # Proposed Team: rishikesh
+      - name: "25F2002940 RISHIKESH RAJ (DS) DS"
+        email: "25f2002940@ds.study.iitm.ac.in"
+      # Proposed Team: Gou
+      - name: "25F3006159 GOURAV (DS) DS"
+        email: "25f3006159@ds.study.iitm.ac.in"
+      # Proposed Team: The Data Wizards
+      - name: "24F1001840 AYUSH KUSHWAHA (DS) DS"
+        email: "24f1001840@ds.study.iitm.ac.in"
+      # Proposed Team: One
+      - name: "Ashutosh Agnihotri (DS) DS"
+        email: "22f2000769@ds.study.iitm.ac.in"
+      # Proposed Team: Harmony
+      - name: "Girish S (DS) DS"
+        email: "25f1002053@ds.study.iitm.ac.in"
+      # Proposed Team: harshitha
+      - name: "25F3005355 SARDESHPANDE HARSHITHA (DS) DS"
+        email: "25f3005355@ds.study.iitm.ac.in"
+      # Proposed Team: Wolves
+      - name: "SUBHASHREE PRIYADARSHINI (DS) DS"
+        email: "23f3003784@ds.study.iitm.ac.in"
+      # Proposed Team: TEAM
+      - name: "MANOJ K (DS) DS"
+        email: "24f2004663@ds.study.iitm.ac.in"
+      # Proposed Team: Divas
+      - name: "25F3001814 PIHU RAI (DS) DS"
+        email: "25f3001814@ds.study.iitm.ac.in"
+      # Proposed Team: I.D.K
+      - name: "SOVIT (DS) DS"
+        email: "24f2004765@ds.study.iitm.ac.in"
+      # Proposed Team: TEAMXYZ
+      - name: "25F3000620 ADITYA SWAMI (DS) DS"
+        email: "25f3000620@ds.study.iitm.ac.in"
+      # Proposed Team: HACKER'S DEN
+      - name: "25F2007037 SHAILESH KUMAR PANDEY (DS) DS"
+        email: "25f2007037@ds.study.iitm.ac.in"
+      # Proposed Team: OrangeIsTheNewBlack
+      - name: "Mikasa Red (DS) DS"
+        email: "21f1000760@ds.study.iitm.ac.in"
+      # Proposed Team: Conquerors
+      - name: "Saniya (DS) DS"
+        email: "24f3001849@ds.study.iitm.ac.in"
+      # Proposed Team: Srijan
+      - name: "25F3000296 SRIJAN TIWARI (DS) DS"
+        email: "25f3000296@ds.study.iitm.ac.in"
+      # Proposed Team: mn bmn
+      - name: "24F2100213 VIMAL PRAKASHAN S (ES) ES"
+        email: "24f2100213@es.study.iitm.ac.in"
+      # Proposed Team: viru
+      - name: "Virendra Jain (DS) DS"
+        email: "23f3004123@ds.study.iitm.ac.in"
