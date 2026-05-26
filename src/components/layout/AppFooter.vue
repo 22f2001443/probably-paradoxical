@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { eventMeta } from '../../data/eventData.js'
+import { eventMeta, navLinks } from '../../data/eventData.js'
 </script>
 
 <template>
@@ -19,28 +19,12 @@ import { eventMeta } from '../../data/eventData.js'
         <!-- Nav links — generous tap targets on mobile -->
         <nav class="flex flex-wrap justify-center gap-1" aria-label="Footer navigation">
           <RouterLink
-            to="/guidelines"
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
             class="text-xs text-neutral-500 hover:text-neutral-950 transition-colors px-3 py-2 min-h-11 flex items-center"
           >
-            Guidelines
-          </RouterLink>
-          <RouterLink
-            to="/timeline"
-            class="text-xs text-neutral-500 hover:text-neutral-950 transition-colors px-3 py-2 min-h-11 flex items-center"
-          >
-            Timeline
-          </RouterLink>
-          <RouterLink
-            to="/teams"
-            class="text-xs text-neutral-500 hover:text-neutral-950 transition-colors px-3 py-2 min-h-11 flex items-center"
-          >
-            Teams
-          </RouterLink>
-          <RouterLink
-            to="/judges"
-            class="text-xs text-neutral-500 hover:text-neutral-950 transition-colors px-3 py-2 min-h-11 flex items-center"
-          >
-            Judges
+            {{ link.label }}
           </RouterLink>
         </nav>
 

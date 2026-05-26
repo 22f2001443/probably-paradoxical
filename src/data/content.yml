@@ -23,7 +23,7 @@ nav:
       to: /timeline
     - label: Teams
       to: /teams
-    - label: Judges
+    - label: Judges and Guests
       to: /judges
 
 # ── Hero section ───────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ hero:
   registrationUrl: "https://www.iitmparadox.org/events/technicals/71"
   description: >
     Teams select a statistical paradox, design a survey, collect real campus
-    data, run analysis, and present findings to a panel of judges — across
+    data, run analysis, and present findings to judges and guests across
     five stages.
   stats:
     - value: "3"
@@ -79,7 +79,7 @@ overview:
     - icon: mdiPresentationPlay
       title: "Present Findings"
       description: >
-        Teams present to a panel of judges, demonstrating how their paradox
+        Teams present to judges and guests, demonstrating how their paradox
         manifested (or didn't) in the real-world data they collected.
 
 # ── Timeline stages ────────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ timeline:
     - stage: 4
       title: "Final Presentation"
       description: >
-        Teams present findings to judges, including statistical results,
+        Teams present findings to judges and guests, including statistical results,
         visualisations, and a reflection on whether the paradox was observed.
       status: upcoming
 
@@ -149,26 +149,40 @@ teams:
     subheading: "If your name is listed below, please contact other participants and form a team of 3-5 people, or you will be assigned to a team randomly."
     countLabel: "students"
 
-# ── Judges page ────────────────────────────────────────────────────────────
-# Add one entry under profiles for each judge. Leave imageUrl empty ("") to
+# ── Judges and guests page ─────────────────────────────────────────────────
+# Add one entry under profiles for each judge or guest. Leave imageUrl empty ("") to
 # render the photo placeholder.
 #
 # Example profile:
-#   - name: "Judge Name"
+#   - name: "Judge or Guest Name"
 #     role: "Designation, Organisation"
-#     bio: "A short introduction to the judge."
-#     imageUrl: "https://example.com/judge-photo.jpg"
+#     bio: "A short introduction to the judge or guest."
+#     imageUrl: "https://example.com/profile-photo.jpg"
 judges:
   eyebrow: "Panel"
-  heading: "Judges"
-  subheading: "The judging panel will be announced before Stage 1."
-  emptyMessage: "Judge profiles coming soon."
+  heading: "Judges and Guests"
+  subheading: "Meet the judges and invited guests joining Probably Paradoxical."
+  emptyMessage: "Judge and guest profiles coming soon."
   imagePlaceholder: "Photo coming soon"
   profiles:
     - name: "Prof. Rahul R Marathe"
       imageUrl: "https://wsai.iitm.ac.in/images/people/rrmarathe.webp"
-      role: "Affiliate Faculty, RBCDSAI / Professor, IIT Madras"
+      role: "Professor, DoMS, IIT Madras / Affiliate Faculty, RBCDSAI"
       # bio: ""
+
+# ── Speakers section ───────────────────────────────────────────────────────
+# Add speaker entries here using the same fields as judge and guest profiles.
+speakers:
+  eyebrow: "Sessions"
+  heading: "Speakers"
+  subheading: "Meet the speakers contributing ideas and perspectives to the event."
+  emptyMessage: "Speaker profiles coming soon."
+  imagePlaceholder: "Photo coming soon"
+  profiles:
+    - name: "Prof. Shyamolina Ghosh"
+      imageUrl: "https://spaces-cdn.owlstown.com/blobs/uxjv2mq0kswrlg1lvn7ufcgs1znb"
+      role: "Assistant Professor, AERU, ISI Kolkata"
+      # bio: "A short introduction to the speaker."
 
 # ── Social feed embeds ─────────────────────────────────────────────────────
 # Add embed URLs for Instagram posts, YouTube videos, and LinkedIn posts.

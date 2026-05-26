@@ -29,7 +29,7 @@ const routes = [
     path: '/judges',
     name: 'judges',
     component: () => import('../pages/JudgesPage.vue'),
-    meta: { title: 'Judges | Probably Paradoxical' },
+    meta: { title: 'Judges and Guests | Probably Paradoxical' },
   },
   {
     path: '/login',
