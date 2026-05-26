@@ -15,14 +15,14 @@ teams:
         email: "23f2002602@ds.study.iitm.ac.in"
         tag: "unregistered"
 
-  - teamName: "DataPulse"
-    teamId: "T02"
-    members:
-      - name: "AYUSH GUPTA (DS)"
-        email: "22f3000144@ds.study.iitm.ac.in"
-      - name: "AIRIZ KUMAR SINGH"
-        email: "24f20007782@ds.study.iitm.ac.in"
-        tag: "unregistered"
+  # - teamName: "DataPulse"
+  #   teamId: "T02"
+  #   members:
+  #     - name: "AYUSH GUPTA (DS)"
+  #       email: "22f3000144@ds.study.iitm.ac.in"
+  #     - name: "AIRIZ KUMAR SINGH"
+  #       email: 
+  #       tag: "unregistered"
 
   - teamName: "TMC"
     teamId: "T03"
