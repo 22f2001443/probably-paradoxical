@@ -9,7 +9,7 @@
 | Field | Value |
 |---|---|
 | **Name** | Probably Paradoxical |
-| **Type** | Event portal — frontend only (no backend yet) |
+| **Type** | Event portal frontend; backend placeholder exists at `../backend/` |
 | **Event** | Paradox'26 · IIT Madras |
 | **Purpose** | Public-facing site for a team-based statistical paradox exploration competition. Teams choose a paradox, survey campus, analyse data, present findings across 5 stages. |
 | **Owner** | Probably Paradoxical team |
@@ -47,6 +47,7 @@ Key decisions:
 ## 3. Commands
 
 ```bash
+cd frontend         # from the repository root
 npm install          # install all dependencies
 npm run dev          # dev server → http://localhost:5173
 npm run build        # production build → dist/
@@ -61,66 +62,71 @@ npm run preview      # preview the dist/ build locally
 
 ```
 probably-paradoxical/
-├── index.html                     ← Entry HTML; loads Inter font from Google Fonts
-├── vite.config.js                 ← Vite config with YAML plugin, Tailwind, Vue
-├── package.json
 ├── AGENTS.md                      ← Agent rules (duplicate of key sections here)
-├── context.md                     ← ← THIS FILE
+├── README.md                      ← Repository overview
+├── backend/                       ← Placeholder for future backend work
+│   └── .gitkeep
 │
-├── public/
-│   ├── favicon.svg
-│   └── icons.svg
-│
-└── src/
-    ├── App.vue                    ← Root component — ONLY contains <RouterView />
-    ├── main.js                    ← Bootstrap: Pinia + Router + Toastification
-    ├── style.css                  ← @import "tailwindcss" + base layer only
+└── frontend/
+    ├── index.html                 ← Entry HTML; loads Inter font from Google Fonts
+    ├── vite.config.js             ← Vite config with YAML plugin, Tailwind, Vue
+    ├── package.json
+    ├── context.md                 ← ← THIS FILE
     │
-    ├── data/
-    │   ├── content.yml            ← ★ SINGLE SOURCE OF TRUTH for all content
-    │   └── eventData.js           ← Thin adapter: named re-exports from content.yml
+    ├── public/
+    │   ├── favicon.svg
+    │   └── icons.svg
     │
-    ├── router/
-    │   └── index.js               ← All routes, lazy-loaded, with meta.title
-    │
-    ├── stores/
-    │   ├── authStore.js           ← Auth state (placeholder — no real auth yet)
-    │   └── eventStore.js          ← Event metadata seeded from eventData.js
-    │
-    ├── assets/
-    │   ├── hero.png
-    │   ├── vite.svg
-    │   └── vue.svg
-    │
-    ├── components/
-    │   ├── layout/
-    │   │   ├── AppHeader.vue      ← Sticky header, desktop nav, mobile hamburger
-    │   │   ├── AppFooter.vue      ← Footer with nav links + copyright from content.yml
-    │   │   └── PublicLayout.vue   ← Shell: AppHeader + <slot> + AppFooter
-    │   │
-    │   ├── common/
-    │   │   ├── BaseButton.vue     ← 3-variant button (primary/outline/ghost)
-    │   │   ├── BaseCard.vue       ← Bordered card with optional hover lift
-    │   │   ├── SectionHeader.vue  ← Eyebrow + heading + subheading block
-    │   │   ├── StatCard.vue       ← Big value + small label tile
-    │   │   └── StatusBadge.vue    ← completed / active / upcoming pill badge
-    │   │
-    │   └── home/
-    │       ├── HeroSection.vue              ← Hero with dot grid, CTAs, stat row
-    │       ├── EventOverviewSection.vue     ← 4-card overview grid with MDI icons
-    │       ├── TimelinePreviewSection.vue   ← Stage 0–4 vertical timeline
-    │       ├── PublicTeamsPreviewSection.vue← Placeholder team grid
-    │       ├── SocialFeedSection.vue        ← 3-col carousel of iframe embeds
-    │       └── CTASection.vue               ← Login CTA banner
-    │
-    └── pages/
-        ├── HomePage.vue          ← Composes all 6 home sections
-        ├── GuidelinesPage.vue    ← Google Doc embed OR placeholder
-        ├── TimelinePage.vue      ← Full stage list
-        ├── TeamsPage.vue         ← Placeholder
-        ├── JudgesPage.vue        ← Placeholder
-        ├── LoginPage.vue         ← Login form with toast feedback (no real auth)
-        └── NotFoundPage.vue      ← 404
+    └── src/
+        ├── App.vue                ← Root component — ONLY contains <RouterView />
+        ├── main.js                ← Bootstrap: Pinia + Router + Toastification
+        ├── style.css              ← @import "tailwindcss" + base layer only
+        │
+        ├── data/
+        │   ├── content.yml        ← ★ SINGLE SOURCE OF TRUTH for all content
+        │   └── eventData.js       ← Thin adapter: named re-exports from content.yml
+        │
+        ├── router/
+        │   └── index.js           ← All routes, lazy-loaded, with meta.title
+        │
+        ├── stores/
+        │   ├── authStore.js       ← Auth state (placeholder — no real auth yet)
+        │   └── eventStore.js      ← Event metadata seeded from eventData.js
+        │
+        ├── assets/
+        │   ├── hero.png
+        │   ├── vite.svg
+        │   └── vue.svg
+        │
+        ├── components/
+        │   ├── layout/
+        │   │   ├── AppHeader.vue  ← Sticky header, desktop nav, mobile hamburger
+        │   │   ├── AppFooter.vue  ← Footer with nav links + copyright from content.yml
+        │   │   └── PublicLayout.vue
+        │   │
+        │   ├── common/
+        │   │   ├── BaseButton.vue
+        │   │   ├── BaseCard.vue
+        │   │   ├── SectionHeader.vue
+        │   │   ├── StatCard.vue
+        │   │   └── StatusBadge.vue
+        │   │
+        │   └── home/
+        │       ├── HeroSection.vue
+        │       ├── EventOverviewSection.vue
+        │       ├── TimelinePreviewSection.vue
+        │       ├── PublicTeamsPreviewSection.vue
+        │       ├── SocialFeedSection.vue
+        │       └── CTASection.vue
+        │
+        └── pages/
+            ├── HomePage.vue
+            ├── GuidelinesPage.vue
+            ├── TimelinePage.vue
+            ├── TeamsPage.vue
+            ├── JudgesPage.vue
+            ├── LoginPage.vue
+            └── NotFoundPage.vue
 ```
 
 > `src/components/HelloWorld.vue` is a leftover from Vite scaffolding. Safe to delete.
