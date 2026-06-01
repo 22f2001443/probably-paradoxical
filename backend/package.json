@@ -2,7 +2,9 @@
   "name": "backend",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
+    "db:setup": "node scripts/setup-database.mjs",
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
@@ -15,5 +17,9 @@
     "typescript": "^5.5.2",
     "vitest": "~3.2.0",
     "wrangler": "^4.95.0"
+  },
+  "dependencies": {
+    "mongodb": "^7.2.0",
+    "yaml": "^2.9.0"
   }
 }
