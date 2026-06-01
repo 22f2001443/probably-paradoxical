@@ -25,4 +25,10 @@ Optional seed values:
 ## Worker Endpoints
 
 - `GET /health` - health check.
+- `POST /auth/login` - accepts `{ "email": "...", "password": "..." }` and returns a bearer JWT.
 - `POST /setup/database` - creates collections and indexes, guarded by `x-setup-secret`.
+
+Team members log in with their member email and the password stored for their
+`teamId` in the `passwords` collection. Admins log in with their admin email and
+admin password. Set `JWT_SECRET` in `.env` locally and as a Worker secret in
+production before using `/auth/login`.

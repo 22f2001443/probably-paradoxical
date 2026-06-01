@@ -1,4 +1,5 @@
 import type { AppEnv } from "./db/mongodb";
+import { handleLogin } from "./auth/login";
 
 export default {
 	async fetch(request, env, _ctx): Promise<Response> {
@@ -17,6 +18,11 @@ export default {
 
 		if (request.method === "POST" && url.pathname === "/setup/database") {
 			return setupDatabase(request, env);
+		}
+
+		if (request.method === "POST" && url.pathname === "/auth/login") {
+			const result = await handleLogin(request, env);
+			return jsonResponse(result.body, result.status);
 		}
 
 		return jsonResponse({ error: "Not found" }, 404);

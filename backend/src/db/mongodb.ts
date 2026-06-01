@@ -5,6 +5,8 @@ export interface AppEnv extends Env {
 	MONGODB_URI?: string;
 	MONGODB_DB?: string;
 	SETUP_SECRET?: string;
+	JWT_SECRET?: string;
+	JWT_EXPIRES_IN_SECONDS?: string;
 }
 
 export class ConfigurationError extends Error {
