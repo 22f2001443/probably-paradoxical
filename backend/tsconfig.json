@@ -13,6 +13,9 @@
 		"module": "es2022",
 		/* Specify how TypeScript looks up a file from a given module specifier. */
 		"moduleResolution": "Bundler",
+		/* Allow explicit .ts extensions in imports so the same modules run under
+		   esbuild (wrangler/vitest) and Node's native TypeScript stripping. */
+		"allowImportingTsExtensions": true,
 		/* Enable importing .json files */
 		"resolveJsonModule": true,
 

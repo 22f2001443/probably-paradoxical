@@ -75,10 +75,10 @@ export const openApiSpec = {
 								example: {
 									ok: true,
 									database: "probably_paradoxical",
-									schemaVersion: 1,
-									createdCollections: ["users", "admins", "passwords"],
+									schemaVersion: 2,
+									createdCollections: ["admins", "judges", "teams", "members", "team_members"],
 									updatedCollections: [],
-									indexes: [{ collection: "users", name: "users_teamId_unique" }],
+									indexes: [{ collection: "teams", name: "teams_teamId_unique" }],
 								},
 							},
 						},
@@ -115,9 +115,9 @@ export const openApiSpec = {
 		"/auth/login": {
 			post: {
 				tags: ["Auth"],
-				summary: "Log in as an admin or team member",
+				summary: "Log in as an admin, judge, or team member",
 				description:
-					"Validates the email/password against admins, then teams. On success returns a signed JWT bearer token.",
+					"Validates the email/password against admins, then judges, then teams (member email + shared team password). On success returns a signed JWT bearer token whose `role` claim is `admin`, `judge`, or `team`.",
 				requestBody: {
 					required: true,
 					content: {
@@ -241,6 +241,7 @@ export const openApiSpec = {
 							name: { type: "string" },
 							teamId: { type: "string" },
 							teamName: { type: "string" },
+							roleInTeam: { type: "string", enum: ["leader", "member"] },
 						},
 					},
 				},

@@ -1,6 +1,14 @@
 import type { AppEnv } from "../db/mongodb";
-import { getDatabase } from "../db/mongodb";
-import { COLLECTIONS } from "../db/schema.js";
+import { withDatabase } from "../db/mongodb";
+import { COLLECTIONS } from "../db/collections.ts";
+import type {
+	AdminDocument,
+	JudgeDocument,
+	MemberDocument,
+	TeamCredentialDocument,
+	TeamDocument,
+	TeamMemberDocument,
+} from "../db/types.ts";
 import { createJwt, parseJwtExpiresInSeconds } from "../security/jwt.js";
 import { verifyPassword } from "../security/password.js";
 
@@ -12,38 +20,6 @@ interface LoginBody {
 interface LoginResult {
 	status: number;
 	body: Record<string, unknown>;
-}
-
-interface PasswordDigest {
-	passwordHash?: string;
-	passwordSalt?: string;
-	passwordAlgorithm?: string;
-	passwordIterations?: number;
-}
-
-interface AdminDocument extends PasswordDigest {
-	_id: unknown;
-	email: string;
-	username?: string;
-	name?: string;
-	role: "admin";
-	isActive: boolean;
-}
-
-interface TeamMember {
-	name: string;
-	email: string;
-	tag?: string;
-}
-
-interface TeamDocument {
-	teamId: string;
-	teamName: string;
-	members: TeamMember[];
-}
-
-interface TeamPasswordDocument extends PasswordDigest {
-	teamId: string;
 }
 
 export async function handleLogin(request: Request, env: AppEnv): Promise<LoginResult> {
@@ -81,97 +57,164 @@ export async function handleLogin(request: Request, env: AppEnv): Promise<LoginR
 	}
 
 	try {
-		const db = await getDatabase(env);
-		const admin = await db
-			.collection<AdminDocument>(COLLECTIONS.admins)
-			.findOne({ email, isActive: true });
+		return await withDatabase(env, async (db) => {
+			const adminLogin = await tryAdminLogin(db, email, password, env.JWT_SECRET!, expiresInSeconds);
+			if (adminLogin) {
+				return adminLogin;
+			}
 
-		if (admin && (await verifyPassword(password, admin))) {
-			const token = await createJwt(
-				{
-					sub: String(admin._id),
-					role: "admin",
-					email: admin.email,
-				},
-				env.JWT_SECRET,
-				{ expiresInSeconds },
-			);
+			const judgeLogin = await tryJudgeLogin(db, email, password, env.JWT_SECRET!, expiresInSeconds);
+			if (judgeLogin) {
+				return judgeLogin;
+			}
 
-			return {
-				status: 200,
-				body: {
-					token,
-					tokenType: "Bearer",
-					expiresIn: expiresInSeconds,
-					user: {
-						role: "admin",
-						email: admin.email,
-						username: admin.username,
-						name: admin.name,
-					},
-				},
-			};
-		}
-
-		const team = await db
-			.collection<TeamDocument>(COLLECTIONS.users)
-			.findOne({ "members.email": email });
-		const teamPassword = team
-			? await db
-					.collection<TeamPasswordDocument>(COLLECTIONS.passwords)
-					.findOne({ teamId: team.teamId })
-			: null;
-
-		if (team && teamPassword && (await verifyPassword(password, teamPassword))) {
-			const member = team.members.find(
-				(teamMember) => normalizeEmail(teamMember.email) === email,
-			);
-			const token = await createJwt(
-				{
-					sub: team.teamId,
-					role: "team",
-					email,
-					teamId: team.teamId,
-					teamName: team.teamName,
-				},
-				env.JWT_SECRET,
-				{ expiresInSeconds },
-			);
+			const teamLogin = await tryTeamLogin(db, email, password, env.JWT_SECRET!, expiresInSeconds);
+			if (teamLogin) {
+				return teamLogin;
+			}
 
 			return {
-				status: 200,
-				body: {
-					token,
-					tokenType: "Bearer",
-					expiresIn: expiresInSeconds,
-					user: {
-						role: "team",
-						email,
-						name: member?.name,
-						teamId: team.teamId,
-						teamName: team.teamName,
-					},
-				},
+				status: 401,
+				body: { error: "Invalid email or password." },
 			};
-		}
-
-		return {
-			status: 401,
-			body: { error: "Invalid email or password." },
-		};
+		});
 	} catch (error) {
-		const status =
-			error instanceof Error && error.name === "ConfigurationError" ? 503 : 500;
+		const status = error instanceof Error && error.name === "ConfigurationError" ? 503 : 500;
 		return {
 			status,
 			body: {
-				error:
-					error instanceof Error
-						? error.message
-						: "Unable to process login request.",
+				error: error instanceof Error ? error.message : "Unable to process login request.",
 			},
 		};
 	}
+}
+
+async function tryAdminLogin(
+	db: import("mongodb").Db,
+	email: string,
+	password: string,
+	secret: string,
+	expiresInSeconds: number,
+): Promise<LoginResult | null> {
+	const admin = await db
+		.collection<AdminDocument>(COLLECTIONS.admins)
+		.findOne({ email, isActive: true });
+	if (!admin || !(await verifyPassword(password, admin))) {
+		return null;
+	}
+
+	const token = await createJwt(
+		{ sub: String(admin._id), role: "admin", email: admin.email },
+		secret,
+		{ expiresInSeconds },
+	);
+
+	return {
+		status: 200,
+		body: {
+			token,
+			tokenType: "Bearer",
+			expiresIn: expiresInSeconds,
+			user: {
+				role: "admin",
+				email: admin.email,
+				username: admin.username,
+				name: admin.name,
+			},
+		},
+	};
+}
+
+async function tryJudgeLogin(
+	db: import("mongodb").Db,
+	email: string,
+	password: string,
+	secret: string,
+	expiresInSeconds: number,
+): Promise<LoginResult | null> {
+	const judge = await db
+		.collection<JudgeDocument>(COLLECTIONS.judges)
+		.findOne({ email, isActive: true });
+	if (!judge || !(await verifyPassword(password, judge))) {
+		return null;
+	}
+
+	const token = await createJwt(
+		{ sub: String(judge._id), role: "judge", email: judge.email },
+		secret,
+		{ expiresInSeconds },
+	);
+
+	return {
+		status: 200,
+		body: {
+			token,
+			tokenType: "Bearer",
+			expiresIn: expiresInSeconds,
+			user: { role: "judge", email: judge.email, name: judge.name },
+		},
+	};
+}
+
+async function tryTeamLogin(
+	db: import("mongodb").Db,
+	email: string,
+	password: string,
+	secret: string,
+	expiresInSeconds: number,
+): Promise<LoginResult | null> {
+	const member = await db.collection<MemberDocument>(COLLECTIONS.members).findOne({ email });
+	if (!member?._id) {
+		return null;
+	}
+
+	const membership = await db
+		.collection<TeamMemberDocument>(COLLECTIONS.teamMembers)
+		.findOne({ memberId: member._id, status: "active" });
+	if (!membership) {
+		return null;
+	}
+
+	const [team, credential] = await Promise.all([
+		db.collection<TeamDocument>(COLLECTIONS.teams).findOne({ teamId: membership.teamId }),
+		db
+			.collection<TeamCredentialDocument>(COLLECTIONS.teamCredentials)
+			.findOne({ teamId: membership.teamId }),
+	]);
+
+	if (!team || !credential || !(await verifyPassword(password, credential))) {
+		return null;
+	}
+
+	const token = await createJwt(
+		{
+			sub: team.teamId,
+			role: "team",
+			email,
+			teamId: team.teamId,
+			teamName: team.teamName,
+			memberId: String(member._id),
+		},
+		secret,
+		{ expiresInSeconds },
+	);
+
+	return {
+		status: 200,
+		body: {
+			token,
+			tokenType: "Bearer",
+			expiresIn: expiresInSeconds,
+			user: {
+				role: "team",
+				email,
+				name: member.name,
+				teamId: team.teamId,
+				teamName: team.teamName,
+				roleInTeam: membership.roleInTeam,
+			},
+		},
+	};
 }
 
 async function readLoginBody(
