@@ -1,5 +1,6 @@
 import type { AppEnv } from "./db/mongodb";
 import { handleLogin } from "./auth/login";
+import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
 export default {
 	async fetch(request, env, _ctx): Promise<Response> {
@@ -14,6 +15,16 @@ export default {
 
 		if (request.method === "GET" && url.pathname === "/health") {
 			return jsonResponse({ ok: true });
+		}
+
+		if (request.method === "GET" && url.pathname === "/openapi.json") {
+			return jsonResponse(openApiSpec);
+		}
+
+		if (request.method === "GET" && url.pathname === "/docs") {
+			return new Response(swaggerUiHtml, {
+				headers: { "content-type": "text/html; charset=utf-8" },
+			});
 		}
 
 		if (request.method === "POST" && url.pathname === "/setup/database") {
