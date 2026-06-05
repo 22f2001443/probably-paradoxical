@@ -112,6 +112,65 @@ export const openApiSpec = {
 				},
 			},
 		},
+		"/auth/signup": {
+			post: {
+				tags: ["Auth"],
+				summary: "Register a team",
+				description:
+					"Self-service team registration. Creates the members, the team, the team_members roster (first member — or `leaderEmail` — becomes the leader), and a shared team password hashed with argon2id. Returns the new team and, if `JWT_SECRET` is configured, an auto-login bearer token for the leader.",
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: { $ref: "#/components/schemas/SignupRequest" },
+							example: {
+								teamName: "Team Paradox",
+								password: "a-strong-shared-password",
+								leaderEmail: "lead@example.com",
+								members: [
+									{ name: "Lead Person", email: "lead@example.com" },
+									{ name: "Second Person", email: "second@example.com" },
+								],
+							},
+						},
+					},
+				},
+				responses: {
+					"201": {
+						description: "Team created.",
+						content: {
+							"application/json": {
+								schema: { $ref: "#/components/schemas/SignupResponse" },
+							},
+						},
+					},
+					"400": {
+						description: "Validation failed (missing fields, bad email, team-size out of range, weak password).",
+						content: {
+							"application/json": {
+								schema: { $ref: "#/components/schemas/Error" },
+								example: { error: "A team must have between 2 and 5 members." },
+							},
+						},
+					},
+					"409": {
+						description: "A member email is already registered to an active team.",
+						content: {
+							"application/json": {
+								schema: { $ref: "#/components/schemas/Error" },
+								example: { error: "Email already registered to a team: lead@example.com" },
+							},
+						},
+					},
+					"503": {
+						description: "Database is not configured.",
+						content: {
+							"application/json": { schema: { $ref: "#/components/schemas/Error" } },
+						},
+					},
+				},
+			},
+		},
 		"/auth/login": {
 			post: {
 				tags: ["Auth"],
@@ -216,6 +275,47 @@ export const openApiSpec = {
 							},
 						},
 					},
+				},
+			},
+			SignupRequest: {
+				type: "object",
+				required: ["teamName", "password", "members"],
+				properties: {
+					teamName: { type: "string" },
+					password: { type: "string", format: "password", minLength: 8, description: "Shared team password (argon2id-hashed)." },
+					leaderEmail: { type: "string", format: "email", description: "Optional; defaults to the first member." },
+					members: {
+						type: "array",
+						minItems: 2,
+						maxItems: 5,
+						items: {
+							type: "object",
+							required: ["name", "email"],
+							properties: {
+								name: { type: "string" },
+								email: { type: "string", format: "email" },
+								tag: { type: "string" },
+							},
+						},
+					},
+				},
+			},
+			SignupResponse: {
+				type: "object",
+				properties: {
+					team: {
+						type: "object",
+						properties: {
+							teamId: { type: "string" },
+							teamName: { type: "string" },
+							leadEmail: { type: "string" },
+							memberCount: { type: "integer" },
+						},
+					},
+					token: { type: "string", nullable: true, description: "Auto-login token; null if JWT_SECRET is unset." },
+					tokenType: { type: "string", example: "Bearer" },
+					expiresIn: { type: "integer" },
+					user: { type: "object" },
 				},
 			},
 			LoginRequest: {

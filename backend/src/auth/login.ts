@@ -10,7 +10,7 @@ import type {
 	TeamMemberDocument,
 } from "../db/types.ts";
 import { createJwt, parseJwtExpiresInSeconds } from "../security/jwt.js";
-import { verifyPassword } from "../security/password.js";
+import { verifyPassword } from "../security/passwords.ts";
 
 interface LoginBody {
 	email?: unknown;

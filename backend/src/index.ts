@@ -1,5 +1,6 @@
 import type { AppEnv } from "./db/mongodb";
 import { handleLogin } from "./auth/login";
+import { handleSignup } from "./auth/signup";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
 export default {
@@ -29,6 +30,11 @@ export default {
 
 		if (request.method === "POST" && url.pathname === "/setup/database") {
 			return setupDatabase(request, env);
+		}
+
+		if (request.method === "POST" && url.pathname === "/auth/signup") {
+			const result = await handleSignup(request, env);
+			return jsonResponse(result.body, result.status);
 		}
 
 		if (request.method === "POST" && url.pathname === "/auth/login") {

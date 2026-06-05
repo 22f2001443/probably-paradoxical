@@ -19,6 +19,7 @@
     "wrangler": "^4.95.0"
   },
   "dependencies": {
+    "@noble/hashes": "^2.2.0",
     "mongodb": "^7.2.0",
     "yaml": "^2.9.0"
   }
