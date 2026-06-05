@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/authStore.js'
 
 const routes = [
   {
@@ -35,7 +36,25 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('../pages/LoginPage.vue'),
-    meta: { title: 'Team Login | Probably Paradoxical' },
+    meta: { title: 'Login | Probably Paradoxical' },
+  },
+  {
+    path: '/participant',
+    name: 'participant',
+    component: () => import('../pages/dashboard/ParticipantPage.vue'),
+    meta: { title: 'Participant Dashboard | Probably Paradoxical', requiresAuth: true, role: 'team' },
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../pages/dashboard/AdminPage.vue'),
+    meta: { title: 'Admin Dashboard | Probably Paradoxical', requiresAuth: true, role: 'admin' },
+  },
+  {
+    path: '/judge',
+    name: 'judge',
+    component: () => import('../pages/dashboard/JudgePage.vue'),
+    meta: { title: 'Judge Dashboard | Probably Paradoxical', requiresAuth: true, role: 'judge' },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -53,6 +72,26 @@ const router = createRouter({
     if (to.hash) return { el: to.hash, behavior: 'smooth' }
     return { top: 0 }
   },
+})
+
+// Auth + role gating.
+router.beforeEach((to) => {
+  const auth = useAuthStore()
+
+  if (to.meta?.requiresAuth) {
+    if (!auth.isAuthenticated) {
+      return { name: 'login', query: { redirect: to.fullPath } }
+    }
+    // Logged in but wrong role → send them to their own dashboard.
+    if (to.meta.role && auth.role !== to.meta.role) {
+      return auth.homeRoute
+    }
+  }
+
+  // Already logged in → keep them off the login page.
+  if (to.name === 'login' && auth.isAuthenticated) {
+    return auth.homeRoute
+  }
 })
 
 // Update document title per route

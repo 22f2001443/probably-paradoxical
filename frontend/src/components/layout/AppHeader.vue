@@ -1,9 +1,14 @@
 <script setup>
 import { ref } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import { navLinks } from '../../data/eventData.js'
+import { useAuthStore } from '../../stores/authStore.js'
 
 const route = useRoute()
+const router = useRouter()
+const toast = useToast()
+const auth = useAuthStore()
 const mobileOpen = ref(false)
 
 function toggleMobile() {
@@ -11,6 +16,12 @@ function toggleMobile() {
 }
 function closeMobile() {
   mobileOpen.value = false
+}
+function handleLogout() {
+  auth.logout()
+  closeMobile()
+  toast.success('Signed out.')
+  router.push('/login')
 }
 </script>
 
@@ -43,13 +54,29 @@ function closeMobile() {
           </RouterLink>
         </nav>
 
-        <!-- Login + hamburger -->
+        <!-- Login / account + hamburger -->
         <div class="flex items-center gap-2 sm:gap-3">
+          <template v-if="auth.isAuthenticated">
+            <RouterLink
+              :to="auth.homeRoute"
+              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold border border-neutral-300 text-neutral-950 rounded-sm hover:border-neutral-950 transition-colors min-h-11"
+            >
+              Dashboard
+            </RouterLink>
+            <button
+              type="button"
+              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold bg-neutral-950 text-white rounded-sm hover:bg-neutral-800 transition-colors min-h-11"
+              @click="handleLogout"
+            >
+              Log out
+            </button>
+          </template>
           <RouterLink
+            v-else
             to="/login"
             class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold bg-neutral-950 text-white rounded-sm hover:bg-neutral-800 transition-colors min-h-11"
           >
-            Team Login
+            Sign In
           </RouterLink>
 
           <!-- Hamburger — enlarged touch target: 44×44 px -->
@@ -93,12 +120,29 @@ function closeMobile() {
         >
           {{ link.label }}
         </RouterLink>
+        <template v-if="auth.isAuthenticated">
+          <RouterLink
+            :to="auth.homeRoute"
+            class="mt-2 mx-3 px-4 py-3 text-sm font-semibold border border-neutral-300 text-neutral-950 text-center hover:border-neutral-950 transition-colors min-h-11 flex items-center justify-center"
+            @click="closeMobile"
+          >
+            Dashboard
+          </RouterLink>
+          <button
+            type="button"
+            class="mx-3 mb-2 px-4 py-3 text-sm font-semibold bg-neutral-950 text-white text-center hover:bg-neutral-800 transition-colors min-h-11 flex items-center justify-center"
+            @click="handleLogout"
+          >
+            Log out
+          </button>
+        </template>
         <RouterLink
+          v-else
           to="/login"
           class="mt-2 mx-3 mb-2 px-4 py-3 text-sm font-semibold bg-neutral-950 text-white text-center hover:bg-neutral-800 transition-colors min-h-11 flex items-center justify-center"
           @click="closeMobile"
         >
-          Team Login
+          Sign In
         </RouterLink>
       </nav>
     </div>
