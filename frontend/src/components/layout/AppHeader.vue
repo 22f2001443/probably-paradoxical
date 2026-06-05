@@ -2,15 +2,18 @@
 import { ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { mdiHome } from '@mdi/js'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { mdiHome, mdiAccountCircleOutline, mdiChevronDown } from '@mdi/js'
 import { navLinks } from '../../data/eventData.js'
 import { useAuthStore } from '../../stores/authStore.js'
+import ChangePasswordModal from '../account/ChangePasswordModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const auth = useAuthStore()
 const mobileOpen = ref(false)
+const showChangePassword = ref(false)
 
 function toggleMobile() {
   mobileOpen.value = !mobileOpen.value
@@ -18,12 +21,19 @@ function toggleMobile() {
 function closeMobile() {
   mobileOpen.value = false
 }
+function openChangePassword() {
+  closeMobile()
+  showChangePassword.value = true
+}
 function handleLogout() {
   auth.logout()
   closeMobile()
   toast.success('Signed out.')
   router.push('/login')
 }
+
+const menuItemClass = (active) =>
+  ['block w-full text-left px-4 py-2.5 text-sm transition-colors', active ? 'bg-neutral-100 text-neutral-950' : 'text-neutral-700']
 </script>
 
 <template>
@@ -58,23 +68,42 @@ function handleLogout() {
           </RouterLink>
         </nav>
 
-        <!-- Login / account + hamburger -->
+        <!-- Account / login + hamburger -->
         <div class="flex items-center gap-2 sm:gap-3">
-          <template v-if="auth.isAuthenticated">
-            <RouterLink
-              :to="auth.homeRoute"
-              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold border border-neutral-300 text-neutral-950 rounded-sm hover:border-neutral-950 transition-colors min-h-11"
+          <!-- Profile dropdown (signed in) -->
+          <Menu v-if="auth.isAuthenticated" as="div" class="relative hidden sm:block">
+            <MenuButton
+              class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold border border-neutral-300 text-neutral-950 rounded-sm hover:border-neutral-950 transition-colors min-h-11"
             >
-              Dashboard
-            </RouterLink>
-            <button
-              type="button"
-              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold bg-neutral-950 text-white rounded-sm hover:bg-neutral-800 transition-colors min-h-11"
-              @click="handleLogout"
+              <svg viewBox="0 0 24 24" class="w-5 h-5" aria-hidden="true"><path fill="currentColor" :d="mdiAccountCircleOutline" /></svg>
+              Profile
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-neutral-500" aria-hidden="true"><path fill="currentColor" :d="mdiChevronDown" /></svg>
+            </MenuButton>
+            <MenuItems
+              class="absolute right-0 mt-2 w-60 origin-top-right bg-white border border-neutral-200 shadow-lg focus:outline-none z-50"
             >
-              Log out
-            </button>
-          </template>
+              <div class="px-4 py-3 border-b border-neutral-100">
+                <p class="text-xs text-neutral-500">Signed in as</p>
+                <p class="text-sm font-semibold text-neutral-950 truncate">{{ auth.user?.email || '—' }}</p>
+              </div>
+              <MenuItem v-slot="{ active }">
+                <RouterLink :to="auth.homeRoute" :class="menuItemClass(active)">Dashboard</RouterLink>
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <button type="button" :class="menuItemClass(active)" @click="openChangePassword">Change password</button>
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <button
+                  type="button"
+                  class="block w-full text-left px-4 py-2.5 text-sm font-medium text-red-600 border-t border-neutral-100 transition-colors"
+                  :class="active ? 'bg-neutral-100' : ''"
+                  @click="handleLogout"
+                >
+                  Log out
+                </button>
+              </MenuItem>
+            </MenuItems>
+          </Menu>
           <RouterLink
             v-else
             to="/login"
@@ -124,17 +153,26 @@ function handleLogout() {
         >
           {{ link.label }}
         </RouterLink>
+
         <template v-if="auth.isAuthenticated">
+          <p class="mt-2 px-3 pt-2 border-t border-neutral-100 text-xs text-neutral-500 truncate">{{ auth.user?.email }}</p>
           <RouterLink
             :to="auth.homeRoute"
-            class="mt-2 mx-3 px-4 py-3 text-sm font-semibold border border-neutral-300 text-neutral-950 text-center hover:border-neutral-950 transition-colors min-h-11 flex items-center justify-center"
+            class="px-3 py-3 text-sm font-medium text-neutral-700 hover:text-neutral-950 hover:bg-neutral-50 min-h-11 flex items-center"
             @click="closeMobile"
           >
             Dashboard
           </RouterLink>
           <button
             type="button"
-            class="mx-3 mb-2 px-4 py-3 text-sm font-semibold bg-neutral-950 text-white text-center hover:bg-neutral-800 transition-colors min-h-11 flex items-center justify-center"
+            class="px-3 py-3 text-left text-sm font-medium text-neutral-700 hover:text-neutral-950 hover:bg-neutral-50 min-h-11 flex items-center"
+            @click="openChangePassword"
+          >
+            Change password
+          </button>
+          <button
+            type="button"
+            class="px-3 py-3 text-left text-sm font-medium text-red-600 hover:bg-neutral-50 min-h-11 flex items-center"
             @click="handleLogout"
           >
             Log out
@@ -151,4 +189,6 @@ function handleLogout() {
       </nav>
     </div>
   </header>
+
+  <ChangePasswordModal :open="showChangePassword" @close="showChangePassword = false" />
 </template>
