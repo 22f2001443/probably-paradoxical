@@ -2,7 +2,7 @@ import type { Db } from "mongodb";
 import type { AppEnv } from "../db/mongodb";
 import { withDatabase } from "../db/mongodb";
 import { COLLECTIONS, CONFIG_SINGLETON_ID, ROUND_STATE } from "../db/collections.ts";
-import type { RoundDocument, RoundScheduleDocument } from "../db/types.ts";
+import type { ConfigDocument, RoundDocument, RoundScheduleDocument } from "../db/types.ts";
 
 export interface TransitionActor {
 	actorRole: "admin" | "system";
@@ -51,8 +51,11 @@ export async function applySetCurrentCascade(
 	}
 
 	await db
-		.collection(COLLECTIONS.config)
-		.updateOne({ _id: CONFIG_SINGLETON_ID }, { $set: { currentRoundKey: roundKey, updatedAt: now } });
+		.collection<ConfigDocument>(COLLECTIONS.config)
+		.updateOne(
+			{ _id: CONFIG_SINGLETON_ID },
+			{ $set: { currentRoundKey: roundKey as RoundDocument["roundKey"], updatedAt: now } },
+		);
 
 	await db.collection(COLLECTIONS.auditEvents).insertOne({
 		actorRole: actor.actorRole,

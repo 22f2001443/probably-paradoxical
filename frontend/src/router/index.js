@@ -51,6 +51,12 @@ const routes = [
     meta: { title: 'Admin Dashboard | Probably Paradoxical', requiresAuth: true, role: 'admin' },
   },
   {
+    path: '/admin/paradoxes',
+    name: 'admin-paradoxes',
+    component: () => import('../pages/dashboard/ParadoxesPage.vue'),
+    meta: { title: 'Paradoxes | Probably Paradoxical', requiresAuth: true, role: 'admin' },
+  },
+  {
     path: '/judge',
     name: 'judge',
     component: () => import('../pages/dashboard/JudgePage.vue'),

@@ -133,8 +133,9 @@ export interface RoundDocument extends Timestamps {
 export interface ParadoxDocument extends Timestamps {
 	_id?: ObjectId;
 	paradoxCode: string;
-	title: string;
-	statement: string;
+	name: string;
+	description: string;
+	example?: string;
 	category?: string;
 	tags?: string[];
 	state: ParadoxState;

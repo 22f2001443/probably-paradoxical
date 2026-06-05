@@ -178,11 +178,12 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 	[COLLECTIONS.paradoxes]: {
 		$jsonSchema: {
 			bsonType: "object",
-			required: ["paradoxCode", "title", "statement", "state", "createdAt", "updatedAt"],
+			required: ["paradoxCode", "name", "description", "state", "createdAt", "updatedAt"],
 			properties: {
 				paradoxCode: { bsonType: "string" },
-				title: { bsonType: "string" },
-				statement: { bsonType: "string" },
+				name: { bsonType: "string" },
+				description: { bsonType: "string" },
+				example: { bsonType: "string" },
 				category: { bsonType: "string" },
 				tags: { bsonType: "array", items: { bsonType: "string" } },
 				state: { enum: ["draft", "published"] },

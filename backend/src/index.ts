@@ -7,6 +7,12 @@ import { handleChangePassword } from "./auth/changePassword";
 import { handleAdminOverview } from "./admin/overview";
 import { handleUpdateRound, handleCancelSchedule } from "./admin/updateRound";
 import { runDueSchedules } from "./admin/roundTransitions";
+import {
+	handleListParadoxes,
+	handleCreateParadox,
+	handleUpdateParadox,
+	handleDeleteParadox,
+} from "./admin/paradoxes";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
@@ -67,6 +73,26 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/admin/rounds/cancel") {
 			const result = await handleCancelSchedule(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/paradoxes") {
+			const result = await handleListParadoxes(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/paradoxes") {
+			const result = await handleCreateParadox(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/paradoxes/update") {
+			const result = await handleUpdateParadox(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/paradoxes/delete") {
+			const result = await handleDeleteParadox(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

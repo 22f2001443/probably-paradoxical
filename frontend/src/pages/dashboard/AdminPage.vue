@@ -35,6 +35,7 @@ const ROUND_STATE_LABEL = {
   open: 'Open',
   closed: 'Closed',
   results_published: 'Results published',
+  stale: 'Stale',
 }
 
 const kpis = computed(() => [
@@ -148,6 +149,14 @@ function onVisible() {
         >
           {{ control.action }}
         </BaseButton>
+        <BaseButton
+          v-else-if="control.key === 'paradoxes'"
+          variant="primary"
+          class="shrink-0"
+          @click="router.push('/admin/paradoxes')"
+        >
+          {{ control.action }}
+        </BaseButton>
         <BaseButton v-else variant="outline" :disabled="true" class="shrink-0">{{ control.action }}</BaseButton>
       </BaseCard>
     </div>
@@ -156,6 +165,7 @@ function onVisible() {
       :open="showRounds"
       :rounds="data?.rounds || []"
       :current-round-key="data?.currentRoundKey"
+      :schedules="data?.schedules || []"
       @close="showRounds = false"
       @updated="load()"
     />

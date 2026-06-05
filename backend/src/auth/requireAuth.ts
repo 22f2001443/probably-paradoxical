@@ -25,3 +25,23 @@ export async function getAuthPayload(request: Request, env: AppEnv): Promise<Aut
 	}
 	return payload as AuthPayload;
 }
+
+export interface AdminGuardResult {
+	status: number;
+	body: Record<string, unknown>;
+}
+
+/** Resolve the bearer token and require the `admin` role. */
+export async function requireAdmin(
+	request: Request,
+	env: AppEnv,
+): Promise<{ payload: AuthPayload } | { error: AdminGuardResult }> {
+	const payload = await getAuthPayload(request, env);
+	if (!payload) {
+		return { error: { status: 401, body: { error: "Authentication required." } } };
+	}
+	if (payload.role !== "admin") {
+		return { error: { status: 403, body: { error: "Admin access required." } } };
+	}
+	return { payload };
+}
