@@ -1,4 +1,5 @@
 import type { Db, MongoClient as MongoClientType } from "mongodb";
+import type { RateLimitBinding } from "../security/rateLimit.ts";
 import { ensureMongoCollections } from "./schema.ts";
 
 export interface AppEnv extends Env {
@@ -7,6 +8,8 @@ export interface AppEnv extends Env {
 	SETUP_SECRET?: string;
 	JWT_SECRET?: string;
 	JWT_EXPIRES_IN_SECONDS?: string;
+	/** Optional Cloudflare Rate Limiting binding (see wrangler.jsonc). */
+	AUTH_RATE_LIMITER?: RateLimitBinding;
 }
 
 export class ConfigurationError extends Error {

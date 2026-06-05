@@ -171,6 +171,74 @@ export const openApiSpec = {
 				},
 			},
 		},
+		"/auth/forgot-password": {
+			post: {
+				tags: ["Auth"],
+				summary: "Request a password reset",
+				description:
+					"Starts a password reset for an admin, judge, or team (resolved by email). Always responds 200 with a generic message to avoid email enumeration. In development the response also includes `devResetToken` so the flow is testable; in production the token is emailed instead.",
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: {
+								type: "object",
+								required: ["email"],
+								properties: { email: { type: "string", format: "email" } },
+							},
+							example: { email: "judge1@example.com" },
+						},
+					},
+				},
+				responses: {
+					"200": {
+						description: "Generic acknowledgement (plus devResetToken in development).",
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										message: { type: "string" },
+										devResetToken: { type: "string", description: "Development only." },
+										devResetPath: { type: "string", description: "Development only." },
+										expiresInSeconds: { type: "integer" },
+									},
+								},
+							},
+						},
+					},
+					"400": { description: "Missing/invalid email.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+				},
+			},
+		},
+		"/auth/reset-password": {
+			post: {
+				tags: ["Auth"],
+				summary: "Reset a password with a token",
+				description:
+					"Consumes a reset token from /auth/forgot-password and sets a new argon2id password on the matching account. Tokens are single-use and expire after 30 minutes.",
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: {
+								type: "object",
+								required: ["token", "password"],
+								properties: {
+									token: { type: "string" },
+									password: { type: "string", format: "password", minLength: 8 },
+								},
+							},
+							example: { token: "<token-from-forgot-password>", password: "a-new-strong-password" },
+						},
+					},
+				},
+				responses: {
+					"200": { description: "Password reset.", content: { "application/json": { schema: { type: "object", properties: { message: { type: "string" } } } } } },
+					"400": { description: "Invalid/expired token or weak password.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" }, example: { error: "Invalid or expired reset token." } } } },
+				},
+			},
+		},
 		"/auth/login": {
 			post: {
 				tags: ["Auth"],

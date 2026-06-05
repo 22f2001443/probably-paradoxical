@@ -98,6 +98,13 @@ export const COLLECTION_INDEXES: Record<string, IndexDefinition[]> = {
 		{ keys: { roundKey: 1, rank: 1 }, options: { name: "results_round_rank", sparse: true } },
 	],
 
+	[COLLECTIONS.passwordResets]: [
+		{ keys: { tokenHash: 1 }, options: { name: "password_resets_token_unique", unique: true } },
+		{ keys: { email: 1 }, options: { name: "password_resets_email" } },
+		// TTL: Mongo removes the document once expiresAt passes.
+		{ keys: { expiresAt: 1 }, options: { name: "password_resets_ttl", expireAfterSeconds: 0 } },
+	],
+
 	[COLLECTIONS.auditEvents]: [
 		{ keys: { at: -1 }, options: { name: "audit_at" } },
 		{ keys: { targetType: 1, targetId: 1 }, options: { name: "audit_target" } },

@@ -13,7 +13,23 @@
 	"upload_source_maps": true,
 	"compatibility_flags": [
 		"nodejs_compat"
-	]
+	],
+	/**
+	 * Rate Limiting binding for auth endpoints (per-IP).
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+	 * `period` must be 10 or 60. The Worker falls back to an in-memory limiter
+	 * if this binding is not present.
+	 */
+	"unsafe": {
+		"bindings": [
+			{
+				"name": "AUTH_RATE_LIMITER",
+				"type": "ratelimit",
+				"namespace_id": "1001",
+				"simple": { "limit": 10, "period": 60 }
+			}
+		]
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

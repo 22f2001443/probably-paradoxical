@@ -270,6 +270,19 @@ export interface ResultDocument {
 	publishedAt: Date;
 }
 
+export interface PasswordResetDocument {
+	_id?: ObjectId;
+	tokenHash: string;
+	/** Which credential store the reset targets. */
+	subjectType: "admin" | "judge" | "team";
+	/** admins/judges: stringified ObjectId; teams: teamId. */
+	subjectId: string;
+	email: string;
+	expiresAt: Date;
+	usedAt?: Date;
+	createdAt: Date;
+}
+
 export interface AuditEventDocument {
 	_id?: ObjectId;
 	actorRole: AuditActorRole;

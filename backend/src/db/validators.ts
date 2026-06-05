@@ -389,6 +389,22 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 		},
 	},
 
+	[COLLECTIONS.passwordResets]: {
+		$jsonSchema: {
+			bsonType: "object",
+			required: ["tokenHash", "subjectType", "subjectId", "email", "expiresAt", "createdAt"],
+			properties: {
+				tokenHash: { bsonType: "string" },
+				subjectType: { enum: ["admin", "judge", "team"] },
+				subjectId: { bsonType: "string" },
+				email: { bsonType: "string" },
+				expiresAt: { bsonType: "date" },
+				usedAt: { bsonType: "date" },
+				createdAt: { bsonType: "date" },
+			},
+		},
+	},
+
 	[COLLECTIONS.auditEvents]: {
 		$jsonSchema: {
 			bsonType: "object",

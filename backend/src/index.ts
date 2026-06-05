@@ -1,12 +1,35 @@
 import type { AppEnv } from "./db/mongodb";
 import { handleLogin } from "./auth/login";
 import { handleSignup } from "./auth/signup";
+import { handleForgotPassword } from "./auth/forgotPassword";
+import { handleResetPassword } from "./auth/resetPassword";
+import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
+
+// Auth endpoints: max attempts per IP per 60s window.
+const AUTH_RATE_LIMIT = { limit: 10, windowSeconds: 60 };
 
 export default {
 	async fetch(request, env, _ctx): Promise<Response> {
-		const url = new URL(request.url);
+		const cors = corsHeaders(request);
 
+		// CORS preflight — the SPA lives on a different origin than this Worker.
+		if (request.method === "OPTIONS") {
+			return new Response(null, { status: 204, headers: cors });
+		}
+
+		const response = await route(request, env);
+		for (const [key, value] of Object.entries(cors)) {
+			response.headers.set(key, value);
+		}
+		return response;
+	},
+} satisfies ExportedHandler<AppEnv>;
+
+async function route(request: Request, env: AppEnv): Promise<Response> {
+	const url = new URL(request.url);
+
+	{
 		if (request.method === "GET" && url.pathname === "/") {
 			return jsonResponse({
 				ok: true,
@@ -33,18 +56,72 @@ export default {
 		}
 
 		if (request.method === "POST" && url.pathname === "/auth/signup") {
+			const limited = await enforceRateLimit(request, env, url.pathname);
+			if (limited) return limited;
 			const result = await handleSignup(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 
 		if (request.method === "POST" && url.pathname === "/auth/login") {
+			const limited = await enforceRateLimit(request, env, url.pathname);
+			if (limited) return limited;
 			const result = await handleLogin(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 
+		if (request.method === "POST" && url.pathname === "/auth/forgot-password") {
+			const limited = await enforceRateLimit(request, env, url.pathname);
+			if (limited) return limited;
+			const result = await handleForgotPassword(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/auth/reset-password") {
+			const limited = await enforceRateLimit(request, env, url.pathname);
+			if (limited) return limited;
+			const result = await handleResetPassword(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
 		return jsonResponse({ error: "Not found" }, 404);
-	},
-} satisfies ExportedHandler<AppEnv>;
+	}
+}
+
+/** Returns a 429 response if the caller is over the auth rate limit, else null. */
+async function enforceRateLimit(
+	request: Request,
+	env: AppEnv,
+	scope: string,
+): Promise<Response | null> {
+	const result = await rateLimit(clientKey(request, scope), {
+		...AUTH_RATE_LIMIT,
+		binding: env.AUTH_RATE_LIMITER,
+	});
+	if (result.allowed) {
+		return null;
+	}
+	return new Response(
+		JSON.stringify({ error: "Too many requests. Please slow down and try again shortly." }),
+		{
+			status: 429,
+			headers: {
+				"content-type": "application/json; charset=utf-8",
+				"Retry-After": String(result.retryAfter),
+			},
+		},
+	);
+}
+
+function corsHeaders(request: Request): Record<string, string> {
+	const origin = request.headers.get("Origin");
+	return {
+		"Access-Control-Allow-Origin": origin || "*",
+		"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+		"Access-Control-Allow-Headers": "content-type, authorization, x-setup-secret",
+		"Access-Control-Max-Age": "86400",
+		Vary: "Origin",
+	};
+}
 
 async function setupDatabase(request: Request, env: AppEnv): Promise<Response> {
 	if (!env.SETUP_SECRET) {

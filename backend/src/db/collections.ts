@@ -2,7 +2,7 @@
 // (modelled as `const` objects + union types so the modules stay erasable and
 // runnable under Node's native TypeScript stripping).
 
-export const DATABASE_SCHEMA_VERSION = 2;
+export const DATABASE_SCHEMA_VERSION = 3;
 
 export const COLLECTIONS = Object.freeze({
 	admins: "admins",
@@ -22,6 +22,7 @@ export const COLLECTIONS = Object.freeze({
 	evaluations: "evaluations",
 	results: "results",
 	auditEvents: "audit_events",
+	passwordResets: "password_resets",
 } as const);
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
