@@ -2,7 +2,7 @@
 // (modelled as `const` objects + union types so the modules stay erasable and
 // runnable under Node's native TypeScript stripping).
 
-export const DATABASE_SCHEMA_VERSION = 3;
+export const DATABASE_SCHEMA_VERSION = 4;
 
 export const COLLECTIONS = Object.freeze({
 	admins: "admins",
@@ -23,6 +23,7 @@ export const COLLECTIONS = Object.freeze({
 	results: "results",
 	auditEvents: "audit_events",
 	passwordResets: "password_resets",
+	roundSchedules: "round_schedules",
 } as const);
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
@@ -62,8 +63,17 @@ export const ROUND_STATE = Object.freeze({
 	open: "open",
 	closed: "closed",
 	resultsPublished: "results_published",
+	// A past stage that the pipeline has advanced beyond.
+	stale: "stale",
 } as const);
 export type RoundState = (typeof ROUND_STATE)[keyof typeof ROUND_STATE];
+
+export const ROUND_SCHEDULE_STATUS = Object.freeze({
+	pending: "pending",
+	applied: "applied",
+	cancelled: "cancelled",
+} as const);
+export type RoundScheduleStatus = (typeof ROUND_SCHEDULE_STATUS)[keyof typeof ROUND_SCHEDULE_STATUS];
 
 export const SUBMISSION_TYPE = Object.freeze({
 	none: "none",

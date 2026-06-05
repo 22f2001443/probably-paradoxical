@@ -171,6 +171,38 @@ export const openApiSpec = {
 				},
 			},
 		},
+		"/admin/overview": {
+			get: {
+				tags: ["Admin"],
+				summary: "Admin dashboard overview (live stats)",
+				description:
+					"Admin-only. Returns live entity counts (teams, members, judges, submissions, …), paradox/round status, the current round, and recent activity. Intended to be polled by the admin dashboard.",
+				security: [{ bearerAuth: [] }],
+				responses: {
+					"200": {
+						description: "Overview snapshot.",
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										counts: { type: "object" },
+										paradoxes: { type: "object" },
+										currentRoundKey: { type: "string", nullable: true },
+										currentRound: { type: "object", nullable: true },
+										rounds: { type: "array", items: { type: "object" } },
+										recentActivity: { type: "array", items: { type: "object" } },
+										generatedAt: { type: "string", format: "date-time" },
+									},
+								},
+							},
+						},
+					},
+					"401": { description: "Missing/invalid token.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+					"403": { description: "Not an admin.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" }, example: { error: "Admin access required." } } } },
+				},
+			},
+		},
 		"/auth/forgot-password": {
 			post: {
 				tags: ["Auth"],

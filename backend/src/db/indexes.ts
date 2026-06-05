@@ -98,6 +98,12 @@ export const COLLECTION_INDEXES: Record<string, IndexDefinition[]> = {
 		{ keys: { roundKey: 1, rank: 1 }, options: { name: "results_round_rank", sparse: true } },
 	],
 
+	[COLLECTIONS.roundSchedules]: [
+		// The cron job polls pending schedules due now, in order.
+		{ keys: { status: 1, runAt: 1 }, options: { name: "round_schedules_status_runAt" } },
+		{ keys: { roundKey: 1 }, options: { name: "round_schedules_roundKey" } },
+	],
+
 	[COLLECTIONS.passwordResets]: [
 		{ keys: { tokenHash: 1 }, options: { name: "password_resets_token_unique", unique: true } },
 		{ keys: { email: 1 }, options: { name: "password_resets_email" } },

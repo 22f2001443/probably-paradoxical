@@ -6,7 +6,7 @@
   "scripts": {
     "db:setup": "node scripts/setup-database.ts",
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --test-scheduled",
     "start": "wrangler dev",
     "test": "vitest",
     "cf-typegen": "wrangler types"

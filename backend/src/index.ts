@@ -4,6 +4,9 @@ import { handleSignup } from "./auth/signup";
 import { handleForgotPassword } from "./auth/forgotPassword";
 import { handleResetPassword } from "./auth/resetPassword";
 import { handleChangePassword } from "./auth/changePassword";
+import { handleAdminOverview } from "./admin/overview";
+import { handleUpdateRound, handleCancelSchedule } from "./admin/updateRound";
+import { runDueSchedules } from "./admin/roundTransitions";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
@@ -25,6 +28,12 @@ export default {
 		}
 		return response;
 	},
+
+	// Cron trigger (see wrangler.jsonc): applies any due scheduled stage
+	// transitions. Runs every minute in production.
+	async scheduled(_event, env, ctx): Promise<void> {
+		ctx.waitUntil(runDueSchedules(env));
+	},
 } satisfies ExportedHandler<AppEnv>;
 
 async function route(request: Request, env: AppEnv): Promise<Response> {
@@ -44,6 +53,21 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "GET" && url.pathname === "/openapi.json") {
 			return jsonResponse(openApiSpec);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/overview") {
+			const result = await handleAdminOverview(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/rounds") {
+			const result = await handleUpdateRound(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/rounds/cancel") {
+			const result = await handleCancelSchedule(request, env);
+			return jsonResponse(result.body, result.status);
 		}
 
 		if (request.method === "GET" && url.pathname === "/docs") {

@@ -270,6 +270,19 @@ export interface ResultDocument {
 	publishedAt: Date;
 }
 
+export interface RoundScheduleDocument {
+	_id?: ObjectId;
+	roundKey: RoundKey;
+	/** When the transition should run (UTC). */
+	runAt: Date;
+	status: "pending" | "applied" | "cancelled";
+	/** Setting a stage current cascades states (prev → stale, next → upcoming). */
+	makeCurrent: boolean;
+	createdBy: string;
+	createdAt: Date;
+	appliedAt?: Date;
+}
+
 export interface PasswordResetDocument {
 	_id?: ObjectId;
 	tokenHash: string;

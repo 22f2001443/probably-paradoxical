@@ -15,6 +15,13 @@
 		"nodejs_compat"
 	],
 	/**
+	 * Cron trigger: runs the scheduled() handler every minute to apply due
+	 * scheduled stage transitions. https://developers.cloudflare.com/workers/configuration/cron-triggers/
+	 */
+	"triggers": {
+		"crons": ["* * * * *"]
+	},
+	/**
 	 * Rate Limiting binding for auth endpoints (per-IP).
 	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
 	 * `period` must be 10 or 60. The Worker falls back to an in-memory limiter
