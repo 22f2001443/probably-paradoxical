@@ -5,12 +5,24 @@ defineProps({
     type: String,
     default: 'upcoming',
   },
+  /** 'default' | 'violet' */
+  tone: {
+    type: String,
+    default: 'default',
+  },
 })
 
 const classes = {
-  completed: 'bg-neutral-950 text-white',
-  active:    'bg-neutral-200 text-neutral-950 font-bold',
-  upcoming:  'border border-neutral-300 text-neutral-400',
+  default: {
+    completed: 'bg-neutral-950 text-white',
+    active:    'bg-neutral-200 text-neutral-950 font-bold',
+    upcoming:  'border border-neutral-300 text-neutral-400',
+  },
+  violet: {
+    completed: 'bg-violet-600 text-white',
+    active:    'border border-violet-600 text-violet-700 font-bold',
+    upcoming:  'border border-violet-600 text-violet-700',
+  },
 }
 
 const labels = {
@@ -23,7 +35,7 @@ const labels = {
 <template>
   <span
     class="inline-flex items-center px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider"
-    :class="classes[status] ?? classes.upcoming"
+    :class="classes[tone]?.[status] ?? classes.default[status] ?? classes.default.upcoming"
   >
     {{ labels[status] ?? status }}
   </span>

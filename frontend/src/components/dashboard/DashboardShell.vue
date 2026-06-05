@@ -1,9 +1,11 @@
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '../../stores/authStore.js'
 import PublicLayout from '../layout/PublicLayout.vue'
 import BaseButton from '../common/BaseButton.vue'
+import ChangePasswordCard from './ChangePasswordCard.vue'
 
 defineProps({
   /** Small eyebrow label above the title (e.g. the role). */
@@ -14,6 +16,7 @@ defineProps({
 const auth = useAuthStore()
 const router = useRouter()
 const toast = useToast()
+const showChangePassword = ref(false)
 
 function handleLogout() {
   auth.logout()
@@ -34,9 +37,12 @@ function handleLogout() {
         </div>
         <div class="flex items-center gap-3">
           <span class="hidden sm:inline text-sm text-neutral-500">{{ auth.user?.email }}</span>
+          <BaseButton variant="ghost" @click="showChangePassword = !showChangePassword">Change password</BaseButton>
           <BaseButton variant="outline" @click="handleLogout">Log out</BaseButton>
         </div>
       </div>
+
+      <ChangePasswordCard v-if="showChangePassword" @done="showChangePassword = false" />
 
       <slot />
     </section>

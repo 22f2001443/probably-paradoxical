@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { mdiHome } from '@mdi/js'
 import { navLinks } from '../../data/eventData.js'
 import { useAuthStore } from '../../stores/authStore.js'
 
@@ -33,9 +34,12 @@ function handleLogout() {
         <!-- Brand — smaller tracking on mobile to prevent overflow on 320px screens -->
         <RouterLink
           to="/"
-          class="text-xs sm:text-sm font-bold tracking-wide sm:tracking-widest uppercase text-neutral-950 hover:text-neutral-600 transition-colors shrink-0"
+          class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wide sm:tracking-widest uppercase text-neutral-950 hover:text-neutral-600 transition-colors shrink-0"
           @click="closeMobile"
         >
+          <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" aria-hidden="true">
+            <path fill="currentColor" :d="mdiHome" />
+          </svg>
           Probably Paradoxical
         </RouterLink>
 

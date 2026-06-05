@@ -3,6 +3,7 @@ import { handleLogin } from "./auth/login";
 import { handleSignup } from "./auth/signup";
 import { handleForgotPassword } from "./auth/forgotPassword";
 import { handleResetPassword } from "./auth/resetPassword";
+import { handleChangePassword } from "./auth/changePassword";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
@@ -80,6 +81,13 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 			const limited = await enforceRateLimit(request, env, url.pathname);
 			if (limited) return limited;
 			const result = await handleResetPassword(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/auth/change-password") {
+			const limited = await enforceRateLimit(request, env, url.pathname);
+			if (limited) return limited;
+			const result = await handleChangePassword(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

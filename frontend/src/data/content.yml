@@ -84,11 +84,22 @@ overview:
 
 # ── Timeline stages ────────────────────────────────────────────────────────
 # status: completed | active | upcoming
+# tone: default | violet
 timeline:
-  eyebrow: "Five stages"
+  eyebrow: "Six stages"
   heading: "Event Timeline"
-  subheading: "From problem statement to final presentation."
+  subheading: "From the pre-event expert talk to final presentation."
   stages:
+    - stage: -1
+      title: "Pre-event Expert Talk Session"
+      description: >
+        An expert-led session introduces teams to statistical paradoxes, research
+        framing, and expectations before the competition stages begin.
+      status: completed
+      date: "2nd June 2026"
+      tone: violet
+      recordingUrl: "https://www.youtube.com/live/cck5qcGkPsE?si=yUfePPAY4ZZeATV3"
+
     - stage: 0
       title: "Problem Statement Release"
       description: >
@@ -204,12 +215,12 @@ social:
   feeds:
     - platform: instagram
       label: "Latest from Instagram"
-      embedUrl: ""
+      embedUrl: "https://www.instagram.com/p/DYrF6CXzXEu/embed/"
 
     - platform: youtube
       label: "Event Highlight"
-      embedUrl: ""
+      embedUrl: "https://www.youtube.com/embed/cck5qcGkPsE"
 
     - platform: linkedin
       label: "LinkedIn Update"
-      embedUrl: ""
+      embedUrl: "https://www.linkedin.com/embed/feed/update/urn:li:activity:7463252257732628482"

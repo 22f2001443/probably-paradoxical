@@ -1,8 +1,29 @@
 <script setup>
+import { mdiPlayCircleOutline } from '@mdi/js'
 import SectionHeader from '../common/SectionHeader.vue'
 import StatusBadge from '../common/StatusBadge.vue'
 import BaseButton from '../common/BaseButton.vue'
-import { timelineStages } from '../../data/eventData.js'
+import { timelineMeta, timelineStages } from '../../data/eventData.js'
+
+const statusDotClasses = (stage) => {
+  if (stage.tone === 'violet') {
+    return stage.status === 'completed'
+      ? 'bg-violet-600 border-violet-600 text-white'
+      : 'bg-white border-violet-600 text-violet-700'
+  }
+
+  if (stage.status === 'completed') return 'bg-neutral-950 border-neutral-950 text-white'
+  if (stage.status === 'active') return 'bg-white border-neutral-950 text-neutral-950'
+  return 'bg-white border-neutral-300 text-neutral-400'
+}
+
+const stageLabelClasses = (stage) => {
+  if (stage.tone === 'violet') return 'text-violet-700'
+  return stage.status === 'active' ? 'text-neutral-950' : 'text-neutral-400'
+}
+
+const stageTitleClasses = (stage) =>
+  stage.tone === 'violet' ? 'text-violet-700' : 'text-neutral-950'
 </script>
 
 <template>
@@ -11,9 +32,9 @@ import { timelineStages } from '../../data/eventData.js'
 
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
         <SectionHeader
-          eyebrow="Five stages"
-          heading="Event Timeline"
-          subheading="From problem statement to final presentation."
+          :eyebrow="timelineMeta.eyebrow"
+          :heading="timelineMeta.heading"
+          :subheading="timelineMeta.subheading"
         />
         <BaseButton variant="ghost" to="/timeline">Full timeline →</BaseButton>
       </div>
@@ -27,11 +48,7 @@ import { timelineStages } from '../../data/eventData.js'
           <!-- Connector dot -->
           <span
             class="absolute -left-2.25 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center text-[9px] font-bold"
-            :class="stage.status === 'completed'
-              ? 'bg-neutral-950 border-neutral-950 text-white'
-              : stage.status === 'active'
-              ? 'bg-white border-neutral-950 text-neutral-950'
-              : 'bg-white border-neutral-300 text-neutral-400'"
+            :class="statusDotClasses(stage)"
             aria-hidden="true"
           >{{ stage.stage }}</span>
 
@@ -39,16 +56,33 @@ import { timelineStages } from '../../data/eventData.js'
           <div class="flex flex-col sm:flex-row sm:items-start sm:gap-3">
             <span
               class="mb-1 sm:mb-0 sm:mt-0.5 text-xs font-bold uppercase tracking-widest shrink-0 w-10"
-              :class="stage.status === 'active' ? 'text-neutral-950' : 'text-neutral-400'"
+              :class="stageLabelClasses(stage)"
             >
               S{{ stage.stage }}
             </span>
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 mb-1">
-                <h3 class="text-sm font-bold text-neutral-950">{{ stage.title }}</h3>
-                <StatusBadge :status="stage.status" />
+                <h3 class="text-sm font-bold" :class="stageTitleClasses(stage)">
+                  {{ stage.title }}
+                </h3>
+                <StatusBadge :status="stage.status" :tone="stage.tone" />
+                <span v-if="stage.date" class="text-xs text-neutral-400">
+                  {{ stage.date }}
+                </span>
               </div>
               <p class="text-xs text-neutral-500 leading-relaxed">{{ stage.description }}</p>
+              <a
+                v-if="stage.recordingUrl"
+                :href="stage.recordingUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 hover:text-violet-700"
+              >
+                <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+                  <path fill="currentColor" :d="mdiPlayCircleOutline" />
+                </svg>
+                Watch recording
+              </a>
             </div>
           </div>
         </li>

@@ -34,12 +34,21 @@ export const useAuthStore = defineStore(
       return data.user
     }
 
+    /** Change the signed-in account's password (requires the current one). */
+    async function changePassword(currentPassword, newPassword) {
+      await apiPost(
+        '/auth/change-password',
+        { currentPassword, newPassword },
+        { token: token.value },
+      )
+    }
+
     function logout() {
       user.value = null
       token.value = null
     }
 
-    return { user, token, isAuthenticated, role, homeRoute, setSession, login, logout }
+    return { user, token, isAuthenticated, role, homeRoute, setSession, login, changePassword, logout }
   },
   {
     // Persist only the session state to sessionStorage (survives refresh,

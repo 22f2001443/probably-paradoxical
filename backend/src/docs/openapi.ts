@@ -239,6 +239,35 @@ export const openApiSpec = {
 				},
 			},
 		},
+		"/auth/change-password": {
+			post: {
+				tags: ["Auth"],
+				summary: "Change password (authenticated)",
+				description:
+					"Changes the password of the signed-in account (admin, judge, or team — resolved from the bearer token). Requires the current password. For teams this updates the shared team password.",
+				security: [{ bearerAuth: [] }],
+				requestBody: {
+					required: true,
+					content: {
+						"application/json": {
+							schema: {
+								type: "object",
+								required: ["currentPassword", "newPassword"],
+								properties: {
+									currentPassword: { type: "string", format: "password" },
+									newPassword: { type: "string", format: "password", minLength: 8 },
+								},
+							},
+						},
+					},
+				},
+				responses: {
+					"200": { description: "Password updated.", content: { "application/json": { schema: { type: "object", properties: { message: { type: "string" } } } } } },
+					"400": { description: "Validation failed.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
+					"401": { description: "Missing/invalid token or wrong current password.", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" }, example: { error: "Current password is incorrect." } } } },
+				},
+			},
+		},
 		"/auth/login": {
 			post: {
 				tags: ["Auth"],
