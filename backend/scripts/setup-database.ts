@@ -67,7 +67,7 @@ async function seedConfig(db: import("mongodb").Db) {
 		{
 			$set: {
 				competitionName: "Probably Paradoxical",
-				currentRoundKey: ROUND_KEYS.inauguration,
+				currentRoundKey: ROUND_KEYS.stage0Release,
 				teamSize: { min: 2, max: 5 },
 				targetPopulations: [
 					"students",
@@ -88,11 +88,11 @@ async function seedConfig(db: import("mongodb").Db) {
 async function seedRounds(db: import("mongodb").Db) {
 	const now = new Date();
 	const rounds = [
-		{ roundKey: ROUND_KEYS.inauguration, order: 0, title: "Inauguration", submissionType: SUBMISSION_TYPE.none, requiresJudging: false },
-		{ roundKey: ROUND_KEYS.stage1Submission, order: 1, title: "Stage 1 — Theme & Questionnaire", submissionType: SUBMISSION_TYPE.theme, requiresJudging: true, rubricKey: "questionnaire_v1" },
-		{ roundKey: ROUND_KEYS.stage1Selection, order: 2, title: "Stage 1 Selection", submissionType: SUBMISSION_TYPE.none, requiresJudging: false },
-		{ roundKey: ROUND_KEYS.dataCollection, order: 3, title: "Data Collection", submissionType: SUBMISSION_TYPE.dataset, requiresJudging: false },
-		{ roundKey: ROUND_KEYS.analysis, order: 4, title: "Data Analysis (Proctored)", submissionType: SUBMISSION_TYPE.analysisZip, requiresJudging: false },
+		{ roundKey: ROUND_KEYS.stage0Release, order: 0, title: "Stage 0 — Problem Statement Release", submissionType: SUBMISSION_TYPE.none, requiresJudging: false },
+		{ roundKey: ROUND_KEYS.stage1Submission, order: 1, title: "Stage 1 — Theme & Questionnaire Design", submissionType: SUBMISSION_TYPE.theme, requiresJudging: true, rubricKey: "questionnaire_v1" },
+		{ roundKey: ROUND_KEYS.stage2DataCollection, order: 2, title: "Stage 2 — Data Collection / Survey Phase", submissionType: SUBMISSION_TYPE.dataset, requiresJudging: true },
+		{ roundKey: ROUND_KEYS.stage3Analysis, order: 3, title: "Stage 3 — Data Cleaning & Data Analysis Phase", submissionType: SUBMISSION_TYPE.analysisZip, requiresJudging: true },
+		{ roundKey: ROUND_KEYS.stage4Presentation, order: 4, title: "Stage 4 — Final Presentation", submissionType: SUBMISSION_TYPE.none, requiresJudging: true },
 	];
 
 	let upserted = 0;

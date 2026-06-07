@@ -33,6 +33,32 @@ export async function apiRequest(path, { method = 'GET', body, token } = {}) {
   return data
 }
 
+/**
+ * Send multipart/form-data (for file uploads). Does NOT set content-type so the
+ * browser adds the correct multipart boundary. Parses the JSON response and
+ * throws (with `.status`/`.data`) on non-2xx like apiRequest.
+ */
+export async function apiUpload(path, formData, { token } = {}) {
+  const headers = {}
+  if (token) headers.authorization = `Bearer ${token}`
+
+  let response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, { method: 'POST', headers, body: formData })
+  } catch {
+    throw new Error('Could not reach the server. Please try again.')
+  }
+
+  const data = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    const error = new Error(data?.error || `Request failed (${response.status}).`)
+    error.status = response.status
+    error.data = data
+    throw error
+  }
+  return data
+}
+
 export const apiPost = (path, body, options = {}) =>
   apiRequest(path, { ...options, method: 'POST', body })
 

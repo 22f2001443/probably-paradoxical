@@ -10,6 +10,8 @@ export interface AppEnv extends Env {
 	JWT_EXPIRES_IN_SECONDS?: string;
 	/** Optional Cloudflare Rate Limiting binding (see wrangler.jsonc). */
 	AUTH_RATE_LIMITER?: RateLimitBinding;
+	/** R2 bucket for participant file uploads (see wrangler.jsonc). */
+	SUBMISSIONS_BUCKET?: R2Bucket;
 }
 
 export class ConfigurationError extends Error {

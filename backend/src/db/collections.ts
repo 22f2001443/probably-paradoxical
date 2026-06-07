@@ -2,7 +2,7 @@
 // (modelled as `const` objects + union types so the modules stay erasable and
 // runnable under Node's native TypeScript stripping).
 
-export const DATABASE_SCHEMA_VERSION = 4;
+export const DATABASE_SCHEMA_VERSION = 6;
 
 export const COLLECTIONS = Object.freeze({
 	admins: "admins",
@@ -49,12 +49,15 @@ export type TeamMemberRole = (typeof TEAM_MEMBER_ROLE)[keyof typeof TEAM_MEMBER_
 export const MEMBERSHIP_STATUS = Object.freeze({ active: "active", removed: "removed" } as const);
 export type MembershipStatus = (typeof MEMBERSHIP_STATUS)[keyof typeof MEMBERSHIP_STATUS];
 
+// Mirrors the Paradox'26 "Event Format" — Stages 0 through 4. Result
+// announcements between stages are represented by the round's `results_published`
+// state rather than separate rounds.
 export const ROUND_KEYS = Object.freeze({
-	inauguration: "inauguration",
+	stage0Release: "stage0_release",
 	stage1Submission: "stage1_submission",
-	stage1Selection: "stage1_selection",
-	dataCollection: "data_collection",
-	analysis: "analysis",
+	stage2DataCollection: "stage2_data_collection",
+	stage3Analysis: "stage3_analysis",
+	stage4Presentation: "stage4_presentation",
 } as const);
 export type RoundKey = (typeof ROUND_KEYS)[keyof typeof ROUND_KEYS];
 
@@ -112,6 +115,7 @@ export const FILE_KIND = Object.freeze({
 	teamIcon: "team_icon",
 	dataset: "dataset",
 	analysisZip: "analysis_zip",
+	questionnairePdf: "questionnaire_pdf",
 } as const);
 export type FileKind = (typeof FILE_KIND)[keyof typeof FILE_KIND];
 

@@ -2,10 +2,10 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { useAuthStore } from '../stores/authStore.js'
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import BaseButton from '../components/common/BaseButton.vue'
-import BaseCard from '../components/common/BaseCard.vue'
+import { useAuthStore } from '../../stores/authStore.js'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import BaseButton from '../../components/common/BaseButton.vue'
+import BaseCard from '../../components/common/BaseCard.vue'
 
 const toast = useToast()
 const router = useRouter()

@@ -4,7 +4,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '../../stores/authStore.js'
 import { apiGet, apiPost } from '../../services/api.js'
-import DashboardShell from '../../components/dashboard/DashboardShell.vue'
+import DashboardShell from '../../components/common/DashboardShell.vue'
 import BaseCard from '../../components/common/BaseCard.vue'
 import BaseButton from '../../components/common/BaseButton.vue'
 

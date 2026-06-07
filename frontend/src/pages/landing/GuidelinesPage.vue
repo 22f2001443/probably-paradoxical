@@ -1,7 +1,7 @@
 <script setup>
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import SectionHeader from '../components/common/SectionHeader.vue'
-import config from '../data/content.yml'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import SectionHeader from '../../components/common/SectionHeader.vue'
+import config from '../../data/content.yml'
 
 function toGoogleDocsEmbedUrl(url) {
   if (!url || !url.trim()) return null

@@ -1,8 +1,8 @@
 <script setup>
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import SectionHeader from '../components/common/SectionHeader.vue'
-import BaseCard from '../components/common/BaseCard.vue'
-import config from '../data/content.yml'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import SectionHeader from '../../components/common/SectionHeader.vue'
+import BaseCard from '../../components/common/BaseCard.vue'
+import config from '../../data/content.yml'
 
 const { judges, speakers } = config
 const profileSections = [judges, speakers]

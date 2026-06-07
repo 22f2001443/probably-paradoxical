@@ -5,10 +5,15 @@ import { handleForgotPassword } from "./auth/forgotPassword";
 import { handleResetPassword } from "./auth/resetPassword";
 import { handleChangePassword } from "./auth/changePassword";
 import { handleAdminOverview } from "./admin/overview";
+import { handleTeamMembers } from "./team/members";
+import { handleThemeSubmission } from "./team/themeSubmission";
+import { handleDatasetSubmission } from "./team/datasetSubmission";
+import { handleTeamResults } from "./team/results";
 import { handleUpdateRound, handleCancelSchedule } from "./admin/updateRound";
 import { runDueSchedules } from "./admin/roundTransitions";
 import {
 	handleListParadoxes,
+	handleListPublishedParadoxes,
 	handleCreateParadox,
 	handleUpdateParadox,
 	handleDeleteParadox,
@@ -93,6 +98,31 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/admin/paradoxes/delete") {
 			const result = await handleDeleteParadox(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/paradoxes") {
+			const result = await handleListPublishedParadoxes(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/team/members") {
+			const result = await handleTeamMembers(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/team/theme-submission") {
+			const result = await handleThemeSubmission(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/team/dataset-submission") {
+			const result = await handleDatasetSubmission(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/team/results") {
+			const result = await handleTeamResults(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

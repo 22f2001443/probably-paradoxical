@@ -3,7 +3,7 @@ import type { AppEnv } from "../db/mongodb";
 import { withDatabase } from "../db/mongodb";
 import { COLLECTIONS } from "../db/collections.ts";
 import type { ParadoxDocument } from "../db/types.ts";
-import { requireAdmin } from "../auth/requireAuth.ts";
+import { getAuthPayload, requireAdmin } from "../auth/requireAuth.ts";
 
 interface Result {
 	status: number;
@@ -33,6 +33,27 @@ export async function handleListParadoxes(request: Request, env: AppEnv): Promis
 			const items = await db
 				.collection<ParadoxDocument>(COLLECTIONS.paradoxes)
 				.find({})
+				.sort({ paradoxCode: 1 })
+				.toArray();
+			return { status: 200, body: { paradoxes: items.map(toPublic) } };
+		});
+	} catch (error) {
+		return errorResult(error);
+	}
+}
+
+/** GET /paradoxes — list published paradoxes (any authenticated user). */
+export async function handleListPublishedParadoxes(request: Request, env: AppEnv): Promise<Result> {
+	const auth = await getAuthPayload(request, env);
+	if (!auth) {
+		return { status: 401, body: { error: "Authentication required." } };
+	}
+
+	try {
+		return await withDatabase(env, async (db) => {
+			const items = await db
+				.collection<ParadoxDocument>(COLLECTIONS.paradoxes)
+				.find({ state: "published" })
 				.sort({ paradoxCode: 1 })
 				.toArray();
 			return { status: 200, body: { paradoxes: items.map(toPublic) } };

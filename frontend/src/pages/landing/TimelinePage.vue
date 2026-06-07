@@ -1,9 +1,9 @@
 <script setup>
 import { mdiPlayCircleOutline } from '@mdi/js'
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import SectionHeader from '../components/common/SectionHeader.vue'
-import StatusBadge from '../components/common/StatusBadge.vue'
-import { timelineMeta, timelineStages } from '../data/eventData.js'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import SectionHeader from '../../components/common/SectionHeader.vue'
+import StatusBadge from '../../components/common/StatusBadge.vue'
+import { timelineMeta, timelineStages } from '../../data/eventData.js'
 
 const statusDotClasses = (stage) => {
   if (stage.tone === 'violet') {
@@ -49,6 +49,9 @@ const stageTitleClasses = (stage) =>
             <StatusBadge :status="stage.status" :tone="stage.tone" />
             <span v-if="stage.date" class="text-xs text-neutral-400">
               {{ stage.date }}
+            </span>
+            <span v-if="stage.location" class="text-xs font-medium text-neutral-500">
+              · {{ stage.location }}
             </span>
           </div>
           <p class="text-sm text-neutral-500 leading-relaxed max-w-2xl">

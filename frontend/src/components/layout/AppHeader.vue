@@ -6,7 +6,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { mdiHome, mdiAccountCircleOutline, mdiChevronDown } from '@mdi/js'
 import { navLinks } from '../../data/eventData.js'
 import { useAuthStore } from '../../stores/authStore.js'
-import ChangePasswordModal from '../account/ChangePasswordModal.vue'
+import ChangePasswordModal from '../common/ChangePasswordModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -89,6 +89,9 @@ const menuItemClass = (active) =>
               <MenuItem v-slot="{ active }">
                 <RouterLink :to="auth.homeRoute" :class="menuItemClass(active)">Dashboard</RouterLink>
               </MenuItem>
+              <MenuItem v-if="auth.role === 'team'" v-slot="{ active }">
+                <RouterLink to="/participant/team-info" :class="menuItemClass(active)">Team info</RouterLink>
+              </MenuItem>
               <MenuItem v-slot="{ active }">
                 <button type="button" :class="menuItemClass(active)" @click="openChangePassword">Change password</button>
               </MenuItem>
@@ -162,6 +165,14 @@ const menuItemClass = (active) =>
             @click="closeMobile"
           >
             Dashboard
+          </RouterLink>
+          <RouterLink
+            v-if="auth.role === 'team'"
+            to="/participant/team-info"
+            class="px-3 py-3 text-sm font-medium text-neutral-700 hover:text-neutral-950 hover:bg-neutral-50 min-h-11 flex items-center"
+            @click="closeMobile"
+          >
+            Team info
           </RouterLink>
           <button
             type="button"

@@ -157,7 +157,7 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 			required: ["roundKey", "order", "title", "state", "submissionType", "requiresJudging", "createdAt", "updatedAt"],
 			properties: {
 				roundKey: {
-					enum: ["inauguration", "stage1_submission", "stage1_selection", "data_collection", "analysis"],
+					enum: ["stage0_release", "stage1_submission", "stage2_data_collection", "stage3_analysis", "stage4_presentation"],
 				},
 				order: { bsonType: "number" },
 				title: { bsonType: "string" },
@@ -293,7 +293,7 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 			required: ["r2Key", "kind", "originalName", "contentType", "extension", "sizeBytes", "teamId", "uploadedAt", "uploadedByEmail"],
 			properties: {
 				r2Key: { bsonType: "string" },
-				kind: { enum: ["team_icon", "dataset", "analysis_zip"] },
+				kind: { enum: ["team_icon", "dataset", "analysis_zip", "questionnaire_pdf"] },
 				originalName: { bsonType: "string" },
 				contentType: { bsonType: "string" },
 				extension: { bsonType: "string" },

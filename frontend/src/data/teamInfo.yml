@@ -110,7 +110,7 @@ teams:
     teamId: "T08"
     pure: false
     members:
-      - name: "24F1000810 MANALI MILIND ULHE (DS)"
+      - name: "MANALI MILIND ULHE (DS)"
         email: "24f1000810@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -370,7 +370,7 @@ teams:
     teamId: "T12"
     pure: false
     members:
-      - name: "25F3004956 ANUPAMA SHAW (DS)"
+      - name: "ANUPAMA SHAW (DS)"
         email: "25f3004956@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -380,11 +380,11 @@ teams:
         gender: ""
         level: ""
 #         teamLead: true
-      - name: "26F1000304 SUMIT PANDEY (DS)"
+      - name: "SUMIT PANDEY (DS)"
         email: "26f1000304@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F3004764 ALHAMDA IQBAL SADIQ (DS)"
+      - name: "ALHAMDA IQBAL SADIQ (DS)"
         email: "25f3004764@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -704,6 +704,7 @@ teams:
 
   - teamName: "Meowshoot"
     teamId: "T42"
+    pure: false
     members:
       - name: "SHIVANG (DS)"
         email: "22f1000561@ds.study.iitm.ac.in"
@@ -800,6 +801,7 @@ teams:
 
   - teamName: "BUDDING WARRIORS"
     teamId: "T48"
+    pure: false
     members:
       - name: "25F2100132 THRINAYANI P (ES)"
         email: "25f2100132@es.study.iitm.ac.in"

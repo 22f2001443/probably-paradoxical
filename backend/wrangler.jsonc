@@ -36,7 +36,19 @@
 				"simple": { "limit": 10, "period": 60 }
 			}
 		]
-	}
+	},
+	/**
+	 * R2 bucket for participant file uploads (questionnaire PDFs, datasets, etc.).
+	 * Create it before deploying: `wrangler r2 bucket create probably-paradoxical-submissions`.
+	 * Local dev uses an automatic on-disk simulation, so no setup is needed.
+	 * https://developers.cloudflare.com/r2/buckets/
+	 */
+	"r2_buckets": [
+		{
+			"binding": "SUBMISSIONS_BUCKET",
+			"bucket_name": "probably-paradoxical-submissions"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

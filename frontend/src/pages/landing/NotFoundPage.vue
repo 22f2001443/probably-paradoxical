@@ -1,6 +1,6 @@
 <script setup>
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import BaseButton from '../components/common/BaseButton.vue'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import BaseButton from '../../components/common/BaseButton.vue'
 </script>
 
 <template>

@@ -106,6 +106,8 @@ timeline:
         The event brief and list of eligible paradoxes are published. Teams
         study the domain and form their research hypothesis.
       status: upcoming
+      date: "10th June 2026 · 12–3 PM"
+      location: "RJN101"
 
     - stage: 1
       title: "Theme & Questionnaire Design"
@@ -113,6 +115,7 @@ timeline:
         Teams submit their chosen paradox, target population, and finalised
         questionnaire for review before data collection begins.
       status: upcoming
+      date: "10th June 2026"
 
     - stage: 2
       title: "Data Collection"
@@ -120,6 +123,7 @@ timeline:
         Teams deploy surveys across the IIT Madras campus. Minimum response
         thresholds must be met within the allotted time window.
       status: upcoming
+      date: "10th–11th June 2026"
 
     - stage: 3
       title: "Data Cleaning & Analysis"
@@ -127,6 +131,8 @@ timeline:
         Collected data is cleaned, coded, and analysed. Teams document
         methodology, assumptions, and any anomalies encountered.
       status: upcoming
+      date: "11th June 2026 · 10 AM–4 PM"
+      location: "RJN102"
 
     - stage: 4
       title: "Final Presentation"
@@ -134,6 +140,8 @@ timeline:
         Teams present findings to judges and guests, including statistical results,
         visualisations, and a reflection on whether the paradox was observed.
       status: upcoming
+      date: "12th June 2026 · 12–6 PM"
+      location: "RJN102"
 
 # ── Guidelines document ────────────────────────────────────────────────────
 # Paste your Google Doc share link here and the page auto-embeds it.
@@ -179,6 +187,10 @@ judges:
     - name: "Prof. Rahul R Marathe"
       imageUrl: "https://wsai.iitm.ac.in/images/people/rrmarathe.webp"
       role: "Professor, DoMS, IIT Madras / Affiliate Faculty, RBCDSAI"
+      # bio: ""
+    - name: "Dr. Naveen Sivadasan"
+      imageUrl: "https://scontent.fccu27-3.fna.fbcdn.net/v/t39.30808-6/484826265_1145698220685882_4839767975617634624_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=H8yp0tXj87cQ7kNvwHYS0Fj&_nc_oc=AdrCHXSS7pjOeMfm5iNBAxz6lIO9HeyecM2ty6gOAJl6jiTMC0lUGtwZJrSvx4fAL1W2-HUanB1VUqTQuACCXM7Y&_nc_zt=23&_nc_ht=scontent.fccu27-3.fna&_nc_gid=qvea6piYOL77zg_EWQGUBg&_nc_ss=7b289&oh=00_Af9hm8nLGSCQFGcd6JGs5SiiPZaka5IjxoRCJlH78eD91Q&oe=6A2AEA49"
+      role: "Principal Scientist, Head of Life Sciences Research at TCS Research / Adjunct Faculty, IIT Hyderabad"
       # bio: ""
 
 # ── Speakers section ───────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useAuthStore } from '../../stores/authStore.js'
-import DashboardShell from '../../components/dashboard/DashboardShell.vue'
+import DashboardShell from '../../components/common/DashboardShell.vue'
 import BaseCard from '../../components/common/BaseCard.vue'
 
 const auth = useAuthStore()

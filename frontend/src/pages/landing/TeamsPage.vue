@@ -1,10 +1,10 @@
 <script setup>
 import { computed } from 'vue'
-import PublicLayout from '../components/layout/PublicLayout.vue'
-import SectionHeader from '../components/common/SectionHeader.vue'
-import BaseCard from '../components/common/BaseCard.vue'
-import config from '../data/content.yml'
-import teamInfo from '../data/teamInfo.yml'
+import PublicLayout from '../../components/layout/PublicLayout.vue'
+import SectionHeader from '../../components/common/SectionHeader.vue'
+import BaseCard from '../../components/common/BaseCard.vue'
+import config from '../../data/content.yml'
+import teamInfo from '../../data/teamInfo.yml'
 
 const teamsContent = config.teams
 const unclusteredTeam = computed(() =>
@@ -13,6 +13,16 @@ const unclusteredTeam = computed(() =>
 const confirmedTeams = computed(() =>
   teamInfo.teams.filter((team) => team.teamId !== 'unclustered')
 )
+
+// Border colour by team composition:
+//   blue  → invalid size (more than 5, or only 1 member) — takes priority
+//   green → pure team
+//   red   → non-pure team
+function borderClass(team) {
+  const count = team.members.length
+  if (count > 5 || count === 1) return '!border-blue-600'
+  return team.pure ? '!border-green-600' : '!border-red-600'
+}
 </script>
 
 <template>
@@ -37,8 +47,8 @@ const confirmedTeams = computed(() =>
         <BaseCard
           v-for="(team, index) in confirmedTeams"
           :key="`${team.teamId}-${index}`"
-          class="relative"
-          :class="team.members.length >= 3 ? '!border-green-600' : '!border-red-600'"
+          class="relative !border-2"
+          :class="borderClass(team)"
         >
           <div
             class="absolute top-4 right-4 flex flex-col items-center gap-1"
