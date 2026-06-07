@@ -92,7 +92,7 @@ async function seedRounds(db: import("mongodb").Db) {
 		{ roundKey: ROUND_KEYS.stage1Submission, order: 1, title: "Stage 1 — Theme & Questionnaire Design", submissionType: SUBMISSION_TYPE.theme, requiresJudging: true, rubricKey: "questionnaire_v1" },
 		{ roundKey: ROUND_KEYS.stage2DataCollection, order: 2, title: "Stage 2 — Data Collection / Survey Phase", submissionType: SUBMISSION_TYPE.dataset, requiresJudging: true },
 		{ roundKey: ROUND_KEYS.stage3Analysis, order: 3, title: "Stage 3 — Data Cleaning & Data Analysis Phase", submissionType: SUBMISSION_TYPE.analysisZip, requiresJudging: true },
-		{ roundKey: ROUND_KEYS.stage4Presentation, order: 4, title: "Stage 4 — Final Presentation", submissionType: SUBMISSION_TYPE.none, requiresJudging: true },
+		{ roundKey: ROUND_KEYS.stage4Presentation, order: 4, title: "Stage 4 — Final Presentation", submissionType: SUBMISSION_TYPE.presentation, requiresJudging: true },
 	];
 
 	let upserted = 0;

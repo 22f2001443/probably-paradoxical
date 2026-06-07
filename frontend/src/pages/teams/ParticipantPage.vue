@@ -29,8 +29,8 @@ const tasks = [
   { title: 'Paradoxes', desc: 'Browse all available paradoxes for the competition.', cta: 'View paradoxes', to: '/participant/paradoxes' },
   { title: 'Theme & Questionnaire', desc: 'Pick a paradox, define your real-world theme, and upload your questionnaire PDF.', cta: 'Start submission', to: '/participant/theme' },
   { title: 'Raw dataset upload', desc: 'Survey the campus, upload the raw data you collect (CSV or Excel), and sign the declaration.', cta: 'Upload dataset', to: '/participant/dataset' },
-  { title: 'Analysis deliverables', desc: 'Clean and analyse the data, then submit your deliverables in the invigilated round.', when: 'Opens at Stage 3' },
-  { title: 'Final presentation', desc: 'Present your full workflow and findings to the judges with a PPT.', when: 'Opens at Stage 4' },
+  { title: 'Analysis deliverables', desc: 'Submit a ZIP with your clean dataset, analysis notebook, and findings document.', cta: 'Upload analysis', to: '/participant/analysis' },
+  { title: 'Final presentation', desc: 'Upload your final presentation (PPT or PDF) based on your submitted findings.', cta: 'Upload presentation', to: '/participant/presentation' },
 ]
 </script>
 

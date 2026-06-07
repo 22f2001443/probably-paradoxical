@@ -12,8 +12,7 @@ const auth = useAuthStore()
 const router = useRouter()
 const toast = useToast()
 
-const MAX_DATASET_BYTES = 25 * 1024 * 1024
-const ALLOWED_EXTENSIONS = ['csv', 'xls', 'xlsx']
+const MAX_ZIP_BYTES = 50 * 1024 * 1024
 
 const consent = ref(false)
 const guidelinesRead = ref(false)
@@ -26,15 +25,15 @@ const canSubmit = computed(() => !!file.value && consent.value && guidelinesRead
 function onFileChange(event) {
   const picked = event.target.files?.[0] || null
   if (!picked) { file.value = null; return }
-  const ext = (picked.name.split('.').pop() || '').toLowerCase()
-  if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    toast.error('The dataset must be a CSV or Excel file (.csv, .xls, .xlsx).')
+  const isZip = picked.name.toLowerCase().endsWith('.zip')
+  if (!isZip) {
+    toast.error('The submission must be a single .zip file.')
     event.target.value = ''
     file.value = null
     return
   }
-  if (picked.size > MAX_DATASET_BYTES) {
-    toast.error('The dataset must be 25 MB or smaller.')
+  if (picked.size > MAX_ZIP_BYTES) {
+    toast.error('The ZIP must be 50 MB or smaller.')
     event.target.value = ''
     file.value = null
     return
@@ -57,7 +56,7 @@ function reset() {
 
 async function submit() {
   if (!canSubmit.value) {
-    toast.error('Attach your dataset and sign the declaration.')
+    toast.error('Attach your ZIP and sign the originality declaration.')
     return
   }
   submitting.value = true
@@ -66,8 +65,8 @@ async function submit() {
     data.append('consent', String(consent.value))
     data.append('file', file.value)
 
-    await apiUpload('/team/dataset-submission', data, { token: auth.token })
-    toast.success('Raw dataset submitted.')
+    await apiUpload('/team/analysis-submission', data, { token: auth.token })
+    toast.success('Analysis submitted.')
     reset()
     router.push('/participant')
   } catch (e) {
@@ -80,39 +79,49 @@ async function submit() {
 </script>
 
 <template>
-  <DashboardShell eyebrow="Participant" title="Raw dataset upload">
+  <DashboardShell eyebrow="Participant" title="Analysis deliverables">
     <RouterLink to="/participant" class="inline-flex items-center text-sm text-neutral-500 hover:text-neutral-950 mb-6">
       ← Back to dashboard
     </RouterLink>
 
     <BaseCard class="max-w-3xl">
       <form class="space-y-6" novalidate @submit.prevent="submit">
-        <!-- Dataset file -->
+        <!-- What the ZIP must contain -->
+        <div class="border border-neutral-200 bg-neutral-50 p-4">
+          <p class="text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">Your ZIP must contain</p>
+          <ul class="list-disc pl-5 text-sm text-neutral-600 space-y-1">
+            <li>The cleaned dataset</li>
+            <li>Analysis artifacts (e.g. your <code>.ipynb</code> notebook)</li>
+            <li>A document stating your findings</li>
+          </ul>
+        </div>
+
+        <!-- ZIP file -->
         <div>
-          <label for="ds-file" class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">
-            Raw dataset (CSV / Excel) <span class="text-red-500">*</span>
+          <label for="an-file" class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">
+            Analysis ZIP <span class="text-red-500">*</span>
           </label>
           <input
-            id="ds-file"
+            id="an-file"
             ref="fileInput"
             type="file"
-            accept=".csv,.xls,.xlsx,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            accept=".zip,application/zip,application/x-zip-compressed"
             class="block w-full text-sm text-neutral-600 file:mr-4 file:border-0 file:bg-neutral-950 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-white hover:file:bg-neutral-800 file:cursor-pointer cursor-pointer border border-neutral-300 p-2"
             @change="onFileChange"
           />
           <p v-if="file" class="mt-2 text-sm text-neutral-600">
             Selected: <span class="font-semibold text-neutral-950">{{ file.name }}</span> ({{ formatSize(file.size) }})
           </p>
-          <p class="mt-1 text-xs text-neutral-400">CSV or Excel, up to 25 MB. Upload the raw responses you collected.</p>
+          <p class="mt-1 text-xs text-neutral-400">A single .zip, up to 50 MB.</p>
         </div>
 
-        <!-- Declaration -->
+        <!-- Originality declaration -->
         <label class="flex items-start gap-3 cursor-pointer">
           <input v-model="consent" type="checkbox" class="mt-1 h-4 w-4 accent-violet-600" />
           <span class="text-sm text-neutral-700">
-            I declare that this dataset contains genuine responses collected by my team, has not
-            been fabricated, simulated, or altered, and I consent to it being reviewed by the
-            organisers and judges.
+            I declare that this analysis is entirely my team's original work and that
+            <span class="font-semibold">no LLM or AI assistance was used at this stage</span>.
+            I consent to it being reviewed by the organisers and judges.
           </span>
         </label>
 

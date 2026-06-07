@@ -2,7 +2,7 @@
 // (modelled as `const` objects + union types so the modules stay erasable and
 // runnable under Node's native TypeScript stripping).
 
-export const DATABASE_SCHEMA_VERSION = 6;
+export const DATABASE_SCHEMA_VERSION = 7;
 
 export const COLLECTIONS = Object.freeze({
 	admins: "admins",
@@ -83,6 +83,7 @@ export const SUBMISSION_TYPE = Object.freeze({
 	theme: "theme",
 	dataset: "dataset",
 	analysisZip: "analysis_zip",
+	presentation: "presentation",
 } as const);
 export type SubmissionType = (typeof SUBMISSION_TYPE)[keyof typeof SUBMISSION_TYPE];
 
@@ -116,6 +117,7 @@ export const FILE_KIND = Object.freeze({
 	dataset: "dataset",
 	analysisZip: "analysis_zip",
 	questionnairePdf: "questionnaire_pdf",
+	presentation: "presentation",
 } as const);
 export type FileKind = (typeof FILE_KIND)[keyof typeof FILE_KIND];
 

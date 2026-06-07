@@ -8,6 +8,8 @@ import { handleAdminOverview } from "./admin/overview";
 import { handleTeamMembers } from "./team/members";
 import { handleThemeSubmission } from "./team/themeSubmission";
 import { handleDatasetSubmission } from "./team/datasetSubmission";
+import { handleAnalysisSubmission } from "./team/analysisSubmission";
+import { handlePresentationSubmission } from "./team/presentationSubmission";
 import { handleTeamResults } from "./team/results";
 import { handleUpdateRound, handleCancelSchedule } from "./admin/updateRound";
 import { runDueSchedules } from "./admin/roundTransitions";
@@ -118,6 +120,16 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/team/dataset-submission") {
 			const result = await handleDatasetSubmission(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/team/analysis-submission") {
+			const result = await handleAnalysisSubmission(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/team/presentation-submission") {
+			const result = await handlePresentationSubmission(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

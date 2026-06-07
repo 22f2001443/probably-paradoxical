@@ -18,7 +18,7 @@ const paradoxes = ref([])
 const loadingParadoxes = ref(true)
 const paradoxError = ref('')
 
-const form = ref({ paradoxCode: '', theme: '', rationale: '', consent: false })
+const form = ref({ paradoxCode: '', theme: '', rationale: '', consent: false, guidelinesRead: false })
 const file = ref(null)
 const fileInput = ref(null)
 const submitting = ref(false)
@@ -27,7 +27,7 @@ const inputClass =
   'w-full border border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent transition-shadow'
 
 const canSubmit = computed(
-  () => !!form.value.paradoxCode && !!form.value.theme.trim() && !!file.value && form.value.consent && !submitting.value,
+  () => !!form.value.paradoxCode && !!form.value.theme.trim() && !!file.value && form.value.consent && form.value.guidelinesRead && !submitting.value,
 )
 
 async function loadParadoxes() {
@@ -69,7 +69,7 @@ function formatSize(bytes) {
 }
 
 function reset() {
-  form.value = { paradoxCode: '', theme: '', rationale: '', consent: false }
+  form.value = { paradoxCode: '', theme: '', rationale: '', consent: false, guidelinesRead: false }
   file.value = null
   if (fileInput.value) fileInput.value.value = ''
 }
@@ -180,6 +180,15 @@ onMounted(loadParadoxes)
           <span class="text-sm text-neutral-700">
             I confirm this submission is my team's own work and consent to it being reviewed by the
             organisers and judges.
+          </span>
+        </label>
+
+        <!-- Guidelines acknowledgement -->
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input v-model="form.guidelinesRead" type="checkbox" class="mt-1 h-4 w-4 accent-violet-600" />
+          <span class="text-sm text-neutral-700">
+            I have read the
+            <RouterLink to="/guidelines" target="_blank" class="font-semibold text-violet-700 hover:underline">guidelines document</RouterLink>.
           </span>
         </label>
 

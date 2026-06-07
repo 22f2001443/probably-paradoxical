@@ -12,8 +12,8 @@ const auth = useAuthStore()
 const router = useRouter()
 const toast = useToast()
 
-const MAX_DATASET_BYTES = 25 * 1024 * 1024
-const ALLOWED_EXTENSIONS = ['csv', 'xls', 'xlsx']
+const MAX_BYTES = 50 * 1024 * 1024
+const ALLOWED_EXTENSIONS = ['ppt', 'pptx', 'pdf']
 
 const consent = ref(false)
 const guidelinesRead = ref(false)
@@ -28,13 +28,13 @@ function onFileChange(event) {
   if (!picked) { file.value = null; return }
   const ext = (picked.name.split('.').pop() || '').toLowerCase()
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    toast.error('The dataset must be a CSV or Excel file (.csv, .xls, .xlsx).')
+    toast.error('The presentation must be a PPT, PPTX, or PDF.')
     event.target.value = ''
     file.value = null
     return
   }
-  if (picked.size > MAX_DATASET_BYTES) {
-    toast.error('The dataset must be 25 MB or smaller.')
+  if (picked.size > MAX_BYTES) {
+    toast.error('The presentation must be 50 MB or smaller.')
     event.target.value = ''
     file.value = null
     return
@@ -57,7 +57,7 @@ function reset() {
 
 async function submit() {
   if (!canSubmit.value) {
-    toast.error('Attach your dataset and sign the declaration.')
+    toast.error('Attach your presentation and sign the declaration.')
     return
   }
   submitting.value = true
@@ -66,8 +66,8 @@ async function submit() {
     data.append('consent', String(consent.value))
     data.append('file', file.value)
 
-    await apiUpload('/team/dataset-submission', data, { token: auth.token })
-    toast.success('Raw dataset submitted.')
+    await apiUpload('/team/presentation-submission', data, { token: auth.token })
+    toast.success('Presentation submitted.')
     reset()
     router.push('/participant')
   } catch (e) {
@@ -80,39 +80,39 @@ async function submit() {
 </script>
 
 <template>
-  <DashboardShell eyebrow="Participant" title="Raw dataset upload">
+  <DashboardShell eyebrow="Participant" title="Final presentation">
     <RouterLink to="/participant" class="inline-flex items-center text-sm text-neutral-500 hover:text-neutral-950 mb-6">
       ← Back to dashboard
     </RouterLink>
 
     <BaseCard class="max-w-3xl">
       <form class="space-y-6" novalidate @submit.prevent="submit">
-        <!-- Dataset file -->
+        <!-- Presentation file -->
         <div>
-          <label for="ds-file" class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">
-            Raw dataset (CSV / Excel) <span class="text-red-500">*</span>
+          <label for="pr-file" class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">
+            Presentation (PPT / PPTX / PDF) <span class="text-red-500">*</span>
           </label>
           <input
-            id="ds-file"
+            id="pr-file"
             ref="fileInput"
             type="file"
-            accept=".csv,.xls,.xlsx,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            accept=".ppt,.pptx,.pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf"
             class="block w-full text-sm text-neutral-600 file:mr-4 file:border-0 file:bg-neutral-950 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-white hover:file:bg-neutral-800 file:cursor-pointer cursor-pointer border border-neutral-300 p-2"
             @change="onFileChange"
           />
           <p v-if="file" class="mt-2 text-sm text-neutral-600">
             Selected: <span class="font-semibold text-neutral-950">{{ file.name }}</span> ({{ formatSize(file.size) }})
           </p>
-          <p class="mt-1 text-xs text-neutral-400">CSV or Excel, up to 25 MB. Upload the raw responses you collected.</p>
+          <p class="mt-1 text-xs text-neutral-400">PPT, PPTX, or PDF — up to 50 MB.</p>
         </div>
 
         <!-- Declaration -->
         <label class="flex items-start gap-3 cursor-pointer">
           <input v-model="consent" type="checkbox" class="mt-1 h-4 w-4 accent-violet-600" />
           <span class="text-sm text-neutral-700">
-            I declare that this dataset contains genuine responses collected by my team, has not
-            been fabricated, simulated, or altered, and I consent to it being reviewed by the
-            organisers and judges.
+            I declare that this presentation is based entirely on the findings my team already
+            submitted at the end of the previous stage, with no new or altered results.
+            I consent to it being reviewed by the organisers and judges.
           </span>
         </label>
 

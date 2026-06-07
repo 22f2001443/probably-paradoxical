@@ -63,6 +63,18 @@ const routes = [
     meta: { title: 'Raw Dataset Upload | Probably Paradoxical', requiresAuth: true, role: 'team' },
   },
   {
+    path: '/participant/analysis',
+    name: 'participant-analysis',
+    component: () => import('../pages/teams/TeamAnalysisPage.vue'),
+    meta: { title: 'Analysis Deliverables | Probably Paradoxical', requiresAuth: true, role: 'team' },
+  },
+  {
+    path: '/participant/presentation',
+    name: 'participant-presentation',
+    component: () => import('../pages/teams/TeamPresentationPage.vue'),
+    meta: { title: 'Final Presentation | Probably Paradoxical', requiresAuth: true, role: 'team' },
+  },
+  {
     path: '/participant/team-info',
     name: 'participant-team-info',
     component: () => import('../pages/teams/TeamInfoPage.vue'),
