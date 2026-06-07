@@ -99,6 +99,18 @@ const routes = [
     meta: { title: 'Paradoxes | Probably Paradoxical', requiresAuth: true, role: 'admin' },
   },
   {
+    path: '/admin/assignments',
+    name: 'admin-assignments',
+    component: () => import('../pages/admin/AssignmentsPage.vue'),
+    meta: { title: 'Judge Assignments | Probably Paradoxical', requiresAuth: true, role: 'admin' },
+  },
+  {
+    path: '/admin/results',
+    name: 'admin-results',
+    component: () => import('../pages/admin/ResultsPage.vue'),
+    meta: { title: 'Results | Probably Paradoxical', requiresAuth: true, role: 'admin' },
+  },
+  {
     path: '/judge',
     name: 'judge',
     component: () => import('../pages/judge/JudgePage.vue'),

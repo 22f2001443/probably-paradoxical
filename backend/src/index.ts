@@ -20,6 +20,14 @@ import {
 	handleUpdateParadox,
 	handleDeleteParadox,
 } from "./admin/paradoxes";
+import {
+	handleListAssignments,
+	handleCreateAssignment,
+	handleDeleteAssignment,
+	handleAutoAssign,
+} from "./admin/assignments";
+import { handleListResults, handlePublishResults } from "./admin/results";
+import { handleJudgeQueue, handleSubmitEvaluation } from "./judge/evaluations";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
@@ -100,6 +108,46 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/admin/paradoxes/delete") {
 			const result = await handleDeleteParadox(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/assignments") {
+			const result = await handleListAssignments(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/assignments") {
+			const result = await handleCreateAssignment(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/assignments/delete") {
+			const result = await handleDeleteAssignment(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/assignments/auto") {
+			const result = await handleAutoAssign(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/results") {
+			const result = await handleListResults(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/results/publish") {
+			const result = await handlePublishResults(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/judge/queue") {
+			const result = await handleJudgeQueue(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/judge/evaluations") {
+			const result = await handleSubmitEvaluation(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

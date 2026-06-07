@@ -158,6 +158,22 @@ function onVisible() {
         >
           {{ control.action }}
         </BaseButton>
+        <BaseButton
+          v-else-if="control.key === 'assignments'"
+          variant="primary"
+          class="shrink-0"
+          @click="router.push('/admin/assignments')"
+        >
+          {{ control.action }}
+        </BaseButton>
+        <BaseButton
+          v-else-if="control.key === 'results'"
+          variant="primary"
+          class="shrink-0"
+          @click="router.push('/admin/results')"
+        >
+          {{ control.action }}
+        </BaseButton>
         <BaseButton v-else variant="outline" :disabled="true" class="shrink-0">{{ control.action }}</BaseButton>
       </BaseCard>
     </div>
