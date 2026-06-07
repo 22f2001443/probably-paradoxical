@@ -52,6 +52,7 @@ const controls = computed(() => [
 ])
 
 const activity = computed(() => data.value?.recentActivity ?? [])
+const rubric = computed(() => data.value?.rubric ?? null)
 const updatedAgo = computed(() => {
   if (!lastUpdated.value) return ''
   const secs = Math.max(0, Math.round((now.value - lastUpdated.value) / 1000))
@@ -169,6 +170,21 @@ function onVisible() {
       @close="showRounds = false"
       @updated="load()"
     />
+
+    <!-- Scoring rubric (judging) -->
+    <BaseCard v-if="rubric" class="mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-bold text-neutral-950">Scoring rubric</h3>
+        <span class="text-sm font-bold text-violet-700">Total {{ rubric.total }} pts</span>
+      </div>
+      <ul class="divide-y divide-neutral-100">
+        <li v-for="c in rubric.criteria" :key="c.key" class="flex items-center justify-between gap-3 py-2.5">
+          <span class="text-sm text-neutral-700">{{ c.label }}</span>
+          <span class="text-sm font-bold text-neutral-950 shrink-0">{{ c.maxScore }} pts</span>
+        </li>
+      </ul>
+      <p class="text-xs text-neutral-400 mt-3">Questionnaires are judged against these criteria; the weighted total decides advancement.</p>
+    </BaseCard>
 
     <!-- Activity feed -->
     <BaseCard class="mt-6">

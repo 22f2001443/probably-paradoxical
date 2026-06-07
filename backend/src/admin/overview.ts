@@ -1,7 +1,7 @@
 import type { AppEnv } from "../db/mongodb";
 import { withDatabase } from "../db/mongodb";
 import { COLLECTIONS } from "../db/collections.ts";
-import type { ConfigDocument, RoundDocument } from "../db/types.ts";
+import type { ConfigDocument, RoundDocument, RubricDocument } from "../db/types.ts";
 import { getAuthPayload } from "../auth/requireAuth.ts";
 
 interface Result {
@@ -79,6 +79,18 @@ export async function handleAdminOverview(request: Request, env: AppEnv): Promis
 				runAt: s.runAt,
 			}));
 
+			const rubricDoc = await db
+				.collection<RubricDocument>(COLLECTIONS.rubrics)
+				.findOne({ appliesTo: "questionnaire", isActive: true }, { sort: { version: -1 } });
+			const rubric = rubricDoc
+				? {
+						rubricKey: rubricDoc.rubricKey,
+						version: rubricDoc.version,
+						criteria: rubricDoc.criteria.map((c) => ({ key: c.key, label: c.label, maxScore: c.maxScore })),
+						total: rubricDoc.criteria.reduce((sum, c) => sum + (c.maxScore || 0), 0),
+					}
+				: null;
+
 			return {
 				status: 200,
 				body: {
@@ -97,6 +109,7 @@ export async function handleAdminOverview(request: Request, env: AppEnv): Promis
 					currentRound,
 					rounds,
 					schedules,
+					rubric,
 					recentActivity,
 					generatedAt: new Date().toISOString(),
 				},

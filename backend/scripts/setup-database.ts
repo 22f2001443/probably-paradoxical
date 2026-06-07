@@ -118,10 +118,11 @@ async function seedRubric(db: import("mongodb").Db) {
 			$set: {
 				appliesTo: "questionnaire",
 				isActive: true,
+				// Criteria sum to 50 points: 15 + 15 + 10 + 10.
 				criteria: [
-					{ key: "relevance", label: "Relevance to paradox & theme", maxScore: 10, weight: 1 },
-					{ key: "clarity", label: "Clarity of items", maxScore: 10, weight: 1 },
-					{ key: "methodology", label: "Methodological soundness", maxScore: 10, weight: 1.5 },
+					{ key: "relevance", label: "Relevance to paradox & theme", maxScore: 15, weight: 1 },
+					{ key: "clarity", label: "Clarity of items", maxScore: 15, weight: 1 },
+					{ key: "methodology", label: "Methodological soundness", maxScore: 10, weight: 1 },
 					{ key: "originality", label: "Originality", maxScore: 10, weight: 1 },
 				],
 				updatedAt: now,

@@ -14,13 +14,14 @@ const stats = [
   { label: 'Pending', value: '0' },
 ]
 
-// Mirrors the seeded `questionnaire_v1` rubric.
+// Mirrors the seeded `questionnaire_v1` rubric (50 points total).
 const rubric = [
-  { criterion: 'Relevance to paradox & theme', weight: '×1.0' },
-  { criterion: 'Clarity of items', weight: '×1.0' },
-  { criterion: 'Methodological soundness', weight: '×1.5' },
-  { criterion: 'Originality', weight: '×1.0' },
+  { criterion: 'Relevance to paradox & theme', points: 15 },
+  { criterion: 'Clarity of items', points: 15 },
+  { criterion: 'Methodological soundness', points: 10 },
+  { criterion: 'Originality', points: 10 },
 ]
+const rubricTotal = computed(() => rubric.reduce((sum, r) => sum + r.points, 0))
 </script>
 
 <template>
@@ -51,15 +52,18 @@ const rubric = [
       </div>
 
       <div>
-        <h2 class="text-lg font-bold text-neutral-950 mb-3">Scoring rubric</h2>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-bold text-neutral-950">Scoring rubric</h2>
+          <span class="text-sm font-bold text-violet-700">Total {{ rubricTotal }} pts</span>
+        </div>
         <BaseCard>
           <ul class="divide-y divide-neutral-100">
             <li v-for="row in rubric" :key="row.criterion" class="flex items-center justify-between py-2.5 gap-3">
               <span class="text-sm text-neutral-700">{{ row.criterion }}</span>
-              <span class="text-xs font-bold text-violet-600 shrink-0">{{ row.weight }}</span>
+              <span class="text-sm font-bold text-neutral-950 shrink-0">{{ row.points }} pts</span>
             </li>
           </ul>
-          <p class="text-xs text-neutral-400 mt-3">Each criterion scored 0–10; weighted total decides advancement.</p>
+          <p class="text-xs text-neutral-400 mt-3">Each questionnaire is scored out of {{ rubricTotal }}; the total decides advancement.</p>
         </BaseCard>
       </div>
     </div>
