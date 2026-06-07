@@ -12,6 +12,7 @@ export const overviewCards  = config.overview.cards
 export const timelineMeta   = config.timeline
 export const timelineStages = config.timeline.stages
 export const navLinks       = config.nav.links
+export const footerLinks    = config.footer?.links ?? config.nav.links
 export const eventMeta      = config.event
 
 /** Full config object — for components that need arbitrary fields */

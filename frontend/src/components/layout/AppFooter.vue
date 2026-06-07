@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { eventMeta, navLinks } from '../../data/eventData.js'
+import { eventMeta, footerLinks } from '../../data/eventData.js'
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import { eventMeta, navLinks } from '../../data/eventData.js'
         <!-- Nav links — generous tap targets on mobile -->
         <nav class="flex flex-wrap justify-center gap-1" aria-label="Footer navigation">
           <RouterLink
-            v-for="link in navLinks"
+            v-for="link in footerLinks"
             :key="link.to"
             :to="link.to"
             class="text-xs text-neutral-500 hover:text-neutral-950 transition-colors px-3 py-2 min-h-11 flex items-center"

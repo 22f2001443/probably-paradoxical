@@ -105,7 +105,7 @@ onMounted(load)
     </RouterLink>
 
     <!-- Add / edit form -->
-    <BaseCard class="mb-8 max-w-3xl">
+    <BaseCard class="mb-8">
       <h2 class="text-lg font-bold text-neutral-950 mb-4">{{ isEditing ? 'Edit paradox' : 'Add a paradox' }}</h2>
       <form class="space-y-4" novalidate @submit.prevent="save">
         <div>

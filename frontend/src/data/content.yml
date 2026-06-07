@@ -26,6 +26,20 @@ nav:
     - label: Judges and Guests
       to: /judges
 
+# ── Footer navigation links ────────────────────────────────────────────────
+footer:
+  links:
+    - label: Guidelines
+      to: /guidelines
+    - label: Timeline
+      to: /timeline
+    - label: Teams
+      to: /teams
+    - label: Judges and Guests
+      to: /judges
+    - label: Organizing Team
+      to: /organizing-team
+
 # ── Hero section ───────────────────────────────────────────────────────────
 hero:
   eyebrow: "Paradox'26 · IIT Madras"
@@ -177,6 +191,8 @@ teams:
 #     role: "Designation, Organisation"
 #     bio: "A short introduction to the judge or guest."
 #     imageUrl: "https://example.com/profile-photo.jpg"
+#     linkedInUrl: "https://www.linkedin.com/in/profile/"
+#     websiteUrl: "https://example.com/"
 judges:
   eyebrow: "Panel"
   heading: "Judges and Guests"
@@ -206,6 +222,41 @@ speakers:
       imageUrl: "https://spaces-cdn.owlstown.com/blobs/uxjv2mq0kswrlg1lvn7ufcgs1znb"
       role: "Assistant Professor, AERU, ISI Kolkata"
       # bio: "A short introduction to the speaker."
+
+# ── Organizing team page ───────────────────────────────────────────────────
+# Add organizing team entries here using the same fields as judge and guest
+# profiles. Leave imageUrl empty ("") to render the photo placeholder.
+organizingTeam:
+  eyebrow: "Crew"
+  heading: "Organizing Team"
+  subheading: "Meet the team coordinating Probably Paradoxical."
+  emptyMessage: "Organizing team profiles coming soon."
+  imagePlaceholder: "Photo coming soon"
+  profiles:
+    - name: "Samyabrata Roy"
+      imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQFDusThBVa48w/profile-displayphoto-crop_800_800/B56Z0kxbLWKAAI-/0/1774438431419?e=1782345600&v=beta&t=nyELRoDFEa38KDz5KdGz_BuVumKgpSItEKmlhWjN0Zc"
+      # bio: "A short introduction to the organizing team member."
+      linkedInUrl: "https://www.linkedin.com/in/samyabrataroy/"
+      websiteUrl: "https://samyabrata.codeium.xyz/"
+    
+    - name: "Sukanya S"
+      imageUrl: "https://media.licdn.com/dms/image/v2/D4D03AQHkdRNVHRFeHQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1690172351238?e=1782345600&v=beta&t=6rwN75nWrcyLj4C-7P5-mVxn_a6Uldy3Hw2drK_3tis"
+      # bio: "A short introduction to the organizing team member."
+      linkedInUrl: "https://www.linkedin.com/in/sukanya-s-9bba73210/"
+      websiteUrl: ""
+    
+    - name: "Premanand Jena"
+      imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQFbfG7-f-0-cQ/profile-displayphoto-scale_400_400/B56ZzEKBZMKUAk-/0/1772817488590?e=1782345600&v=beta&t=S3_bxIzI6WqRPMEo07x3NpMfV_ATetYk3lVqIGthELA"
+      # bio: "A short introduction to the organizing team member."
+      linkedInUrl: "https://www.linkedin.com/in/premanand-jena-9bba73210/"
+      websiteUrl: ""
+    
+    - name: "Ankit S"
+      imageUrl: ""
+      # bio: "A short introduction to the organizing team member."
+      linkedInUrl: "https://www.linkedin.com/in/siddhesh-kamble-9bba73210/"
+      websiteUrl: ""
+
 
 # ── Social feed embeds ─────────────────────────────────────────────────────
 # Add embed URLs for Instagram posts, YouTube videos, and LinkedIn posts.

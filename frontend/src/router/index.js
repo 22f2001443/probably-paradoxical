@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '../stores/authStore.js'
 
 const routes = [
@@ -31,6 +31,12 @@ const routes = [
     name: 'judges',
     component: () => import('../pages/landing/JudgesPage.vue'),
     meta: { title: 'Judges and Guests | Probably Paradoxical' },
+  },
+  {
+    path: '/organizing-team',
+    name: 'organizing-team',
+    component: () => import('../pages/landing/OrganizingTeamPage.vue'),
+    meta: { title: 'Organizing Team | Probably Paradoxical' },
   },
   {
     path: '/login',
@@ -125,7 +131,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
