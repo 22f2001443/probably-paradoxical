@@ -73,6 +73,7 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 		}
 
 		if (request.method === "GET" && url.pathname === "/openapi.json") {
+			if (!isSwaggerEnabled(env)) return jsonResponse({ error: "Not found" }, 404);
 			return jsonResponse(openApiSpec);
 		}
 
@@ -187,6 +188,7 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 		}
 
 		if (request.method === "GET" && url.pathname === "/docs") {
+			if (!isSwaggerEnabled(env)) return jsonResponse({ error: "Not found" }, 404);
 			return new Response(swaggerUiHtml, {
 				headers: { "content-type": "text/html; charset=utf-8" },
 			});
@@ -258,6 +260,11 @@ async function enforceRateLimit(
 			},
 		},
 	);
+}
+
+function isSwaggerEnabled(env: AppEnv): boolean {
+	const value = env.SWAGGER_ENABLED?.trim().toLowerCase();
+	return value === "true" || value === "1" || value === "yes";
 }
 
 function corsHeaders(request: Request): Record<string, string> {
