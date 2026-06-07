@@ -153,13 +153,19 @@ async function seedRoster(db: import("mongodb").Db, teamInfo: unknown) {
 			continue;
 		}
 
-		// Upsert members and capture their ids.
+		// Upsert members and capture their ids (including gender/level).
 		const memberIds: ObjectId[] = [];
 		for (const member of validMembers) {
 			const doc = await db.collection(COLLECTIONS.members).findOneAndUpdate(
 				{ email: member.email },
 				{
-					$set: { email: member.email, name: member.name, updatedAt: now },
+					$set: {
+						email: member.email,
+						name: member.name,
+						gender: member.gender ?? "",
+						level: member.level ?? "",
+						updatedAt: now,
+					},
 					$setOnInsert: { createdAt: now },
 				},
 				{ upsert: true, returnDocument: "after" },
@@ -170,26 +176,31 @@ async function seedRoster(db: import("mongodb").Db, teamInfo: unknown) {
 			}
 		}
 
-		const leadMemberId = memberIds[0];
+		// Leader = the member flagged teamLead, else the first valid member.
+		const leadIndex = Math.max(0, validMembers.findIndex((m) => m.teamLead));
+		const leadMemberId = memberIds[leadIndex] ?? memberIds[0];
+
+		// Computed purity: a team is pure only if no member is `unregistered`.
+		const pure = validMembers.every((m) => m.tag !== "unregistered");
 
 		const teamResult = await db.collection(COLLECTIONS.teams).updateOne(
 			{ teamId: team.teamId },
 			{
-				$set: { teamName: team.teamName, status: "active", leadMemberId, updatedAt: now },
+				$set: { teamName: team.teamName, status: "active", leadMemberId, pure, updatedAt: now },
 				$setOnInsert: { teamId: team.teamId, createdAt: now },
 			},
 			{ upsert: true },
 		);
 		if (teamResult.upsertedCount) teamsUpserted += 1;
 
-		// Map each member to the team; first valid member is the leader.
+		// Map each member to the team; the teamLead member is the leader.
 		for (let index = 0; index < memberIds.length; index += 1) {
 			const tag = validMembers[index].tag;
 			await db.collection(COLLECTIONS.teamMembers).updateOne(
 				{ teamId: team.teamId, memberId: memberIds[index] },
 				{
 					$set: {
-						roleInTeam: index === 0 ? "leader" : "member",
+						roleInTeam: index === leadIndex ? "leader" : "member",
 						status: "active",
 						...(tag ? { tag } : {}),
 						updatedAt: now,
@@ -256,6 +267,9 @@ interface NormalizedMember {
 	name: string;
 	email: string;
 	tag?: string;
+	gender?: string;
+	level?: string;
+	teamLead?: boolean;
 }
 interface NormalizedTeam {
 	teamId: string;
@@ -289,6 +303,9 @@ function normalizeMembers(members: unknown, teamId: string): NormalizedMember[] 
 		if (member.tag) {
 			normalized.tag = requireString(member.tag, `member.tag for ${teamId}`);
 		}
+		if (typeof member.gender === "string") normalized.gender = member.gender.trim();
+		if (typeof member.level === "string") normalized.level = member.level.trim();
+		if (member.teamLead === true) normalized.teamLead = true;
 		return normalized;
 	});
 }

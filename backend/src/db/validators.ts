@@ -62,6 +62,8 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 			properties: {
 				teamId: { bsonType: "string" },
 				teamName: { bsonType: "string" },
+				// Computed: true only when the team has no `unregistered` member.
+				pure: { bsonType: "bool" },
 				iconFileId: { bsonType: "objectId" },
 				leadMemberId: { bsonType: "objectId" },
 				status: { enum: ["active", "eliminated", "winner", "withdrawn"] },
@@ -91,6 +93,8 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 			properties: {
 				email: { bsonType: "string" },
 				name: { bsonType: "string" },
+				gender: { bsonType: "string" },
+				level: { bsonType: "string" },
 				phone: { bsonType: "string" },
 				affiliation: { bsonType: "string" },
 				createdAt: { bsonType: "date" },

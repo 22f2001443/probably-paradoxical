@@ -66,6 +66,8 @@ export interface TeamDocument extends Timestamps {
 	_id?: ObjectId;
 	teamId: string;
 	teamName: string;
+	/** Computed: true only when the team has no `unregistered` member. */
+	pure?: boolean;
 	iconFileId?: ObjectId;
 	leadMemberId?: ObjectId;
 	status: TeamStatus;
@@ -77,6 +79,8 @@ export interface MemberDocument extends Timestamps {
 	_id?: ObjectId;
 	email: string;
 	name: string;
+	gender?: string;
+	level?: string;
 	phone?: string;
 	affiliation?: string;
 }
