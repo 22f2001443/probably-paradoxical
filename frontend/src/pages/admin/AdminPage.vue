@@ -49,6 +49,7 @@ const controls = computed(() => [
   { key: 'rounds', title: 'Rounds', meta: currentRound.value ? `${currentRound.value.title} · ${roundState(currentRound.value.state)}` : '—', desc: 'Open and close submission windows across the five stages.', action: 'Manage' },
   { key: 'assignments', title: 'Judge assignments', meta: `${fmt(counts.value.assignments)} assignments`, desc: 'Assign judges to questionnaires for Stage 1 review.', action: 'Assign' },
   { key: 'results', title: 'Results', meta: `${fmt(counts.value.results)} published`, desc: 'Aggregate scores and publish advancement per round.', action: 'Publish' },
+  { key: 'attendance', title: 'Attendance', meta: '3 event days', desc: 'Mark day-wise attendance for every team across the event.', action: 'Manage' },
 ])
 
 const activity = computed(() => data.value?.recentActivity ?? [])
@@ -171,6 +172,14 @@ function onVisible() {
           variant="primary"
           class="shrink-0"
           @click="router.push('/admin/results')"
+        >
+          {{ control.action }}
+        </BaseButton>
+        <BaseButton
+          v-else-if="control.key === 'attendance'"
+          variant="primary"
+          class="shrink-0"
+          @click="router.push('/admin/attendance')"
         >
           {{ control.action }}
         </BaseButton>

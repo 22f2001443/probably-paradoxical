@@ -27,6 +27,11 @@ import {
 	handleAutoAssign,
 } from "./admin/assignments";
 import { handleListResults, handlePublishResults } from "./admin/results";
+import {
+	handleListAttendance,
+	handleMarkAttendance,
+	handleBulkAttendance,
+} from "./admin/attendance";
 import { handleJudgeQueue, handleSubmitEvaluation } from "./judge/evaluations";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
@@ -139,6 +144,21 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/admin/results/publish") {
 			const result = await handlePublishResults(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/attendance") {
+			const result = await handleListAttendance(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/attendance") {
+			const result = await handleMarkAttendance(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/attendance/bulk") {
+			const result = await handleBulkAttendance(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

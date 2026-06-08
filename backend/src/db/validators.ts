@@ -426,6 +426,22 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 		},
 	},
 
+	[COLLECTIONS.attendance]: {
+		$jsonSchema: {
+			bsonType: "object",
+			required: ["teamId", "day", "present", "markedBy", "markedAt", "createdAt", "updatedAt"],
+			properties: {
+				teamId: { bsonType: "string" },
+				day: { enum: ["day1", "day2", "day3"] },
+				present: { bsonType: "bool" },
+				markedBy: { bsonType: "objectId" },
+				markedAt: { bsonType: "date" },
+				createdAt: { bsonType: "date" },
+				updatedAt: { bsonType: "date" },
+			},
+		},
+	},
+
 	[COLLECTIONS.auditEvents]: {
 		$jsonSchema: {
 			bsonType: "object",

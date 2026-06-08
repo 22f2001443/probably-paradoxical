@@ -3,6 +3,7 @@
 import type { ObjectId } from "mongodb";
 import type {
 	AssignmentStatus,
+	AttendanceDayKey,
 	AuditActorRole,
 	EvaluationStatus,
 	FileKind,
@@ -83,6 +84,15 @@ export interface MemberDocument extends Timestamps {
 	level?: string;
 	phone?: string;
 	affiliation?: string;
+}
+
+export interface AttendanceDocument extends Timestamps {
+	_id?: ObjectId;
+	teamId: string;
+	day: AttendanceDayKey;
+	present: boolean;
+	markedBy: ObjectId;
+	markedAt: Date;
 }
 
 export interface TeamMemberDocument extends Timestamps {

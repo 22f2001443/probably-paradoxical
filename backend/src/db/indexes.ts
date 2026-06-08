@@ -116,4 +116,9 @@ export const COLLECTION_INDEXES: Record<string, IndexDefinition[]> = {
 		{ keys: { targetType: 1, targetId: 1 }, options: { name: "audit_target" } },
 		{ keys: { actorRole: 1, actorId: 1 }, options: { name: "audit_actor" } },
 	],
+
+	[COLLECTIONS.attendance]: [
+		{ keys: { teamId: 1, day: 1 }, options: { name: "attendance_team_day_unique", unique: true } },
+		{ keys: { day: 1, present: 1 }, options: { name: "attendance_day_present" } },
+	],
 };

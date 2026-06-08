@@ -2,7 +2,7 @@
 // (modelled as `const` objects + union types so the modules stay erasable and
 // runnable under Node's native TypeScript stripping).
 
-export const DATABASE_SCHEMA_VERSION = 8;
+export const DATABASE_SCHEMA_VERSION = 9;
 
 export const COLLECTIONS = Object.freeze({
 	admins: "admins",
@@ -24,11 +24,23 @@ export const COLLECTIONS = Object.freeze({
 	auditEvents: "audit_events",
 	passwordResets: "password_resets",
 	roundSchedules: "round_schedules",
+	attendance: "attendance",
 } as const);
 
 export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
 
 export const CONFIG_SINGLETON_ID = "singleton";
+
+// The three fixed event days (Paradox'26 plan of action). Attendance is tracked
+// per team against these days.
+export const ATTENDANCE_DAYS = Object.freeze([
+	{ key: "day1", label: "Day 1", date: "2026-06-10" },
+	{ key: "day2", label: "Day 2", date: "2026-06-11" },
+	{ key: "day3", label: "Day 3", date: "2026-06-12" },
+] as const);
+
+export const ATTENDANCE_DAY_KEYS = ATTENDANCE_DAYS.map((d) => d.key);
+export type AttendanceDayKey = (typeof ATTENDANCE_DAYS)[number]["key"];
 
 // --- Enumerations -----------------------------------------------------------
 
