@@ -18,7 +18,7 @@ const loading = ref(false)
 
 async function handleLogin() {
   if (!email.value || !password.value) {
-    toast.error('Please enter both email and password.')
+    toast.error('Please enter both username and password.')
     return
   }
 
@@ -48,7 +48,7 @@ async function handleLogin() {
         <div class="text-center mb-8">
           <h1 class="text-2xl font-bold text-neutral-950 mb-2">Sign In</h1>
           <p class="text-sm text-neutral-500">
-            Admins, judges, and team members sign in with the email and password shared by the organisers.
+            Admins, judges, and team members sign in with the username and password shared by the organisers.
           </p>
         </div>
 
@@ -58,14 +58,14 @@ async function handleLogin() {
               for="email"
               class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2"
             >
-              Email
+              Username
             </label>
             <input
               id="email"
               v-model="email"
               type="email"
               autocomplete="username"
-              placeholder="you@example.com"
+              placeholder="Username"
               class="w-full border border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent min-h-11 transition-shadow"
             />
           </div>
