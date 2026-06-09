@@ -1534,7 +1534,113 @@ teams:
        email: "24f3100265@es.study.iitm.ac.in"
        gender: ""
        level: ""
-    
-    
   
- 
+  - teamName: "The Wise Man"
+    teamId: "RT17"
+    pure: true
+    members:
+     - name: "NAGENDRA SAKETH KASHYAP (DS)"
+       email: "23f1002669@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "PIYUSH SINGH (DS)"
+       email: "24f3000422@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Taaleah Anwaar (DS)"
+       email: "26f1000697@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Ramakanta Routaray (DS)"
+       email: "22f1001212@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Data Dilen"
+    teamId: "RT18"
+    pure: true
+    members:
+     - name: "Tushar Kant Pradhan (DS) DS"
+       email: "23f1002669@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Rishith Kalipatnapu (DS) DS"
+       email: "25f2007339@ds.study.iitm.ac.in "
+       gender: ""
+       level: ""
+     - name: "KHAGESH KESRIYAR (DS) DS"
+       email: "25f2006154@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+
+  - teamName: "Robotic Illusions"
+    teamId: "RT19"
+    pure: true
+    members:
+     - name: "Kamya Singh Bhadauriya"
+       email: "25f200718@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Sadasiba Lenka (DS)"
+       email: "25f3100070@es.study.iitm.ac.in)"
+       tag : "unregistered"
+       gender: ""
+       level: ""
+     - name: "Shyam Sundar Padhy" 
+       email: "24f1002508@ds.study.iitm.ac.in"
+       tag : "unregistered"
+       gender: ""
+       level: ""
+     - name: "Kushagra Singh "
+       tag : "unregistered" 
+       email: "25f3005423@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Team Paradoxis"
+    teamId: "RT20"
+    pure: true
+    members:
+     - name: "GOWTHUM VIJAAY (DS)"
+       email: "25f3005964@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Narain Kartik (DS)"
+       email: "25f2003812@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Super Statisticians"
+    teamId: "RT21"
+    pure: true
+    members:
+     - name: "HARSHITA DUDEJA (DS) DS"
+       email: "23f2005244@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "ATHARVA ADSUL (DS)"
+       email: "25f2001490@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "MOHAMMED JUBAIR A (DS)"
+       email: "24f2008742@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Naveen Garg (DS)"
+       email: "23f1000497@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "TARAN BALRAM P M (DS)"
+       email: "26f1000243@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "VISHAL RAAJ D N D (DS)"
+       email: "25f2004152@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
