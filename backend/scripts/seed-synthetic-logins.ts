@@ -1,7 +1,8 @@
 // Seeds the full team roster from teamInfo.yml, then gives EVERY team in the DB
-// a synthetic login: a member with email `<teamId>@probably.paradoxical` whose
-// (shared team) password is the same string. Email + password are stored in
-// lowercase because login normalizes the email to lowercase before lookup.
+// a synthetic login: a member with email `<teamId>@probably.paradoxical` and a
+// (shared team) password `<teamId>@Prardox#2026`. The email is stored lowercase
+// because login normalizes the email to lowercase before lookup; the password is
+// case-sensitive, so `<teamId>` keeps the roster's original casing (e.g. T01, RT01).
 // Idempotent. `node scripts/seed-synthetic-logins.ts`.
 import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
@@ -112,12 +113,12 @@ async function seedSyntheticLogins(db: import("mongodb").Db, now: Date) {
 		.toArray();
 
 	let processed = 0;
-	const samples: { teamId: string; email: string }[] = [];
+	const samples: { teamId: string; email: string; password: string }[] = [];
 
 	for (const team of teams) {
 		const teamId = team.teamId as string;
 		const email = `${teamId.toLowerCase()}@${EMAIL_DOMAIN}`;
-		const password = email; // password == the login email
+		const password = `${teamId}@Prardox#2026`; // case-sensitive; keeps teamId casing
 
 		const member = await db.collection(COLLECTIONS.members).findOneAndUpdate(
 			{ email },
@@ -143,7 +144,7 @@ async function seedSyntheticLogins(db: import("mongodb").Db, now: Date) {
 		);
 
 		processed += 1;
-		if (samples.length < 5) samples.push({ teamId, email });
+		if (samples.length < 5) samples.push({ teamId, email, password });
 	}
 
 	return { teamsProcessed: processed, sampleCredentials: samples };

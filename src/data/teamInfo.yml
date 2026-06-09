@@ -101,7 +101,7 @@ teams:
         teamLead: true
         gender: ""
         level: ""
-      - name: "24F2002059 ABHISHEK KUMAR (DS)"
+      - name: "ABHISHEK KUMAR (DS)"
         email: "24f2002059@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -110,7 +110,7 @@ teams:
     teamId: "T08"
     pure: false
     members:
-      - name: "24F1000810 MANALI MILIND ULHE (DS)"
+      - name: "MANALI MILIND ULHE (DS)"
         email: "24f1000810@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -177,7 +177,7 @@ teams:
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F2008000 ISHU RAJ (DS)"
+      - name: "ISHU RAJ (DS)"
         email: "25f2008000@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -265,16 +265,16 @@ teams:
     teamId: "T16"
     pure: true
     members:
-      - name: "24F1002193 BALA PRAHARSHA (DS)"
+      - name: "BALA PRAHARSHA (DS)"
         email: "24f1002193@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "24F1001011 RUDRA RAJESWARI (DS)"
+      - name: "RUDRA RAJESWARI (DS)"
         email: "24f1001011@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F2000394 MANNEPALLI AKSHAYA SIRI (DS)"
+      - name: "MANNEPALLI AKSHAYA SIRI (DS)"
         email: "25f2000394@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -315,12 +315,12 @@ teams:
     teamId: "T20"
     pure: true
     members:
-      - name: "25F3000179 SIDDHESH SUNIL KAMBLE (DS)"
+      - name: "SIDDHESH SUNIL KAMBLE (DS)"
         email: "25f3000179@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "26F1000422 RIDA SAHIN (DS)"
+      - name: "RIDA SAHIN (DS)"
         email: "26f1000422@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -370,7 +370,7 @@ teams:
     teamId: "T12"
     pure: false
     members:
-      - name: "25F3004956 ANUPAMA SHAW (DS)"
+      - name: "ANUPAMA SHAW (DS)"
         email: "25f3004956@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -380,11 +380,11 @@ teams:
         gender: ""
         level: ""
 #         teamLead: true
-      - name: "26F1000304 SUMIT PANDEY (DS)"
+      - name: "SUMIT PANDEY (DS)"
         email: "26f1000304@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F3004764 ALHAMDA IQBAL SADIQ (DS)"
+      - name: "ALHAMDA IQBAL SADIQ (DS)"
         email: "25f3004764@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -498,7 +498,7 @@ teams:
         gender: ""
         level: ""
 
-  - teamName: "Probabilitypaglus"
+  - teamName: "Probability Paglus"
     teamId: "T31"
     pure: true
     members:
@@ -577,11 +577,11 @@ teams:
         gender: ""
         level: ""
 
-  - teamName: "Blue mist"
+  - teamName: "Blue Mist"
     teamId: "T36"
     pure: true
     members:
-      - name: "25F2000191 TANDRA GANGULY (DS)"
+      - name: "TANDRA GANGULY (DS)"
         email: "25f2000191@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -603,11 +603,11 @@ teams:
         gender: ""
         level: ""
 
-  - teamName: "unitywolf"
+  - teamName: "Unity Wolf"
     teamId: "T37"
     pure: false
     members:
-      - name: "25F2006005 PRATEEK KUMAR (DS)"
+      - name: "PRATEEK KUMAR (DS)"
         email: "25f2006005@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -636,20 +636,20 @@ teams:
     teamId: "T39"
     pure: true
     members:
-      - name: "25F3004678 SOUMYA SACHIN RAMDASI (DS)"
+      - name: "SOUMYA SACHIN RAMDASI (DS)"
         email: "25f3004678@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F2007822 SAMRUDDHI SUHAS KANADE (DS)"
+      - name: "SAMRUDDHI SUHAS KANADE (DS)"
         email: "25f2007822@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F3000304 PURVA AVINASH GHORPADE (DS)"
+      - name: "PURVA AVINASH GHORPADE (DS)"
         email: "25f3000304@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F2003305 AARYA SANJOG KAREKAR (DS)"
+      - name: "AARYA SANJOG KAREKAR (DS)"
         email: "25f2003305@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -678,12 +678,12 @@ teams:
     teamId: "T41"
     pure: false
     members:
-      - name: "25F2005198 JUNED PINJARI (DS)"
+      - name: "JUNED PINJARI (DS)"
         email: "25f2005198@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F2003730 SONAM ARYA (DS)"
+      - name: "SONAM ARYA (DS)"
         email: "25f2003730@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -697,13 +697,14 @@ teams:
         tag: "unregistered"
         gender: ""
         level: ""
-      - name: "24F3001739 AMIT KUMAR (DS)"
+      - name: "AMIT KUMAR (DS)"
         email: "24f3001739@ds.study.iitm.ac.in"
         gender: ""
         level: ""
 
   - teamName: "Meowshoot"
     teamId: "T42"
+    pure: false
     members:
       - name: "SHIVANG (DS)"
         email: "22f1000561@ds.study.iitm.ac.in"
@@ -732,12 +733,12 @@ teams:
     teamId: "T43"
     pure: true
     members:
-      - name: "24F2008913 JAYANARAYAN MENON NETTATH (DS)"
+      - name: "JAYANARAYAN MENON NETTATH (DS)"
         email: "24f2008913@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F2007532 A K KAVIVIGNESH (DS)"
+      - name: "A K KAVIVIGNESH (DS)"
         email: "25f2007532@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -746,7 +747,7 @@ teams:
     teamId: "T44"
     pure: true
     members:
-      - name: "24F2006532 GAURI VERMA (DS)"
+      - name: "GAURI VERMA (DS)"
         email: "24f2006532@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -759,7 +760,7 @@ teams:
     teamId: "T45"
     pure: true
     members:
-      - name: "25F3006326 MD HUSSAIN (DS)"
+      - name: "MD HUSSAIN (DS)"
         email: "25f3006326@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -788,20 +789,21 @@ teams:
     teamId: "T47"
     pure: true
     members:
-      - name: "26F1001541 DEVANSH TIWARI (DS)"
+      - name: "DEVANSH TIWARI (DS)"
         email: "26f1001541@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F2006141 HARSHIT KUMAR (DS)"
+      - name: "HARSHIT KUMAR (DS)"
         email: "25f2006141@ds.study.iitm.ac.in"
         gender: ""
         level: ""
 
   - teamName: "BUDDING WARRIORS"
     teamId: "T48"
+    pure: false
     members:
-      - name: "25F2100132 THRINAYANI P (ES)"
+      - name: "THRINAYANI P (ES)"
         email: "25f2100132@es.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -819,11 +821,11 @@ teams:
       - name: "SHAMBHAVI VERMA (DS)"
         email: "24f2003130@ds.study.iitm.ac.in"
         teamLead: true
-        gender: ""
+        gender: "Female"
         level: ""
       - name: "AMAN GUPTA (DS)"
         email: "24f2002969@ds.study.iitm.ac.in"
-        gender: ""
+        gender: "Male"
         level: ""
       - name: "Tarkeshwar Sharma"
         email: "23f3003124@ds.study.iitm.ac.in"
@@ -840,7 +842,7 @@ teams:
     teamId: "T50"
     pure: false
     members:
-      - name: "25F2007484 LAKSHAY ATRI (DS)"
+      - name: "LAKSHAY ATRI (DS)"
         email: "25f2007484@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -869,20 +871,20 @@ teams:
     teamId: "T51"
     pure: false
     members:
-      - name: "24F3001777 INDALI IPSITA (DS)"
+      - name: "INDALI IPSITA (DS)"
         email: "24f3001777@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "24F2004660 ASHUTOSH RAY MOHAPATRA (DS)"
+      - name: "ASHUTOSH RAY MOHAPATRA (DS)"
         email: "24f2004660@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F2006524 SAHBA QUADRI (DS)"
+      - name: "SAHBA QUADRI (DS)"
         email: "25f2006524@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F2000481 SEKH SAJID (DS)"
+      - name: "SEKH SAJID (DS)"
         email: "25f2000481@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -916,12 +918,12 @@ teams:
     teamId: "T54"
     pure: true
     members:
-      - name: "24F2005162 ISHI JAKHMOLA (DS)"
+      - name: "ISHI JAKHMOLA (DS)"
         email: "24f2005162@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
         level: ""
-      - name: "25F1001277 VAIDEHI KISHOR NARKHEDE (DS)"
+      - name: "VAIDEHI KISHOR NARKHEDE (DS)"
         email: "25f1001277@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -930,7 +932,7 @@ teams:
     teamId: "T55"
     pure: false
     members:
-      - name: "24F2000243 SABTHARISHI S (DS)"
+      - name: "SABTHARISHI S (DS)"
         email: "24f2000243@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -945,7 +947,7 @@ teams:
     teamId: "T56"
     pure: false
     members:
-      - name: "25F3005294 MUSKAN YADAV (DS)"
+      - name: "MUSKAN YADAV (DS)"
         email: "25f3005294@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -989,7 +991,7 @@ teams:
     teamId: "T59"
     pure: true
     members:
-      - name: "24F3003046 SANJANA SIRIMALLA (DS)"
+      - name: "SANJANA SIRIMALLA (DS)"
         email: "24f3003046@ds.study.iitm.ac.in"
         teamLead: true
         gender: ""
@@ -1027,7 +1029,7 @@ teams:
         email: "25f2001744@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "25F2003572 SHIVAM KUMAR (DS)"
+      - name: "SHIVAM KUMAR (DS)"
         email: "25f2003572@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -1046,7 +1048,7 @@ teams:
         gender: ""
         level: ""
 
-  - teamName: "Outliers"
+  - teamName: "Outliers 1"
     teamId: "T63"
     pure: false
     members:
@@ -1363,7 +1365,7 @@ teams:
     teamId: "RT12"
     pure: true
     members:
-      - name: "24F3001996 KRISHNAMOORTHY (DS)"
+      - name: "KRISHNAMOORTHY (DS)"
         email: "24f3001996@ds.study.iitm.ac.in"
         gender: ""
         level: ""
@@ -1532,7 +1534,113 @@ teams:
        email: "24f3100265@es.study.iitm.ac.in"
        gender: ""
        level: ""
-    
-    
   
- 
+  - teamName: "The Wise Man"
+    teamId: "RT17"
+    pure: true
+    members:
+     - name: "NAGENDRA SAKETH KASHYAP (DS)"
+       email: "23f1002669@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "PIYUSH SINGH (DS)"
+       email: "24f3000422@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Taaleah Anwaar (DS)"
+       email: "26f1000697@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Ramakanta Routaray (DS)"
+       email: "22f1001212@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Data Dilen"
+    teamId: "RT18"
+    pure: true
+    members:
+     - name: "Tushar Kant Pradhan (DS) DS"
+       email: "23f1002669@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Rishith Kalipatnapu (DS) DS"
+       email: "25f2007339@ds.study.iitm.ac.in "
+       gender: ""
+       level: ""
+     - name: "KHAGESH KESRIYAR (DS) DS"
+       email: "25f2006154@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+
+  - teamName: "Robotic Illusions"
+    teamId: "RT19"
+    pure: true
+    members:
+     - name: "Kamya Singh Bhadauriya"
+       email: "25f200718@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Sadasiba Lenka (DS)"
+       email: "25f3100070@es.study.iitm.ac.in)"
+       tag : "unregistered"
+       gender: ""
+       level: ""
+     - name: "Shyam Sundar Padhy" 
+       email: "24f1002508@ds.study.iitm.ac.in"
+       tag : "unregistered"
+       gender: ""
+       level: ""
+     - name: "Kushagra Singh "
+       tag : "unregistered" 
+       email: "25f3005423@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Team Paradoxis"
+    teamId: "RT20"
+    pure: true
+    members:
+     - name: "GOWTHUM VIJAAY (DS)"
+       email: "25f3005964@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "Narain Kartik (DS)"
+       email: "25f2003812@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+
+  - teamName: "Super Statisticians"
+    teamId: "RT21"
+    pure: true
+    members:
+     - name: "HARSHITA DUDEJA (DS) DS"
+       email: "23f2005244@ds.study.iitm.ac.in"
+       teamLead: true
+       gender: ""
+       level: ""
+     - name: "ATHARVA ADSUL (DS)"
+       email: "25f2001490@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "MOHAMMED JUBAIR A (DS)"
+       email: "24f2008742@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "Naveen Garg (DS)"
+       email: "23f1000497@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "TARAN BALRAM P M (DS)"
+       email: "26f1000243@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
+     - name: "VISHAL RAAJ D N D (DS)"
+       email: "25f2004152@ds.study.iitm.ac.in"
+       gender: ""
+       level: ""
