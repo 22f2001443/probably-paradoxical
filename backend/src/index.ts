@@ -56,7 +56,7 @@ export default {
 	},
 
 	// Cron trigger (see wrangler.jsonc): applies any due scheduled stage
-	// transitions. Runs every minute in production.
+	// transitions. Runs every 15 minutes in production.
 	async scheduled(_event, env, ctx): Promise<void> {
 		ctx.waitUntil(runDueSchedules(env));
 	},

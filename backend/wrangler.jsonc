@@ -15,11 +15,11 @@
 		"nodejs_compat"
 	],
 	/**
-	 * Cron trigger: runs the scheduled() handler every minute to apply due
+	 * Cron trigger: runs the scheduled() handler every 15 minutes to apply due
 	 * scheduled stage transitions. https://developers.cloudflare.com/workers/configuration/cron-triggers/
 	 */
 	"triggers": {
-		"crons": ["* * * * *"]
+		"crons": ["*/15 * * * *"]
 	},
 	/**
 	 * Rate Limiting binding for auth endpoints (per-IP).

@@ -120,7 +120,7 @@ timeline:
         The event brief and list of eligible paradoxes are published. Teams
         study the domain and form their research hypothesis.
       status: upcoming
-      date: "10th June 2026 · 12–3 PM"
+      date: "10th June 2026 · 12:30 PM–3:30 PM"
       location: "RJN101"
 
     - stage: 1
@@ -129,7 +129,7 @@ timeline:
         Teams submit their chosen paradox, target population, and finalised
         questionnaire for review before data collection begins.
       status: upcoming
-      date: "10th June 2026"
+      date: "10th June 2026 · 2:30 PM–5:30 PM"
 
     - stage: 2
       title: "Data Collection"
@@ -137,7 +137,7 @@ timeline:
         Teams deploy surveys across the IIT Madras campus. Minimum response
         thresholds must be met within the allotted time window.
       status: upcoming
-      date: "10th–11th June 2026"
+      date: "10th June 2026 · 5:30 PM–11th June 2026 · 10 AM"
 
     - stage: 3
       title: "Data Cleaning & Analysis"
@@ -145,7 +145,7 @@ timeline:
         Collected data is cleaned, coded, and analysed. Teams document
         methodology, assumptions, and any anomalies encountered.
       status: upcoming
-      date: "11th June 2026 · 10 AM–4 PM"
+      date: "11th June 2026 · 11:30 AM–4 PM"
       location: "RJN102"
 
     - stage: 4
@@ -154,7 +154,7 @@ timeline:
         Teams present findings to judges and guests, including statistical results,
         visualisations, and a reflection on whether the paradox was observed.
       status: upcoming
-      date: "12th June 2026 · 12–6 PM"
+      date: "12th June 2026 · 12 PM–4 PM"
       location: "RJN102"
 
 # ── Guidelines document ────────────────────────────────────────────────────
