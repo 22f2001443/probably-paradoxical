@@ -5,6 +5,7 @@ import { handleForgotPassword } from "./auth/forgotPassword";
 import { handleResetPassword } from "./auth/resetPassword";
 import { handleChangePassword } from "./auth/changePassword";
 import { handleAdminOverview } from "./admin/overview";
+import { handleTeamOverview } from "./team/overview";
 import { handleTeamMembers } from "./team/members";
 import { handleThemeSubmission } from "./team/themeSubmission";
 import { handleDatasetSubmission } from "./team/datasetSubmission";
@@ -174,6 +175,11 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "GET" && url.pathname === "/paradoxes") {
 			const result = await handleListPublishedParadoxes(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/team/overview") {
+			const result = await handleTeamOverview(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

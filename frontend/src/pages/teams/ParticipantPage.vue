@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore.js'
+import { fetchTeamRounds, roundGate, isSubmitted, formatSubmittedAt, ROUND_KEYS } from '../../services/rounds.js'
 import DashboardShell from '../../components/common/DashboardShell.vue'
 import BaseCard from '../../components/common/BaseCard.vue'
 import BaseButton from '../../components/common/BaseButton.vue'
@@ -16,22 +17,89 @@ const tiles = computed(() => [
   { label: 'Team ID', value: user.value.teamId || '—' },
 ])
 
-// Competition roadmap (mirrors the backend `rounds` pipeline — Stages 0–4).
-const roadmap = [
-  { label: 'Stage 0 — Problem Statement Release', status: 'active', note: 'Curated paradoxes released with explanatory documents.' },
-  { label: 'Stage 1 — Theme & Questionnaire Design', status: 'upcoming', note: 'Choose a paradox, build your theme, and design the questionnaire.' },
-  { label: 'Stage 2 — Data Collection / Survey Phase', status: 'upcoming', note: 'Survey the campus population and submit your raw dataset.' },
-  { label: 'Stage 3 — Data Cleaning & Data Analysis Phase', status: 'upcoming', note: 'Invigilated round — clean, analyse, and submit your deliverables.' },
-  { label: 'Stage 4 — Final Presentation', status: 'upcoming', note: 'Present your full workflow to the judges.' },
+// Live round states + this team's submissions, used to lock submissions whose
+// round isn't open and to show what's already been submitted.
+const roundsByKey = ref({})
+const submissionsByKey = ref({})
+
+// Keep the roadmap/tiles current: refetch on a timer and whenever the tab
+// regains focus, so admin/cron stage transitions show without a manual reload.
+const REFRESH_MS = 60000
+let pollId = null
+
+async function loadRounds() {
+  try {
+    const { byKey, submissions } = await fetchTeamRounds(auth.token)
+    roundsByKey.value = byKey
+    submissionsByKey.value = submissions
+  } catch (e) {
+    if (e?.status === 401) { stopRefresh(); auth.logout(); router.push('/login'); return }
+    // Fail open: keep the last-known state on a transient fetch error.
+  }
+}
+
+function onVisible() {
+  if (document.visibilityState === 'visible') loadRounds()
+}
+
+function stopRefresh() {
+  if (pollId) { clearInterval(pollId); pollId = null }
+  document.removeEventListener('visibilitychange', onVisible)
+}
+
+onMounted(() => {
+  loadRounds()
+  pollId = setInterval(loadRounds, REFRESH_MS)
+  document.addEventListener('visibilitychange', onVisible)
+})
+
+onUnmounted(stopRefresh)
+
+// Competition roadmap (mirrors the backend `rounds` pipeline — Stages 0–4),
+// with each stage's badge driven by its live round state.
+const roadmapDefs = [
+  { key: ROUND_KEYS.stage0, label: 'Stage 0 — Problem Statement Release', note: 'Curated paradoxes released with explanatory documents.' },
+  { key: ROUND_KEYS.stage1, label: 'Stage 1 — Theme & Questionnaire Design', note: 'Choose a paradox, build your theme, and design the questionnaire.' },
+  { key: ROUND_KEYS.stage2, label: 'Stage 2 — Data Collection / Survey Phase', note: 'Survey the campus population and submit your raw dataset.' },
+  { key: ROUND_KEYS.stage3, label: 'Stage 3 — Data Cleaning & Data Analysis Phase', note: 'Invigilated round — clean, analyse, and submit your deliverables.' },
+  { key: ROUND_KEYS.stage4, label: 'Stage 4 — Final Presentation', note: 'Present your full workflow to the judges.' },
 ]
 
-const tasks = [
+const roadmap = computed(() =>
+  roadmapDefs.map((step) => ({
+    label: step.label,
+    note: step.note,
+    status: roundsByKey.value[step.key] ? roundGate(roundsByKey.value[step.key]).status : 'upcoming',
+  })),
+)
+
+// Deliverables. Submission tiles carry a roundKey and lock when their round
+// isn't open; non-submission tiles (Paradoxes) stay always available.
+const taskDefs = [
   { title: 'Paradoxes', desc: 'Browse all available paradoxes for the competition.', cta: 'View paradoxes', to: '/participant/paradoxes' },
-  { title: 'Theme & Questionnaire', desc: 'Pick a paradox, define your real-world theme, and upload your questionnaire PDF.', cta: 'Start submission', to: '/participant/theme' },
-  { title: 'Raw dataset upload', desc: 'Survey the campus, upload the raw data you collect (CSV or Excel), and sign the declaration.', cta: 'Upload dataset', to: '/participant/dataset' },
-  { title: 'Analysis deliverables', desc: 'Submit a ZIP with your clean dataset, analysis notebook, and findings document.', cta: 'Upload analysis', to: '/participant/analysis' },
-  { title: 'Final presentation', desc: 'Upload your final presentation (PPT or PDF) based on your submitted findings.', cta: 'Upload presentation', to: '/participant/presentation' },
+  { title: 'Theme & Questionnaire', desc: 'Pick a paradox, define your real-world theme, and upload your questionnaire PDF.', cta: 'Start submission', to: '/participant/theme', roundKey: ROUND_KEYS.stage1 },
+  { title: 'Raw dataset upload', desc: 'Survey the campus, upload the raw data you collect (CSV or Excel), and sign the declaration.', cta: 'Upload dataset', to: '/participant/dataset', roundKey: ROUND_KEYS.stage2 },
+  { title: 'Analysis deliverables', desc: 'Submit a ZIP with your clean dataset, analysis notebook, and findings document.', cta: 'Upload analysis', to: '/participant/analysis', roundKey: ROUND_KEYS.stage3 },
+  { title: 'Final presentation', desc: 'Upload your final presentation (PPT or PDF) based on your submitted findings.', cta: 'Upload presentation', to: '/participant/presentation', roundKey: ROUND_KEYS.stage4 },
 ]
+
+const tasks = computed(() =>
+  taskDefs.map((task) => {
+    if (!task.roundKey) return { ...task, locked: false, gate: null, submitted: false, submittedAt: '' }
+    const round = roundsByKey.value[task.roundKey]
+    // Fail open until data loads so a fetch error never hides a live round.
+    const gate = round ? roundGate(round) : { open: true, status: 'active', label: 'Open', note: '' }
+    const submission = submissionsByKey.value[task.roundKey]
+    const submitted = isSubmitted(submission)
+    return {
+      ...task,
+      locked: !gate.open,
+      gate,
+      submitted,
+      submittedAt: submitted ? formatSubmittedAt(submission.submittedAt) : '',
+    }
+  }),
+)
 </script>
 
 <template>
@@ -75,11 +143,21 @@ const tasks = [
     <h2 class="text-lg font-bold text-neutral-950 mb-3">Your deliverables</h2>
     <div class="grid gap-4 sm:grid-cols-2">
       <BaseCard v-for="task in tasks" :key="task.title" class="flex flex-col">
-        <h3 class="font-bold text-neutral-950 mb-1">{{ task.title }}</h3>
+        <div class="flex items-start justify-between gap-2 mb-1">
+          <h3 class="font-bold text-neutral-950">{{ task.title }}</h3>
+          <StatusBadge v-if="task.submitted" status="submitted" />
+          <StatusBadge v-else-if="task.gate && !task.gate.open" :status="task.gate.status" />
+        </div>
         <p class="text-sm text-neutral-500 flex-1">{{ task.desc }}</p>
+        <p v-if="task.submitted" class="text-xs text-emerald-700 mt-2">
+          Submitted<span v-if="task.submittedAt"> · {{ task.submittedAt }}</span>
+        </p>
+        <p v-else-if="task.locked" class="text-xs text-neutral-400 mt-2">{{ task.gate.note }}</p>
         <div class="mt-4">
-          <BaseButton v-if="task.to" variant="primary" @click="router.push(task.to)">{{ task.cta }}</BaseButton>
-          <BaseButton v-else variant="outline" :disabled="true">{{ task.when }}</BaseButton>
+          <BaseButton v-if="task.locked" variant="outline" :disabled="true">{{ task.gate.label }}</BaseButton>
+          <BaseButton v-else variant="primary" @click="router.push(task.to)">
+            {{ task.submitted ? 'Update submission' : task.cta }}
+          </BaseButton>
         </div>
       </BaseCard>
     </div>

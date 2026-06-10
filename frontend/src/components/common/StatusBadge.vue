@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  /** 'completed' | 'active' | 'upcoming' */
+  /** 'completed' | 'active' | 'upcoming' | 'submitted' */
   status: {
     type: String,
     default: 'upcoming',
@@ -17,11 +17,13 @@ const classes = {
     completed: 'bg-neutral-950 text-white',
     active:    'bg-neutral-200 text-neutral-950 font-bold',
     upcoming:  'border border-neutral-300 text-neutral-400',
+    submitted: 'bg-emerald-600 text-white',
   },
   violet: {
     completed: 'bg-violet-600 text-white',
     active:    'border border-violet-600 text-violet-700 font-bold',
     upcoming:  'border border-violet-600 text-violet-700',
+    submitted: 'bg-emerald-600 text-white',
   },
 }
 
@@ -29,6 +31,7 @@ const labels = {
   completed: 'Done',
   active:    'Active',
   upcoming:  'Upcoming',
+  submitted: 'Submitted',
 }
 </script>
 

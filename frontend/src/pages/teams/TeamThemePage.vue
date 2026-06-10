@@ -7,10 +7,16 @@ import { apiGet, apiUpload } from '../../services/api.js'
 import DashboardShell from '../../components/common/DashboardShell.vue'
 import BaseCard from '../../components/common/BaseCard.vue'
 import BaseButton from '../../components/common/BaseButton.vue'
+import RoundLockedNotice from '../../components/common/RoundLockedNotice.vue'
+import { useRoundGate } from '../../composables/useRoundGate.js'
+import { ROUND_KEYS, formatSubmittedAt } from '../../services/rounds.js'
 
 const auth = useAuthStore()
 const router = useRouter()
 const toast = useToast()
+
+const { loading: roundLoading, gate: roundGateInfo, locked, submitted, submission } = useRoundGate(ROUND_KEYS.stage1)
+const submittedAt = computed(() => formatSubmittedAt(submission.value?.submittedAt))
 
 const MAX_PDF_BYTES = 10 * 1024 * 1024
 
@@ -75,6 +81,10 @@ function reset() {
 }
 
 async function submit() {
+  if (locked.value) {
+    toast.error('This round isn’t open for submissions.')
+    return
+  }
   if (!canSubmit.value) {
     toast.error('Complete all required fields and accept the consent declaration.')
     return
@@ -109,8 +119,21 @@ onMounted(loadParadoxes)
       ← Back to dashboard
     </RouterLink>
 
-    <BaseCard class="max-w-3xl">
+    <BaseCard v-if="roundLoading" class="max-w-3xl">
+      <p class="text-sm text-neutral-500 py-6 text-center">Checking round status…</p>
+    </BaseCard>
+    <BaseCard v-else-if="locked" class="max-w-3xl">
+      <RoundLockedNotice :gate="roundGateInfo" />
+    </BaseCard>
+    <BaseCard v-else class="max-w-3xl">
       <form class="space-y-6" novalidate @submit.prevent="submit">
+        <p
+          v-if="submitted"
+          class="border border-emerald-200 bg-emerald-50 text-emerald-800 text-sm px-4 py-3"
+        >
+          ✓ You’ve already submitted this stage<span v-if="submittedAt"> on {{ submittedAt }}</span>.
+          Submitting again will replace your previous upload.
+        </p>
         <!-- Paradox selector -->
         <div>
           <label for="th-paradox" class="block text-xs font-semibold uppercase tracking-widest text-neutral-600 mb-2">

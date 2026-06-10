@@ -119,7 +119,7 @@ timeline:
       description: >
         The event brief and list of eligible paradoxes are published. Teams
         study the domain and form their research hypothesis.
-      status: upcoming
+      status: completed
       date: "10th June 2026 · 12:30 PM–3:30 PM"
       location: "RJN101"
 
@@ -128,7 +128,7 @@ timeline:
       description: >
         Teams submit their chosen paradox, target population, and finalised
         questionnaire for review before data collection begins.
-      status: upcoming
+      status: completed
       date: "10th June 2026 · 2:30 PM–5:30 PM"
 
     - stage: 2
