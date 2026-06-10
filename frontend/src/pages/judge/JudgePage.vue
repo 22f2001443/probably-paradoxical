@@ -1,9 +1,9 @@
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useAuthStore } from '../../stores/authStore.js'
-import { apiGet, apiPost } from '../../services/api.js'
+import { apiGet, apiPost, apiGetBlob } from '../../services/api.js'
 import DashboardShell from '../../components/common/DashboardShell.vue'
 import BaseCard from '../../components/common/BaseCard.vue'
 import BaseButton from '../../components/common/BaseButton.vue'
@@ -20,6 +20,9 @@ const error = ref('')
 const busy = ref(false)
 const openId = ref('')           // questionnaireId whose form is expanded
 const drafts = reactive({})      // questionnaireId -> { criterionKey: score }
+const pdfUrls = reactive({})     // questionnaireId -> object URL of the fetched PDF
+const pdfLoading = reactive({})  // questionnaireId -> bool
+const pdfError = reactive({})    // questionnaireId -> string
 
 const rubricTotal = computed(() => rubric.value?.total ?? 0)
 const stats = computed(() => {
@@ -46,6 +49,28 @@ function toggle(item) {
   }
   drafts[item.questionnaireId] = d
   openId.value = item.questionnaireId
+  if (item.hasPdf) loadPdf(item)
+}
+
+async function loadPdf(item) {
+  const qid = item.questionnaireId
+  if (pdfUrls[qid] || pdfLoading[qid]) return
+  pdfLoading[qid] = true
+  pdfError[qid] = ''
+  try {
+    const blob = await apiGetBlob(`/judge/submission-file?questionnaireId=${encodeURIComponent(qid)}`, { token: auth.token })
+    pdfUrls[qid] = URL.createObjectURL(blob)
+  } catch (e) {
+    if (e?.status === 401) { auth.logout(); router.push('/login'); return }
+    pdfError[qid] = e?.message || 'Could not load the PDF.'
+  } finally {
+    pdfLoading[qid] = false
+  }
+}
+
+function openPdf(item) {
+  const url = pdfUrls[item.questionnaireId]
+  if (url) window.open(url, '_blank', 'noopener')
 }
 
 async function load() {
@@ -86,6 +111,11 @@ async function submit(item, status) {
 }
 
 onMounted(load)
+onBeforeUnmount(() => {
+  for (const url of Object.values(pdfUrls)) {
+    if (url) URL.revokeObjectURL(url)
+  }
+})
 </script>
 
 <template>
@@ -134,6 +164,47 @@ onMounted(load)
               {{ openId === item.questionnaireId ? 'Close' : (item.evaluation ? 'Edit' : 'Score') }}
             </BaseButton>
           </div>
+        </div>
+
+        <!-- Submission details + questionnaire PDF (full, not a preview) -->
+        <div v-if="openId === item.questionnaireId" class="mt-4 border-t border-neutral-100 pt-4 space-y-4">
+          <dl class="space-y-3">
+            <div v-if="item.paradoxCode">
+              <dt class="text-xs font-semibold uppercase tracking-widest text-neutral-500">Paradox</dt>
+              <dd class="text-sm text-neutral-800 mt-0.5">{{ item.paradoxCode }}</dd>
+            </div>
+            <div v-if="item.theme">
+              <dt class="text-xs font-semibold uppercase tracking-widest text-neutral-500">Theme</dt>
+              <dd class="text-sm text-neutral-800 mt-0.5 whitespace-pre-wrap">{{ item.theme }}</dd>
+            </div>
+            <div v-if="item.rationale">
+              <dt class="text-xs font-semibold uppercase tracking-widest text-neutral-500">Rationale</dt>
+              <dd class="text-sm text-neutral-800 mt-0.5 whitespace-pre-wrap">{{ item.rationale }}</dd>
+            </div>
+            <div v-if="item.targetPopulation">
+              <dt class="text-xs font-semibold uppercase tracking-widest text-neutral-500">Target population</dt>
+              <dd class="text-sm text-neutral-800 mt-0.5">{{ item.targetPopulation }}</dd>
+            </div>
+          </dl>
+
+          <div v-if="item.hasPdf">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold uppercase tracking-widest text-neutral-500">Questionnaire PDF</span>
+              <BaseButton v-if="pdfUrls[item.questionnaireId]" variant="ghost" @click="openPdf(item)">
+                Open in new tab ↗
+              </BaseButton>
+            </div>
+            <p v-if="pdfError[item.questionnaireId]" class="text-sm text-red-600">{{ pdfError[item.questionnaireId] }}</p>
+            <p v-else-if="pdfLoading[item.questionnaireId]" class="text-sm text-neutral-500">Loading PDF…</p>
+            <iframe
+              v-else-if="pdfUrls[item.questionnaireId]"
+              :src="pdfUrls[item.questionnaireId]"
+              class="w-full h-[70vh] border border-neutral-200"
+              title="Questionnaire PDF"
+            />
+            <BaseButton v-else variant="outline" @click="loadPdf(item)">View PDF</BaseButton>
+          </div>
+          <p v-else class="text-sm text-neutral-400">No questionnaire PDF attached.</p>
         </div>
 
         <!-- Scoring form -->

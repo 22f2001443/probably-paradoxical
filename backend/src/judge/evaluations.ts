@@ -6,6 +6,7 @@ import { COLLECTIONS } from "../db/collections.ts";
 import type {
 	AssignmentDocument,
 	EvaluationDocument,
+	FileDocument,
 	RubricDocument,
 	SubmissionDocument,
 	TeamDocument,
@@ -74,6 +75,9 @@ export async function handleJudgeQueue(request: Request, env: AppEnv): Promise<R
 						teamName: teamName.get(a.teamId) ?? a.teamId,
 						paradoxCode: sub.theme?.paradoxCode ?? "",
 						theme: sub.theme?.theme ?? "",
+						rationale: sub.theme?.rationale ?? "",
+						targetPopulation: sub.theme?.targetPopulation ?? "",
+						hasPdf: Boolean(sub.fileIds && sub.fileIds.length > 0),
 						evaluation: ev
 							? {
 									criterionScores: ev.criterionScores,
@@ -209,7 +213,73 @@ export async function handleSubmitEvaluation(request: Request, env: AppEnv): Pro
 	}
 }
 
+/**
+ * GET /judge/submission-file?questionnaireId=... — streams the questionnaire PDF
+ * (from R2) for a questionnaire the signed-in judge is assigned to. Returns the
+ * raw file inline (not JSON), so index.ts returns this Response directly.
+ */
+export async function handleJudgeSubmissionFile(request: Request, env: AppEnv): Promise<Response> {
+	const auth = await getAuthPayload(request, env);
+	if (!auth) return fileError("Authentication required.", 401);
+	if (auth.role !== "judge") return fileError("Judge access required.", 403);
+	if (!env.SUBMISSIONS_BUCKET) return fileError("File storage is not configured.", 503);
+
+	let judgeId: ObjectId;
+	try {
+		judgeId = new ObjectId(auth.sub);
+	} catch {
+		return fileError("Invalid judge token.", 400);
+	}
+
+	const qidRaw = new URL(request.url).searchParams.get("questionnaireId") ?? "";
+	let questionnaireId: ObjectId;
+	try {
+		questionnaireId = new ObjectId(qidRaw);
+	} catch {
+		return fileError("Invalid questionnaireId.", 400);
+	}
+
+	try {
+		return await withDatabase(env, async (db) => {
+			// Only the assigned judge may read the file.
+			const assignment = await db
+				.collection<AssignmentDocument>(COLLECTIONS.assignments)
+				.findOne({ questionnaireId, judgeId });
+			if (!assignment) return fileError("You are not assigned to this questionnaire.", 403);
+
+			const submission = await db
+				.collection<SubmissionDocument>(COLLECTIONS.submissions)
+				.findOne({ _id: questionnaireId });
+			const fileId = submission?.fileIds?.[0];
+			if (!fileId) return fileError("No file is attached to this submission.", 404);
+
+			const fileDoc = await db.collection<FileDocument>(COLLECTIONS.files).findOne({ _id: fileId });
+			if (!fileDoc) return fileError("File record not found.", 404);
+
+			const object = await env.SUBMISSIONS_BUCKET!.get(fileDoc.r2Key);
+			if (!object) return fileError("File is no longer available.", 404);
+
+			const safeName = (fileDoc.originalName || "questionnaire.pdf").replace(/["\\\r\n]/g, "_");
+			const headers = new Headers();
+			headers.set("content-type", fileDoc.contentType || "application/octet-stream");
+			headers.set("content-disposition", `inline; filename="${safeName}"`);
+			headers.set("cache-control", "private, no-store");
+			return new Response(object.body, { status: 200, headers });
+		});
+	} catch (error) {
+		const status = error instanceof Error && error.name === "ConfigurationError" ? 503 : 500;
+		return fileError(error instanceof Error ? error.message : "Unable to load the file.", status);
+	}
+}
+
 // --- helpers ----------------------------------------------------------------
+
+function fileError(message: string, status: number): Response {
+	return new Response(JSON.stringify({ error: message }), {
+		status,
+		headers: { "content-type": "application/json; charset=utf-8" },
+	});
+}
 
 function str(v: unknown): string {
 	return typeof v === "string" ? v.trim() : "";

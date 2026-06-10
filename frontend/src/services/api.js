@@ -59,6 +59,31 @@ export async function apiUpload(path, formData, { token } = {}) {
   return data
 }
 
+/**
+ * GET a binary response as a Blob (e.g. a PDF). Throws (with `.status`/`.data`)
+ * on non-2xx, parsing the JSON error body like apiRequest.
+ */
+export async function apiGetBlob(path, { token } = {}) {
+  const headers = {}
+  if (token) headers.authorization = `Bearer ${token}`
+
+  let response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, { method: 'GET', headers })
+  } catch {
+    throw new Error('Could not reach the server. Please try again.')
+  }
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}))
+    const error = new Error(data?.error || `Request failed (${response.status}).`)
+    error.status = response.status
+    error.data = data
+    throw error
+  }
+  return response.blob()
+}
+
 export const apiPost = (path, body, options = {}) =>
   apiRequest(path, { ...options, method: 'POST', body })
 

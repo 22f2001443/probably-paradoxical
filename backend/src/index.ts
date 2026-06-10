@@ -33,7 +33,7 @@ import {
 	handleMarkAttendance,
 	handleBulkAttendance,
 } from "./admin/attendance";
-import { handleJudgeQueue, handleSubmitEvaluation } from "./judge/evaluations";
+import { handleJudgeQueue, handleSubmitEvaluation, handleJudgeSubmissionFile } from "./judge/evaluations";
 import { clientKey, rateLimit } from "./security/rateLimit";
 import { openApiSpec, swaggerUiHtml } from "./docs/openapi";
 
@@ -166,6 +166,11 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 		if (request.method === "GET" && url.pathname === "/judge/queue") {
 			const result = await handleJudgeQueue(request, env);
 			return jsonResponse(result.body, result.status);
+		}
+
+		// Streams the questionnaire PDF (binary) — returns its own Response.
+		if (request.method === "GET" && url.pathname === "/judge/submission-file") {
+			return handleJudgeSubmissionFile(request, env);
 		}
 
 		if (request.method === "POST" && url.pathname === "/judge/evaluations") {
