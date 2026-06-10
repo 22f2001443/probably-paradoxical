@@ -1,5 +1,7 @@
 export const PASSWORD_ALGORITHM = "pbkdf2-sha256";
-export const PASSWORD_ITERATIONS = 310000;
+// Cloudflare Workers caps PBKDF2 at 100000 iterations via WebCrypto; staying at
+// the cap keeps hashing/verification native and well inside the CPU budget.
+export const PASSWORD_ITERATIONS = 100000;
 
 const PASSWORD_KEY_LENGTH_BITS = 256;
 const SALT_LENGTH_BYTES = 16;
@@ -8,7 +10,7 @@ export async function hashPassword(password) {
 	assertPassword(password);
 
 	const passwordSalt = randomBase64(SALT_LENGTH_BYTES);
-	const passwordHash = await derivePasswordHash(password, passwordSalt);
+	const passwordHash = await derivePasswordHash(password, passwordSalt, PASSWORD_ITERATIONS);
 
 	return {
 		passwordHash,
@@ -25,11 +27,14 @@ export async function verifyPassword(password, digest) {
 		return false;
 	}
 
-	const derivedHash = await derivePasswordHash(password, digest.passwordSalt);
+	// Verify at the iteration count the digest was hashed with (falling back to
+	// the current default) so older digests keep verifying if the default changes.
+	const iterations = Number(digest.passwordIterations) || PASSWORD_ITERATIONS;
+	const derivedHash = await derivePasswordHash(password, digest.passwordSalt, iterations);
 	return timingSafeEqual(derivedHash, digest.passwordHash);
 }
 
-async function derivePasswordHash(password, salt) {
+async function derivePasswordHash(password, salt, iterations) {
 	const encoder = new TextEncoder();
 	const keyMaterial = await crypto.subtle.importKey(
 		"raw",
@@ -43,7 +48,7 @@ async function derivePasswordHash(password, salt) {
 			name: "PBKDF2",
 			hash: "SHA-256",
 			salt: base64ToBytes(salt),
-			iterations: PASSWORD_ITERATIONS,
+			iterations,
 		},
 		keyMaterial,
 		PASSWORD_KEY_LENGTH_BITS,
