@@ -21,8 +21,6 @@ const refreshing = ref(false)
 const lastUpdated = ref(null)
 const now = ref(Date.now())
 
-const POLL_MS = 12000
-let pollTimer = null
 let tickTimer = null
 
 const user = computed(() => auth.user ?? {})
@@ -91,18 +89,13 @@ async function load({ initial = false } = {}) {
 
 onMounted(() => {
   load({ initial: true })
-  pollTimer = setInterval(() => load(), POLL_MS)
+  // Data refreshes only via the Refresh button now — no auto-poll or focus
+  // refetch. The tick just keeps the "updated Xs ago" label accurate.
   tickTimer = setInterval(() => { now.value = Date.now() }, 1000)
-  document.addEventListener('visibilitychange', onVisible)
 })
 onBeforeUnmount(() => {
-  clearInterval(pollTimer)
   clearInterval(tickTimer)
-  document.removeEventListener('visibilitychange', onVisible)
 })
-function onVisible() {
-  if (document.visibilityState === 'visible') load()
-}
 </script>
 
 <template>
@@ -116,7 +109,7 @@ function onVisible() {
         </span>
         <span v-if="error" class="text-red-600">{{ error }}</span>
         <span v-else-if="loading">Loading live data…</span>
-        <span v-else>Live · updated {{ updatedAgo }}</span>
+        <span v-else>Updated {{ updatedAgo }}</span>
       </div>
       <BaseButton variant="ghost" :disabled="refreshing || loading" @click="load()">
         {{ refreshing ? 'Refreshing…' : 'Refresh' }}
