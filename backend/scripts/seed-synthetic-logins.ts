@@ -11,7 +11,10 @@ import { fileURLToPath } from "node:url";
 import { MongoClient, ObjectId } from "mongodb";
 import YAML from "yaml";
 import { COLLECTIONS } from "../src/db/collections.ts";
-import { hashPassword } from "../src/security/password.js";
+// Hash with the canonical module (argon2id). The legacy PBKDF2 module uses
+// 310000 iterations, which Node can hash but the Cloudflare Workers runtime
+// refuses to verify (it caps PBKDF2 at 100000), breaking login.
+import { hashPassword } from "../src/security/passwords.ts";
 
 const backendRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 loadEnvFile(resolve(backendRoot, ".env"));
