@@ -27,7 +27,7 @@ import {
 	handleDeleteAssignment,
 	handleAutoAssign,
 } from "./admin/assignments";
-import { handleListResults, handlePublishResults } from "./admin/results";
+import { handleListResults, handlePublishResults, handleSaveScores } from "./admin/results";
 import { handleListSubmissions, handleAdminSubmissionFile } from "./admin/submissions";
 import {
 	handleListAttendance,
@@ -156,6 +156,11 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 
 		if (request.method === "POST" && url.pathname === "/admin/results/publish") {
 			const result = await handlePublishResults(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "POST" && url.pathname === "/admin/results/scores") {
+			const result = await handleSaveScores(request, env);
 			return jsonResponse(result.body, result.status);
 		}
 

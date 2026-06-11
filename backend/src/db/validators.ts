@@ -383,7 +383,10 @@ export const COLLECTION_VALIDATORS: Record<string, { $jsonSchema: Record<string,
 			properties: {
 				roundKey: { bsonType: "string" },
 				teamId: { bsonType: "string" },
-				outcome: { enum: ["advanced", "eliminated"] },
+				// "pending" marks a saved-but-unpublished score (no advance/eliminate
+				// decision yet); it is never shown to teams and never written to a
+				// team's progress.
+				outcome: { enum: ["advanced", "eliminated", "pending"] },
 				aggregateScore: { bsonType: "number" },
 				rank: { bsonType: "number" },
 				breakdown: { bsonType: "object" },

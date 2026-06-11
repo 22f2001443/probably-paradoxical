@@ -23,9 +23,11 @@ export async function handleTeamResults(request: Request, env: AppEnv): Promise<
 
 	try {
 		return await withDatabase(env, async (db) => {
+			// "pending" results are saved scores with no published advance/eliminate
+			// decision yet — never surface them to the team.
 			const docs = await db
 				.collection<ResultDocument>(COLLECTIONS.results)
-				.find({ teamId })
+				.find({ teamId, outcome: { $ne: "pending" } })
 				.sort({ publishedAt: -1 })
 				.toArray();
 

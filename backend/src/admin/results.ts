@@ -154,6 +154,73 @@ export async function handlePublishResults(request: Request, env: AppEnv): Promi
 	}
 }
 
+/**
+ * POST /admin/results/scores — save scores for a stage without publishing.
+ * Body: { roundKey, scores: [{ teamId, aggregateScore }] }.
+ * Upserts the aggregateScore onto each team's result doc. New docs get a
+ * "pending" outcome (hidden from teams, no progress written) so a score can be
+ * recorded before the advance/eliminate decision is made; existing decided
+ * results keep their outcome and just have the score updated. Does NOT flip the
+ * round state or touch team status/progress — that's what publish does.
+ */
+export async function handleSaveScores(request: Request, env: AppEnv): Promise<Result> {
+	const auth = await requireAdmin(request, env);
+	if ("error" in auth) return auth.error;
+
+	const parsed = await readJson(request);
+	if ("error" in parsed) return parsed.error;
+
+	const roundKey = str(parsed.body.roundKey);
+	const scores = Array.isArray(parsed.body.scores) ? parsed.body.scores : null;
+	if (!roundKey) return bad("roundKey is required.");
+	if (!scores || scores.length === 0) return bad("Provide at least one score to save.");
+
+	const clean: { teamId: string; aggregateScore: number }[] = [];
+	for (const s of scores) {
+		const teamId = str((s as Record<string, unknown>).teamId);
+		const score = Number((s as Record<string, unknown>).aggregateScore);
+		if (!teamId || !Number.isFinite(score)) continue;
+		clean.push({ teamId, aggregateScore: score });
+	}
+	if (clean.length === 0) return bad("No valid scores to save.");
+
+	try {
+		return await withDatabase(env, async (db) => {
+			const round = await db
+				.collection<RoundDocument>(COLLECTIONS.rounds)
+				.findOne({ roundKey: roundKey as RoundDocument["roundKey"] });
+			if (!round) return bad("Unknown roundKey.");
+
+			const savedBy = new ObjectId(auth.payload.sub);
+			const now = new Date();
+
+			for (const s of clean) {
+				await db.collection(COLLECTIONS.results).updateOne(
+					{ roundKey, teamId: s.teamId },
+					{
+						$set: { aggregateScore: s.aggregateScore },
+						$setOnInsert: { outcome: "pending", publishedBy: savedBy, publishedAt: now },
+					},
+					{ upsert: true },
+				);
+			}
+
+			await db.collection(COLLECTIONS.auditEvents).insertOne({
+				actorRole: "admin",
+				actorId: auth.payload.sub,
+				action: "results.scores_saved",
+				targetType: "round",
+				targetId: roundKey,
+				at: now,
+			});
+
+			return { status: 200, body: { ok: true, roundKey, saved: clean.length } };
+		});
+	} catch (error) {
+		return errorResult(error);
+	}
+}
+
 // --- helpers ----------------------------------------------------------------
 
 /**

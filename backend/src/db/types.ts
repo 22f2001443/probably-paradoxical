@@ -276,7 +276,8 @@ export interface ResultDocument {
 	_id?: ObjectId;
 	roundKey: RoundKey;
 	teamId: string;
-	outcome: ResultOutcome;
+	/** "pending" = a saved score with no published decision yet (hidden from teams). */
+	outcome: ResultOutcome | "pending";
 	aggregateScore?: number;
 	rank?: number;
 	breakdown?: Record<string, unknown>;

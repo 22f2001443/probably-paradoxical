@@ -26,6 +26,10 @@ const selectedRound = ref('')
 const outcomes = ref({}) // teamId -> 'advanced' | 'eliminated' | ''
 const scores = ref({})    // teamId -> number | ''
 
+// Auto-advance rule: top X% of scored teams, or every team scoring >= a threshold.
+const ruleMode = ref('percent') // 'percent' | 'threshold'
+const ruleValue = ref('')
+
 const ROUND_STATE_LABEL = {
   upcoming: 'Upcoming', open: 'Open', closed: 'Closed',
   results_published: 'Results published', stale: 'Stale',
@@ -63,12 +67,15 @@ function resultsForRound(roundKey) {
 function syncRound() {
   const map = {}, sc = {}
   for (const t of teams.value) { map[t.teamId] = ''; sc[t.teamId] = '' }
+  // Judges' computed scores are the default for judge-scored stages…
+  const judgeScores = computedScores.value[selectedRound.value] || {}
+  for (const [teamId, v] of Object.entries(judgeScores)) sc[teamId] = v.score
+  // …but a saved/published result wins, so a manual entry or an admin override
+  // of the judge average survives reloads.
   for (const r of resultsForRound(selectedRound.value)) {
     map[r.teamId] = r.outcome
     if (r.aggregateScore != null) sc[r.teamId] = r.aggregateScore
   }
-  const judgeScores = computedScores.value[selectedRound.value] || {}
-  for (const [teamId, v] of Object.entries(judgeScores)) sc[teamId] = v.score
   outcomes.value = map
   scores.value = sc
 }
@@ -79,6 +86,71 @@ function setAll(outcome) {
   const map = { ...outcomes.value }
   for (const t of teams.value) map[t.teamId] = outcome
   outcomes.value = map
+}
+
+// Effective score for a team in the selected round: the value in the score box
+// (a manual entry, or an admin's override of the judge average). A blank box
+// falls back to the judges' computed average where one exists.
+function scoreFor(teamId) {
+  const s = scores.value[teamId]
+  if (s !== '' && s != null && Number.isFinite(Number(s))) return Number(s)
+  const c = computedForRound.value[teamId]
+  return c ? c.score : null
+}
+
+// Apply the auto-advance rule to teams that have a valid score. Teams without a
+// score are left undecided. Only sets the local advance/eliminate marks — the
+// admin reviews and then publishes.
+function applyRule() {
+  const v = Number(ruleValue.value)
+  if (ruleValue.value === '' || !Number.isFinite(v)) { toast.error('Enter a number for the rule first.'); return }
+
+  const scored = teams.value
+    .map((t) => ({ teamId: t.teamId, score: scoreFor(t.teamId) }))
+    .filter((x) => x.score != null)
+  if (!scored.length) { toast.error('No scored teams to apply the rule to.'); return }
+
+  const map = { ...outcomes.value }
+  if (ruleMode.value === 'percent') {
+    if (v <= 0 || v > 100) { toast.error('Percentage must be between 1 and 100.'); return }
+    const sorted = [...scored].sort((a, b) => b.score - a.score)
+    const n = Math.max(1, Math.ceil((sorted.length * v) / 100))
+    const cutoff = sorted[n - 1].score // advance everyone at/above the cutoff (ties included)
+    for (const x of scored) map[x.teamId] = x.score >= cutoff ? 'advanced' : 'eliminated'
+  } else {
+    for (const x of scored) map[x.teamId] = x.score >= v ? 'advanced' : 'eliminated'
+  }
+  outcomes.value = map
+  const adv = scored.filter((x) => map[x.teamId] === 'advanced').length
+  toast.success(`${adv} of ${scored.length} scored team(s) marked to advance. Review, then Publish.`)
+}
+
+// Persist scores without publishing. Judge-scored stages save the judges'
+// computed scores; manual stages save the typed values. Teams don't see these
+// until results are published.
+async function saveScores() {
+  const payload = teams.value
+    .map((t) => ({ teamId: t.teamId, aggregateScore: scoreFor(t.teamId) }))
+    .filter((x) => x.aggregateScore != null)
+  if (!payload.length) { toast.error('There are no scores to save yet.'); return }
+
+  busy.value = true
+  try {
+    const res = await apiPost('/admin/results/scores', { roundKey: selectedRound.value, scores: payload }, { token: auth.token })
+    // Preserve in-progress advance/eliminate marks across the refresh.
+    const keep = { ...outcomes.value }
+    await load()
+    const map = { ...outcomes.value }
+    for (const t of teams.value) {
+      if (keep[t.teamId] === 'advanced' || keep[t.teamId] === 'eliminated') map[t.teamId] = keep[t.teamId]
+    }
+    outcomes.value = map
+    toast.success(`Saved ${res.saved} score(s).`)
+  } catch (e) {
+    toast.error(e?.message || 'Could not save scores.')
+  } finally {
+    busy.value = false
+  }
 }
 
 async function load() {
@@ -105,8 +177,8 @@ async function publish() {
     .filter((t) => outcomes.value[t.teamId] === 'advanced' || outcomes.value[t.teamId] === 'eliminated')
     .map((t) => {
       const entry = { teamId: t.teamId, outcome: outcomes.value[t.teamId] }
-      const s = scores.value[t.teamId]
-      if (s !== '' && s != null && Number.isFinite(Number(s))) entry.aggregateScore = Number(s)
+      const s = scoreFor(t.teamId)
+      if (s != null) entry.aggregateScore = s
       return entry
     })
   if (!payload.length) { toast.error('Mark at least one team advanced or eliminated.'); return }
@@ -171,14 +243,49 @@ onMounted(load)
             <BaseButton variant="ghost" :disabled="busy" @click="setAll('advanced')">Advance all</BaseButton>
             <BaseButton variant="ghost" :disabled="busy" @click="setAll('eliminated')">Eliminate all</BaseButton>
             <BaseButton variant="ghost" :disabled="busy" @click="setAll('')">Clear</BaseButton>
+            <BaseButton variant="ghost" :disabled="busy" @click="saveScores">
+              {{ busy ? 'Saving…' : 'Save scores' }}
+            </BaseButton>
             <BaseButton variant="primary" :disabled="busy || counts.set === 0" @click="publish">
               {{ busy ? 'Publishing…' : 'Publish results' }}
             </BaseButton>
           </div>
         </div>
 
+        <!-- Auto-advance rule: mark the top X% (ties included) or everyone at/above
+             a score threshold. Acts only on teams that have a score. -->
+        <div class="flex flex-wrap items-center gap-2 mb-4 p-3 bg-neutral-50 border border-neutral-200">
+          <span class="text-xs font-semibold uppercase tracking-wider text-neutral-500">Auto-advance</span>
+          <div class="inline-flex border border-neutral-300">
+            <button
+              type="button"
+              class="px-3 py-1 text-sm font-semibold transition-colors"
+              :class="ruleMode === 'percent' ? 'bg-neutral-950 text-white' : 'text-neutral-600 hover:bg-neutral-100'"
+              @click="ruleMode = 'percent'"
+            >Top %</button>
+            <button
+              type="button"
+              class="px-3 py-1 text-sm font-semibold border-l border-neutral-300 transition-colors"
+              :class="ruleMode === 'threshold' ? 'bg-neutral-950 text-white' : 'text-neutral-600 hover:bg-neutral-100'"
+              @click="ruleMode = 'threshold'"
+            >Score ≥</button>
+          </div>
+          <input
+            v-model="ruleValue"
+            type="number"
+            step="any"
+            :placeholder="ruleMode === 'percent' ? 'e.g. 50' : 'e.g. 70'"
+            class="w-24 border border-neutral-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+          />
+          <span class="text-sm text-neutral-500">
+            {{ ruleMode === 'percent' ? '% of scored teams advance' : 'and above advance — the rest are eliminated' }}
+          </span>
+          <BaseButton variant="ghost" :disabled="busy" @click="applyRule">Apply rule</BaseButton>
+        </div>
+
         <p v-if="usesJudgeScores" class="text-xs text-neutral-500 mb-3">
-          Scores below are the judges' weighted averages out of {{ rubricTotal }} (teams ordered by score).
+          Scores are pre-filled with the judges' weighted averages out of {{ rubricTotal }} (teams ordered by score).
+          Edit a box to override that team; clear it to keep the judge value. Save scores to persist overrides.
         </p>
         <div class="divide-y divide-neutral-100">
           <div
@@ -195,26 +302,19 @@ onMounted(load)
               >out</span>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-              <!-- Judge-derived score (read-only) or manual entry -->
-              <span
-                v-if="usesJudgeScores"
-                class="text-sm font-semibold w-28 text-right"
-                :class="computedForRound[t.teamId] ? 'text-neutral-950' : 'text-neutral-400'"
-              >
-                <template v-if="computedForRound[t.teamId]">
-                  {{ computedForRound[t.teamId].score }}/{{ rubricTotal }}
-                  <span class="text-xs font-normal text-neutral-400">({{ computedForRound[t.teamId].judges }})</span>
-                </template>
-                <template v-else>no score</template>
-              </span>
+              <!-- Editable score. On judge-scored stages it is pre-filled with the
+                   judges' average; type to override one team, clear to fall back. -->
               <input
-                v-else
                 v-model="scores[t.teamId]"
                 type="number"
                 step="any"
-                placeholder="score"
+                :placeholder="usesJudgeScores ? 'judge avg' : 'score'"
                 class="w-20 border border-neutral-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
+              <span v-if="usesJudgeScores" class="text-xs text-neutral-400 w-24 shrink-0">
+                <template v-if="computedForRound[t.teamId]">/ {{ rubricTotal }} · {{ computedForRound[t.teamId].judges }} judge(s)</template>
+                <template v-else>no judges yet</template>
+              </span>
               <div class="inline-flex border border-neutral-300">
                 <button
                   type="button"
