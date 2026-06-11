@@ -19,6 +19,9 @@ const statusDotClasses = (stage) => {
 
 const stageTitleClasses = (stage) =>
   stage.tone === 'violet' ? 'text-violet-700' : 'text-neutral-950'
+
+// RJN venues are being relocated — show them struck through.
+const isRjn = (loc) => typeof loc === 'string' && loc.trim().toUpperCase().startsWith('RJN')
 </script>
 
 <template>
@@ -50,8 +53,12 @@ const stageTitleClasses = (stage) =>
             <span v-if="stage.date" class="text-xs text-neutral-400">
               {{ stage.date }}
             </span>
-            <span v-if="stage.location" class="text-xs font-medium text-neutral-500">
-              · {{ stage.location }}
+            <span v-if="stage.location || stage.newVenue" class="text-xs font-medium text-neutral-500">
+              ·
+              <span v-if="stage.location" :class="{ 'line-through text-neutral-400': isRjn(stage.location) }">{{ stage.location }}</span>
+              <span v-if="stage.newVenue" class="text-neutral-700 font-semibold">
+                <template v-if="stage.location"> → </template>{{ stage.newVenue }}
+              </span>
             </span>
           </div>
           <p class="text-sm text-neutral-500 leading-relaxed max-w-2xl">
