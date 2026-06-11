@@ -153,6 +153,33 @@ async function saveScores() {
   }
 }
 
+// Persist a single team's score without publishing. Unlike saveScores(), this
+// writes only the one team, so an admin can record/override scores team by team.
+// Patches the local results cache instead of a full reload, so other teams'
+// unsaved score edits aren't clobbered.
+async function saveOneScore(teamId) {
+  const score = scoreFor(teamId)
+  if (score == null) { toast.error('Enter a score for this team first.'); return }
+
+  busy.value = true
+  try {
+    await apiPost(
+      '/admin/results/scores',
+      { roundKey: selectedRound.value, scores: [{ teamId, aggregateScore: score }] },
+      { token: auth.token },
+    )
+    const existing = results.value.find((r) => r.roundKey === selectedRound.value && r.teamId === teamId)
+    if (existing) existing.aggregateScore = score
+    else results.value.push({ roundKey: selectedRound.value, teamId, outcome: 'pending', aggregateScore: score })
+    scores.value[teamId] = score
+    toast.success(`Saved score for ${teamId}.`)
+  } catch (e) {
+    toast.error(e?.message || 'Could not save score.')
+  } finally {
+    busy.value = false
+  }
+}
+
 async function load() {
   try {
     const data = await apiGet('/admin/results', { token: auth.token })
@@ -315,6 +342,14 @@ onMounted(load)
                 <template v-if="computedForRound[t.teamId]">/ {{ rubricTotal }} · {{ computedForRound[t.teamId].judges }} judge(s)</template>
                 <template v-else>no judges yet</template>
               </span>
+              <!-- Save just this team's score, independent of the bulk Save scores. -->
+              <button
+                type="button"
+                class="px-2 py-1 text-sm font-semibold border border-neutral-300 text-neutral-600 transition-colors hover:bg-neutral-100 disabled:opacity-50"
+                :disabled="busy"
+                title="Save this team's score"
+                @click="saveOneScore(t.teamId)"
+              >Save</button>
               <div class="inline-flex border border-neutral-300">
                 <button
                   type="button"
