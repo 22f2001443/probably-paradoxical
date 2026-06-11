@@ -327,7 +327,7 @@ teams:
 
   - teamName: "Team Mahalanobis"
     teamId: "T22"
-    pure: false
+    pure: true
     members:
       - name: "S NITHIKAA (DS)"
         email: "23f3000314@ds.study.iitm.ac.in"
@@ -346,9 +346,8 @@ teams:
         email: "24f2007471@ds.study.iitm.ac.in"
         gender: ""
         level: ""
-      - name: "Mohammed Jubair A"
+      - name: "Mohammed Jubair A (DS)"
         email: "24f2008742@ds.study.iitm.ac.in"
-        tag: "unregistered"
         gender: ""
         level: ""
 
@@ -1626,10 +1625,6 @@ teams:
        level: ""
      - name: "ATHARVA ADSUL (DS)"
        email: "25f2001490@ds.study.iitm.ac.in"
-       gender: ""
-       level: ""
-     - name: "MOHAMMED JUBAIR A (DS)"
-       email: "24f2008742@ds.study.iitm.ac.in"
        gender: ""
        level: ""
      - name: "Naveen Garg (DS)"
