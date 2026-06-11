@@ -117,6 +117,12 @@ const routes = [
     meta: { title: 'Results | Probably Paradoxical', requiresAuth: true, role: 'admin' },
   },
   {
+    path: '/admin/submissions',
+    name: 'admin-submissions',
+    component: () => import('../pages/admin/SubmissionsPage.vue'),
+    meta: { title: 'Submissions | Probably Paradoxical', requiresAuth: true, role: 'admin' },
+  },
+  {
     path: '/admin/attendance',
     name: 'admin-attendance',
     component: () => import('../pages/admin/AttendancePage.vue'),

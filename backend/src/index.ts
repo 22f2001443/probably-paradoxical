@@ -28,6 +28,7 @@ import {
 	handleAutoAssign,
 } from "./admin/assignments";
 import { handleListResults, handlePublishResults } from "./admin/results";
+import { handleListSubmissions, handleAdminSubmissionFile } from "./admin/submissions";
 import {
 	handleListAttendance,
 	handleMarkAttendance,
@@ -141,6 +142,16 @@ async function route(request: Request, env: AppEnv): Promise<Response> {
 		if (request.method === "GET" && url.pathname === "/admin/results") {
 			const result = await handleListResults(request, env);
 			return jsonResponse(result.body, result.status);
+		}
+
+		if (request.method === "GET" && url.pathname === "/admin/submissions") {
+			const result = await handleListSubmissions(request, env);
+			return jsonResponse(result.body, result.status);
+		}
+
+		// Streams a submitted artifact (binary) — returns its own Response.
+		if (request.method === "GET" && url.pathname === "/admin/submission-file") {
+			return handleAdminSubmissionFile(request, env);
 		}
 
 		if (request.method === "POST" && url.pathname === "/admin/results/publish") {

@@ -46,6 +46,7 @@ const controls = computed(() => [
   { key: 'paradoxes', title: 'Paradoxes', meta: `${paradoxes.value.published}/${paradoxes.value.total} published`, desc: 'Draft and publish the paradox statements teams choose from.', action: 'Manage' },
   { key: 'rounds', title: 'Rounds', meta: currentRound.value ? `${currentRound.value.title} · ${roundState(currentRound.value.state)}` : '—', desc: 'Open and close submission windows across the five stages.', action: 'Manage' },
   { key: 'assignments', title: 'Judge assignments', meta: `${fmt(counts.value.assignments)} assignments`, desc: 'Assign judges to questionnaires for Stage 1 review.', action: 'Assign' },
+  { key: 'submissions', title: 'Submissions', meta: `${fmt(counts.value.submissions)} submitted`, desc: 'Review every team\'s submitted artifacts — questionnaires, datasets, analyses, decks.', action: 'Review' },
   { key: 'results', title: 'Results', meta: `${fmt(counts.value.results)} published`, desc: 'Aggregate scores and publish advancement per round.', action: 'Publish' },
   { key: 'attendance', title: 'Attendance', meta: '3 event days', desc: 'Mark day-wise attendance for every team across the event.', action: 'Manage' },
 ])
@@ -157,6 +158,14 @@ onBeforeUnmount(() => {
           variant="primary"
           class="shrink-0"
           @click="router.push('/admin/assignments')"
+        >
+          {{ control.action }}
+        </BaseButton>
+        <BaseButton
+          v-else-if="control.key === 'submissions'"
+          variant="primary"
+          class="shrink-0"
+          @click="router.push('/admin/submissions')"
         >
           {{ control.action }}
         </BaseButton>
